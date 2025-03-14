@@ -1,9 +1,10 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import logger from "./logger"; // ✅ Use Winston for logging
 
 dotenv.config();
 
-// ✅ Configure Nodemailer Transporter
+// ✅ Configure Secure Nodemailer Transporter
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -15,14 +16,36 @@ const transporter = nodemailer.createTransport({
 // ✅ Function to Send Email
 export async function sendEmail(to: string, subject: string, html: string) {
   try {
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"Your Agency" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html,
     });
-    console.log(`📧 Email sent to ${to}`);
+    logger.info(`📧 Email sent to ${to} | Message ID: ${info.messageId}`);
   } catch (err) {
-    console.error(`❌ Email send failed: ${(err as Error).message}`);
+    logger.error(`❌ Email send failed: ${(err as Error).message}`);
   }
+}
+
+// ✅ Send Admin Notification for New Client
+export async function notifyAdminNewClient(
+  clientName: string,
+  clientEmail: string
+) {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!adminEmail) {
+    logger.warn("⚠️ Admin email not set in environment variables.");
+    return;
+  }
+
+  const subject = `🚀 New Client Onboarded: ${clientName}`;
+  const html = `
+    <h2>New Client Signed Up</h2>
+    <p><strong>Name:</strong> ${clientName}</p>
+    <p><strong>Email:</strong> ${clientEmail}</p>
+    <p>Check the admin dashboard for details.</p>
+  `;
+
+  await sendEmail(adminEmail, subject, html);
 }

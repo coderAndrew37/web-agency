@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import Client, { validateClient } from "../models/client";
-import { sendEmail } from "../utils/emailService"; // ✅ Import email utility
+import { sendEmail, notifyAdminNewClient } from "../utils/emailService";
 import logger from "../utils/logger";
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     await client.save();
     logger.info(`✅ New client onboarded: ${client.fullName}`);
 
-    // ✅ Send Confirmation Email
+    // ✅ Send Welcome Email to Client
     const emailContent = `
       <h2>Welcome to Our Agency, ${client.fullName}!</h2>
       <p>Thank you for signing up. Our team will reach out shortly.</p>
@@ -31,12 +31,14 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
         <li><strong>Services Interested:</strong> ${client.servicesInterested}</li>
         <li><strong>Budget:</strong> ${client.budget}</li>
         <li><strong>Message:</strong> ${client.message}</li>
-
       </ul>
       <p>We look forward to working with you! 🚀</p>
     `;
 
     await sendEmail(client.email, "Welcome to Our Agency!", emailContent);
+
+    // ✅ Notify Admin
+    await notifyAdminNewClient(client.fullName, client.email);
 
     res.status(201).json({ message: "Client onboarded & email sent", client });
   } catch (err: unknown) {

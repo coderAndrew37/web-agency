@@ -50,3 +50,16 @@
 [2025-03-14T03:40:03.606Z] INFO: ✅ MongoDB Connected Successfully
 [2025-03-14T03:40:12.163Z] ERROR: ❌ Error onboarding client: E11000 duplicate key error collection: web-agency.clients index: email_1 dup key: { email: "omolloandrew3@gmail.com" }
 [2025-03-14T03:41:08.007Z] INFO: ✅ New client onboarded: John Doe
+[2025-03-14T03:51:18.806Z] INFO: Health check endpoint hit.
+[2025-03-14T04:15:37.949Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T04:15:37.976Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T04:16:32.946Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T04:16:32.973Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T04:17:22.389Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T04:17:22.409Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T04:17:56.533Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T04:17:56.555Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T04:23:33.910Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T04:23:33.928Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T04:24:36.338Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T04:24:36.370Z] INFO: ✅ MongoDB Connected Successfully

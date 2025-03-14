@@ -5,6 +5,10 @@ import helmet from "helmet";
 import { connectDB } from "./startup/db";
 import setupRoutes from "./startup/routes";
 import logger from "./utils/logger";
+import schedule from "node-schedule";
+import { sendReminder } from "./utils/reminderService";
+import Booking from "./models/booking";
+
 dotenv.config();
 const app = express();
 
@@ -19,10 +23,25 @@ app.use(helmet());
 // ✅ Initialize Routes
 setupRoutes(app);
 
-// ✅ Health Check Route
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ message: "✅ API Running..." });
-  logger.info("Health check endpoint hit.");
+// Schedule a reminder 1 hour before the call
+schedule.scheduleJob("0 * * * *", async () => {
+  const bookings = await Booking.find({
+    date: { $gte: new Date() },
+    status: "Confirmed",
+  });
+
+  bookings.forEach((booking) => {
+    const callTime = new Date(booking.date);
+    callTime.setHours(parseInt(booking.time.split(":")[0]));
+    callTime.setMinutes(parseInt(booking.time.split(":")[1]));
+
+    const reminderTime = new Date(callTime.getTime() - 60 * 60 * 1000); // 1 hour before
+    if (reminderTime > new Date()) {
+      schedule.scheduleJob(reminderTime, () =>
+        sendReminder(booking._id.toString())
+      ); // Convert ObjectId to string
+    }
+  });
 });
 
 // ✅ Global Error Handler
