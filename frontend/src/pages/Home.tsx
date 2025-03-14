@@ -7,17 +7,16 @@ import Process from "../components/Process";
 import Pricing from "../components/Pricing";
 import FAQ from "../components/FAQ";
 import Newsletter from "../components/Newsletter";
+import colors from "../styles/colors";
 
 const Home = () => {
   return (
-    <div className="bg-dark text-light">
+    <div style={{ backgroundColor: colors.background, color: colors.darkText }}>
       {/* 1️⃣ Hook Visitors Immediately */}
       <Hero />
       <CTA />
 
       {/* 2️⃣ Show Proof & Build Trust */}
-
-      {/* 3️⃣ Show How We Help */}
       <Features />
       <Services />
       <Process />

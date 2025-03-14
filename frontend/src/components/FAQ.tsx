@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import colors from "../styles/colors";
 
 const faqs = [
   {
@@ -26,20 +27,22 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-20 bg-gray-900 text-light">
+    <section
+      id="faq"
+      className="py-20 text-center"
+      style={{ backgroundColor: colors.background, color: colors.darkText }}
+    >
       <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center">
-          Frequently Asked Questions
-        </h2>
+        <h2 className="text-4xl font-bold">Frequently Asked Questions</h2>
         <div className="mt-8 space-y-6">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="border border-gray-700 rounded-lg p-4 cursor-pointer"
+              className="border border-gray-300 rounded-lg p-5 cursor-pointer shadow-md hover:shadow-xl transition"
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
             >
               <div className="flex justify-between items-center">
-                <h3 className="text-lg">{faq.question}</h3>
+                <h3 className="text-lg font-semibold">{faq.question}</h3>
                 <ChevronDown
                   size={20}
                   className={`transition-transform ${
@@ -48,7 +51,7 @@ const FAQ = () => {
                 />
               </div>
               {openIndex === index && (
-                <p className="mt-2 text-gray-400">{faq.answer}</p>
+                <p className="mt-3 text-gray-600">{faq.answer}</p>
               )}
             </div>
           ))}

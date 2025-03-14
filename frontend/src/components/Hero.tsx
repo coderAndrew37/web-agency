@@ -1,34 +1,47 @@
-import { motion } from "framer-motion";
+import colors from "../styles/colors";
 
 const Hero = () => {
   return (
-    <section className="relative flex flex-col items-center justify-center text-center h-screen bg-background text-light px-6">
-      {/* Background Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-background opacity-80"></div>
-
-      <motion.div
-        className="relative z-10 max-w-4xl"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">
-          Build a <span className="text-primary">Premium Website</span> That
-          Converts 🚀
+    <section
+      className="hero relative flex flex-col items-center justify-center text-center h-screen px-6"
+      style={{ backgroundColor: colors.background, color: colors.darkText }}
+    >
+      <div className="relative z-10 max-w-4xl">
+        <h1 className="hero-title text-5xl md:text-6xl font-extrabold leading-tight">
+          Build a <span style={{ color: colors.primary }}>Premium Website</span>{" "}
+          That Converts 🚀
         </h1>
-        <p className="text-lg md:text-xl text-gray-400 mt-4">
+        <p
+          className="hero-subtext text-lg md:text-xl mt-4"
+          style={{ color: colors.lightText }}
+        >
           We design high-performance, conversion-focused websites that scale
           your business.
         </p>
         <div className="mt-6 flex flex-col md:flex-row items-center gap-4">
-          <button className="px-6 py-3 bg-primary text-dark font-bold text-lg rounded-full shadow-md hover:scale-105 transition">
+          <button
+            className="px-6 py-3 font-bold text-lg rounded-full shadow-md hover:opacity-80 transition"
+            style={{
+              backgroundColor: colors.primary,
+              color: "#fff",
+              cursor: "pointer",
+            }}
+          >
             Get Started
           </button>
-          <button className="px-6 py-3 border-2 border-primary text-light font-bold text-lg rounded-full hover:bg-primary hover:text-dark transition">
+          <button
+            className="px-6 py-3 border-2 font-bold text-lg rounded-full hover:opacity-80 transition"
+            style={{
+              borderColor: colors.primary,
+              color: colors.darkText,
+              backgroundColor: "transparent",
+              cursor: "pointer",
+            }}
+          >
             Book a Free Consultation
           </button>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
