@@ -1,28 +1,38 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
-import mongoose from "mongoose";
-
+import { connectDB } from "./startup/db";
+import setupRoutes from "./startup/routes";
+import logger from "./utils/logger";
 dotenv.config();
 const app = express();
 
-// Middleware
+// ✅ Connect to MongoDB
+connectDB();
+
+// ✅ Middleware
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
 
-// Connect to DB
-mongoose
-  .connect(process.env.MONGO_URI as string)
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ DB Connection Error:", err));
+// ✅ Initialize Routes
+setupRoutes(app);
 
-// Fix: Explicitly define types for req & res
+// ✅ Health Check Route
 app.get("/", (req: Request, res: Response) => {
-  res.send("API Running...");
+  res.status(200).json({ message: "✅ API Running..." });
+  logger.info("Health check endpoint hit.");
 });
 
-// Start Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// ✅ Global Error Handler
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  logger.error(`❌ Unexpected Error: ${err.message}`);
+  res.status(500).json({ error: "Something went wrong. Try again later." });
+});
+
+// ✅ Start Server
+const PORT: number = parseInt(process.env.PORT || "5000", 10);
+app.listen(PORT, () => logger.info(`🚀 Server running on port ${PORT}`));
+
+export default app;

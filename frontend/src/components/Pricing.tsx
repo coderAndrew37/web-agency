@@ -1,20 +1,24 @@
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const plans = [
   {
     name: "Starter",
     price: "Ksh 20,000",
     features: ["1-Page Website", "Basic SEO", "Mobile Friendly"],
+    highlight: false,
   },
   {
     name: "Business",
     price: "Ksh 35,000",
     features: ["Up to 5 Pages", "SEO Optimization", "E-commerce Ready"],
+    highlight: true, // This plan will be visually emphasized
   },
   {
     name: "Premium",
     price: "Ksh 50,000+",
     features: ["Custom Features", "Advanced SEO", "Full Branding"],
+    highlight: false,
   },
 ];
 
@@ -34,20 +38,32 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <motion.div
               key={index}
-              className="p-6 border border-gray-700 rounded-lg bg-gray-900 hover:border-primary transition"
+              className={`p-8 border rounded-xl shadow-lg bg-gray-900 transition ${
+                plan.highlight
+                  ? "border-primary scale-105 shadow-primary/50"
+                  : "border-gray-700"
+              }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
             >
-              <h3 className="text-xl font-semibold">{plan.name}</h3>
-              <p className="text-primary text-2xl font-bold mt-2">
+              <h3 className="text-2xl font-semibold">{plan.name}</h3>
+              <p className="text-primary text-3xl font-bold mt-2">
                 {plan.price}
               </p>
               <ul className="mt-4 space-y-2 text-gray-400">
                 {plan.features.map((feature, i) => (
-                  <li key={i}>✔ {feature}</li>
+                  <li
+                    key={i}
+                    className="flex items-center justify-center gap-2"
+                  >
+                    ✔ {feature}
+                  </li>
                 ))}
               </ul>
+              <button className="mt-6 px-6 py-3 bg-primary text-dark font-semibold rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition">
+                Book Now <ArrowRight size={18} />
+              </button>
             </motion.div>
           ))}
         </div>

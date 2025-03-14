@@ -1,0 +1,52 @@
+[2025-03-13T18:50:44.581Z] INFO: 🚀 Server running on port 5000
+[2025-03-13T18:50:44.603Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-13T18:50:59.859Z] INFO: 🚀 Server running on port 5000
+[2025-03-13T18:50:59.898Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-13T18:51:21.721Z] INFO: 🚀 Server running on port 5000
+[2025-03-13T18:51:21.736Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-13T18:55:43.868Z] INFO: 🚀 Server running on port 5000
+[2025-03-13T18:55:43.884Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-13T18:56:14.278Z] INFO: 🚀 Server running on port 5000
+[2025-03-13T18:56:14.300Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T02:45:11.423Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T02:45:11.450Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T02:45:25.731Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T02:45:25.752Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T03:09:02.458Z] WARN: ⚠️ Validation Error: "servicesInterested" must be an array
+[2025-03-14T03:10:15.761Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T03:10:15.779Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T03:10:24.071Z] WARN: ⚠️ Validation Error: "servicesInterested" must be an array
+[2025-03-14T03:10:36.562Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T03:10:36.583Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T03:11:31.089Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T03:11:31.107Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T03:11:52.958Z] WARN: ⚠️ Validation Error: "servicesInterested" must be an array
+[2025-03-14T03:22:42.007Z] WARN: ⚠️ Validation Error: "servicesInterested" must be an array
+[2025-03-14T03:24:58.732Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T03:24:58.750Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T03:25:15.423Z] WARN: ⚠️ Validation Error: "fullName" is required
+[2025-03-14T03:25:52.348Z] WARN: ⚠️ Validation Error: "email" must be a valid email
+[2025-03-14T03:26:11.479Z] WARN: ⚠️ Validation Error: "phone" length must be at least 10 characters long
+[2025-03-14T03:26:34.545Z] WARN: ⚠️ Validation Error: "servicesInterested" must be an array
+[2025-03-14T03:27:17.019Z] WARN: ⚠️ Validation Error: "servicesInterested" must be an array
+[2025-03-14T03:27:19.825Z] WARN: ⚠️ Validation Error: "servicesInterested" must be an array
+[2025-03-14T03:27:42.554Z] WARN: ⚠️ Validation Error: "website" must be a valid uri
+[2025-03-14T03:28:21.964Z] ERROR: ❌ Unexpected Error: Expected ',' or '}' after property value in JSON at position 27 (line 2 column 25)
+[2025-03-14T03:29:30.131Z] WARN: ⚠️ Validation Error: "website" must be a valid uri
+[2025-03-14T03:33:14.967Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T03:33:14.984Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T03:33:22.699Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T03:33:22.720Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T03:34:31.298Z] WARN: ⚠️ Validation Error: Full Name can only contain letters, spaces, hyphens, apostrophes, commas, and periods.
+[2025-03-14T03:34:56.262Z] WARN: ⚠️ Validation Error: Invalid service selected.
+[2025-03-14T03:35:51.913Z] WARN: ⚠️ Validation Error: Full Name can only contain letters, spaces, hyphens, apostrophes, commas, and periods.
+[2025-03-14T03:36:44.770Z] INFO: ✅ New client onboarded: John Doe
+[2025-03-14T03:37:36.395Z] INFO: ✅ New client onboarded: John Doe
+[2025-03-14T03:38:41.701Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T03:38:41.730Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T03:39:12.029Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T03:39:12.048Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T03:40:03.587Z] INFO: 🚀 Server running on port 5000
+[2025-03-14T03:40:03.606Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-14T03:40:12.163Z] ERROR: ❌ Error onboarding client: E11000 duplicate key error collection: web-agency.clients index: email_1 dup key: { email: "omolloandrew3@gmail.com" }
+[2025-03-14T03:41:08.007Z] INFO: ✅ New client onboarded: John Doe

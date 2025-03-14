@@ -15,17 +15,22 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-8 text-light text-lg">
-          {["Home", "Services", "Portfolio", "Testimonials", "Contact"].map(
-            (item, index) => (
-              <motion.li
-                key={index}
-                whileHover={{ scale: 1.1 }}
-                className="hover:text-primary transition"
-              >
-                <a href={`#${item.toLowerCase()}`}>{item}</a>
-              </motion.li>
-            )
-          )}
+          {[
+            "Home",
+            "Services",
+            "Portfolio",
+            "Testimonials",
+            "work with us",
+            "Contact",
+          ].map((item, index) => (
+            <motion.li
+              key={index}
+              whileHover={{ scale: 1.1 }}
+              className="hover:text-primary transition"
+            >
+              <a href={`#${item.toLowerCase()}`}>{item}</a>
+            </motion.li>
+          ))}
         </ul>
 
         {/* CTA Button (Desktop) */}

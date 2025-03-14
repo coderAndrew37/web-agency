@@ -10,12 +10,21 @@ import FAQ from "../components/FAQ";
 const Home = () => {
   return (
     <div className="bg-dark text-light">
+      {/* 1️⃣ Hook Visitors Immediately */}
       <Hero />
+      <CTA />
+
+      {/* 2️⃣ Show Proof & Build Trust */}
+
+      {/* 3️⃣ Show How We Help */}
       <Features />
       <Services />
-      <CTA />
-      <Pricing />
       <Process />
+
+      {/* 4️⃣ Offer Pricing After Showing Value */}
+      <Pricing />
+
+      {/* 5️⃣ Address Concerns & Close the Sale */}
       <FAQ />
       <Footer />
     </div>
