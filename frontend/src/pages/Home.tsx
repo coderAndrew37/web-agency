@@ -6,6 +6,7 @@ import Features from "../components/Features";
 import Process from "../components/Process";
 import Pricing from "../components/Pricing";
 import FAQ from "../components/FAQ";
+import Newsletter from "../components/Newsletter";
 
 const Home = () => {
   return (
@@ -26,6 +27,7 @@ const Home = () => {
 
       {/* 5️⃣ Address Concerns & Close the Sale */}
       <FAQ />
+      <Newsletter />
       <Footer />
     </div>
   );

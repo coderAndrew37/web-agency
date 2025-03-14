@@ -8,11 +8,12 @@ import { isSlotAvailable } from "../utils/availabilityCheck";
 const router = express.Router();
 
 // ✅ [POST] Book a Call
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response): Promise<void> => {
   const { error } = validateBooking(req.body);
   if (error) {
     logger.warn(`⚠️ Validation Error: ${error.details[0].message}`);
-    return res.status(400).json({ error: error.details[0].message });
+    res.status(400).json({ error: error.details[0].message });
+    return;
   }
 
   const { date, time, clientName, clientEmail } = req.body;
@@ -21,9 +22,8 @@ router.post("/", async (req: Request, res: Response) => {
     // Check if the slot is available
     const slotAvailable = await isSlotAvailable(date, time);
     if (!slotAvailable) {
-      return res
-        .status(400)
-        .json({ error: "This time slot is already booked." });
+      res.status(400).json({ error: "This time slot is already booked." });
+      return;
     }
 
     const booking = new Booking(req.body);
@@ -62,7 +62,7 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 // ✅ [GET] Fetch All Bookings (Admin View)
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
     const bookings = await Booking.find().sort({ date: 1 });
     res.json(bookings);
@@ -73,49 +73,56 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 // ✅ [PUT] Reschedule a Booking
-router.put("/:id/reschedule", async (req: Request, res: Response) => {
-  const { date, time } = req.body;
+router.put(
+  "/:id/reschedule",
+  async (req: Request, res: Response): Promise<void> => {
+    const { date, time } = req.body;
 
-  try {
-    const booking = await Booking.findById(req.params.id);
-    if (!booking) {
-      return res.status(404).json({ error: "Booking not found." });
+    try {
+      const booking = await Booking.findById(req.params.id);
+      if (!booking) {
+        res.status(404).json({ error: "Booking not found." });
+        return;
+      }
+
+      const slotAvailable = await isSlotAvailable(date, time);
+      if (!slotAvailable) {
+        res.status(400).json({ error: "This time slot is already booked." });
+        return;
+      }
+
+      booking.date = date;
+      booking.time = time;
+      await booking.save();
+
+      res.json({ message: "Booking rescheduled successfully", booking });
+    } catch (err) {
+      logger.error(`❌ Error rescheduling booking: ${(err as Error).message}`);
+      res.status(500).json({ error: "Failed to reschedule booking" });
     }
-
-    const slotAvailable = await isSlotAvailable(date, time);
-    if (!slotAvailable) {
-      return res
-        .status(400)
-        .json({ error: "This time slot is already booked." });
-    }
-
-    booking.date = date;
-    booking.time = time;
-    await booking.save();
-
-    res.json({ message: "Booking rescheduled successfully", booking });
-  } catch (err) {
-    logger.error(`❌ Error rescheduling booking: ${(err as Error).message}`);
-    res.status(500).json({ error: "Failed to reschedule booking" });
   }
-});
+);
 
 // ✅ [PUT] Cancel a Booking
-router.put("/:id/cancel", async (req: Request, res: Response) => {
-  try {
-    const booking = await Booking.findById(req.params.id);
-    if (!booking) {
-      return res.status(404).json({ error: "Booking not found." });
+router.put(
+  "/:id/cancel",
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const booking = await Booking.findById(req.params.id);
+      if (!booking) {
+        res.status(404).json({ error: "Booking not found." });
+        return;
+      }
+
+      booking.status = "Cancelled";
+      await booking.save();
+
+      res.json({ message: "Booking cancelled successfully", booking });
+    } catch (err) {
+      logger.error(`❌ Error cancelling booking: ${(err as Error).message}`);
+      res.status(500).json({ error: "Failed to cancel booking" });
     }
-
-    booking.status = "Cancelled";
-    await booking.save();
-
-    res.json({ message: "Booking cancelled successfully", booking });
-  } catch (err) {
-    logger.error(`❌ Error cancelling booking: ${(err as Error).message}`);
-    res.status(500).json({ error: "Failed to cancel booking" });
   }
-});
+);
 
 export default router;
