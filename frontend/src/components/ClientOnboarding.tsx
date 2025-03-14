@@ -1,13 +1,21 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import { submitClientForm } from "../api/apiClient";
 import colors from "../styles/colors";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import {
+  Mail,
+  Phone,
+  Globe,
+  User,
+  Briefcase,
+  DollarSign,
+  MessageCircle,
+  ArrowRight,
+  ArrowLeft,
+} from "lucide-react";
+import { motion } from "framer-motion";
 
 // ✅ Define Schema with Zod
 const clientSchema = z.object({
@@ -32,10 +40,11 @@ const ClientOnboarding = () => {
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors },
+    watch,
+    formState: { errors, isValid },
   } = useForm<ClientData>({
     resolver: zodResolver(clientSchema),
+    mode: "onChange", // Validate fields as users type
     defaultValues: {
       fullName: "",
       email: "",
@@ -48,23 +57,9 @@ const ClientOnboarding = () => {
     },
   });
 
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-
-  const formRef = useRef(null);
-
-  useEffect(() => {
-    gsap.from(formRef.current, {
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: formRef.current,
-        start: "top 85%",
-      },
-    });
-  }, []);
 
   const onSubmit = async (data: ClientData) => {
     setLoading(true);
@@ -73,7 +68,6 @@ const ClientOnboarding = () => {
     try {
       const response = await submitClientForm(data);
       setMessage("✅ " + response.message);
-      reset();
     } catch {
       setMessage("❌ Submission failed. Please try again.");
     } finally {
@@ -81,17 +75,53 @@ const ClientOnboarding = () => {
     }
   };
 
+  // Validate if user can proceed to the next step
+  const isStepValid = () => {
+    switch (step) {
+      case 1:
+        return (
+          watch("fullName") &&
+          watch("email") &&
+          watch("phone") &&
+          !errors.fullName &&
+          !errors.email &&
+          !errors.phone
+        );
+      case 2:
+        return watch("businessName") && !errors.businessName;
+      case 3:
+        return (
+          watch("servicesInterested").length > 0 &&
+          watch("budget") >= 1000 &&
+          !errors.servicesInterested &&
+          !errors.budget
+        );
+      default:
+        return true;
+    }
+  };
+
   return (
-    <div
-      ref={formRef}
-      className="max-w-lg mx-auto p-8 rounded-lg shadow-lg bg-white"
-    >
+    <div className="max-w-lg mx-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-80 backdrop-blur-lg border border-gray-200">
       <h2
         className="text-3xl font-bold text-center mb-6"
         style={{ color: colors.darkText }}
       >
-        🚀 Get Started
+        🚀 Get Started with SleekSites
       </h2>
+
+      {/* Progress Bar (Animated) */}
+      <motion.div
+        className="relative w-full bg-gray-300 h-2 rounded-full overflow-hidden mb-6"
+        initial={{ width: "0%" }}
+        animate={{ width: `${(step / 3) * 100}%` }}
+        transition={{ duration: 0.5 }}
+      >
+        <div
+          className="absolute top-0 left-0 h-full bg-primary"
+          style={{ width: `${(step / 3) * 100}%` }}
+        />
+      </motion.div>
 
       {message && (
         <p
@@ -103,23 +133,142 @@ const ClientOnboarding = () => {
         </p>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <input
-          {...register("fullName")}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
-          placeholder="Full Name"
-        />
-        {errors.fullName && (
-          <p className="text-red-500">{errors.fullName.message}</p>
-        )}
-
-        <button
-          type="submit"
-          className="w-full px-6 py-3 font-bold rounded-lg shadow-md transition bg-primary text-white hover:opacity-80"
-          disabled={loading}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{ duration: 0.5 }}
         >
-          {loading ? "Submitting..." : "Submit"}
-        </button>
+          {/* Step 1: Personal Info */}
+          {step === 1 && (
+            <>
+              <div className="relative">
+                <User
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={18}
+                />
+                <input
+                  {...register("fullName")}
+                  className="w-full pl-10 p-3 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-primary"
+                  placeholder="Full Name"
+                />
+              </div>
+              {errors.fullName && (
+                <p className="text-red-500">{errors.fullName.message}</p>
+              )}
+
+              <div className="relative">
+                <Mail
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={18}
+                />
+                <input
+                  {...register("email")}
+                  type="email"
+                  className="w-full pl-10 p-3 mb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                  placeholder="Email Address"
+                />
+              </div>
+              {errors.email && (
+                <p className="text-red-500">{errors.email.message}</p>
+              )}
+
+              <div className="relative">
+                <Phone
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={18}
+                />
+                <input
+                  {...register("phone")}
+                  className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                  placeholder="Phone Number"
+                />
+              </div>
+              {errors.phone && (
+                <p className="text-red-500">{errors.phone.message}</p>
+              )}
+            </>
+          )}
+
+          {/* Step 2: Business Details */}
+          {step === 2 && (
+            <>
+              <div className="relative">
+                <Briefcase
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={18}
+                />
+                <input
+                  {...register("businessName")}
+                  className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                  placeholder="Business Name"
+                />
+              </div>
+              {errors.businessName && (
+                <p className="text-red-500">{errors.businessName.message}</p>
+              )}
+            </>
+          )}
+
+          {/* Step 3: Services & Budget */}
+          {step === 3 && (
+            <>
+              <div>
+                <label className="block font-semibold mb-2">
+                  Services Interested In
+                </label>
+                <select
+                  {...register("servicesInterested")}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                  multiple
+                >
+                  <option value="Website Development">
+                    Website Development
+                  </option>
+                  <option value="SEO">SEO</option>
+                  <option value="Facebook Ads">Facebook Ads</option>
+                </select>
+              </div>
+              {errors.servicesInterested && (
+                <p className="text-red-500">
+                  {errors.servicesInterested.message}
+                </p>
+              )}
+            </>
+          )}
+        </motion.div>
+
+        {/* Navigation Buttons */}
+        <div className="flex justify-between">
+          {step > 1 && (
+            <button
+              type="button"
+              onClick={() => setStep(step - 1)}
+              className="text-primary flex items-center gap-2"
+            >
+              <ArrowLeft size={18} /> Back
+            </button>
+          )}
+          {step < 3 ? (
+            <button
+              type="button"
+              onClick={() => isStepValid() && setStep(step + 1)}
+              disabled={!isStepValid()}
+              className="bg-primary text-black px-6 py-2 rounded-lg flex items-center gap-2"
+            >
+              Next <ArrowRight size={18} />
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="bg-primary text-blue-700 text-lg px-6 py-2 rounded-lg"
+            >
+              Submit
+            </button>
+          )}
+        </div>
       </form>
     </div>
   );
