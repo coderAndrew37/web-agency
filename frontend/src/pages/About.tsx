@@ -1,8 +1,23 @@
+import HeroSection from "../components/AboutHero";
+import MissionVision from "../components/Mission";
+import Features from "../components/Features";
+import MeetTheTeam from "../components/Team";
+//import Testimonials from "../components/Testimonials";
+import Process from "../components/Process";
+import CTA from "../components/CTA";
+//import AnimatedCounters from "../components/AnimatedCounters";
+import Footer from "../components/Footer";
+
 const About = () => {
   return (
-    <div className="bg-dark text-light">
-      <h1>About Us</h1>
-      <p>This is the about page.</p>
+    <div>
+      <HeroSection />
+      <MissionVision />
+      <Features />
+      <MeetTheTeam />
+      <Process />
+      <CTA />
+      <Footer />
     </div>
   );
 };
