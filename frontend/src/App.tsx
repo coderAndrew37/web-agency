@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
+import TestimonialPage from "./pages/Testimonial"; // ✅ Import Testimonial Page
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthProvider";
 import AuthLayout from "./layouts/AuthLayout";
@@ -50,6 +51,19 @@ const App = () => {
               </>
             }
           />
+
+          {/* ✅ Add Testimonial Page (Publicly Accessible) */}
+          <Route
+            path="/testimonials"
+            element={
+              <>
+                <Navbar />
+                <TestimonialPage />
+                <Footer />
+              </>
+            }
+          />
+
           <Route
             path="*"
             element={

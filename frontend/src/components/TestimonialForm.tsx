@@ -22,6 +22,7 @@ const TestimonialForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<TestimonialData>({
     resolver: zodResolver(testimonialSchema),
@@ -47,6 +48,7 @@ const TestimonialForm = () => {
     try {
       await submitTestimonial(formData);
       setSuccess("✅ Testimonial submitted for approval!");
+      reset(); // ✅ Clear form after successful submission
     } catch {
       setError("❌ Submission failed. Please try again.");
     } finally {

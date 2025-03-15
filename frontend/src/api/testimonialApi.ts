@@ -7,5 +7,6 @@ export const submitTestimonial = async (data: FormData) => {
 };
 
 export const fetchTestimonials = async () => {
-  return axiosInstance.get("/testimonials");
+  const response = await axiosInstance.get("/testimonials");
+  return response.data; // ✅ Ensure correct data is returned
 };
