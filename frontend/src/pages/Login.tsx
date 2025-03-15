@@ -3,9 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { loginUser } from "../api/auth";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth"; // ✅ Fixed import
+import { useAuth } from "../hooks/useAuth";
 import { loginSchema } from "../Utils/validationSchemas";
-import { Eye, EyeOff } from "lucide-react"; // ✅ Icons for show/hide password
+import { Eye, EyeOff } from "lucide-react";
+import { motion } from "framer-motion";
+import colors from "../styles/colors"; // ✅ Use theme colors
 
 type LoginData = {
   email: string;
@@ -17,7 +19,7 @@ const Login = () => {
   const { setUser } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // ✅ Password visibility state
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -46,20 +48,33 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 shadow-lg bg-white rounded-lg">
-      <h2 className="text-2xl font-bold text-center">Login</h2>
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <input {...register("email")} placeholder="Email" className="input" />
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h2
+        className="text-3xl font-bold text-center"
+        style={{ color: colors.primary }}
+      >
+        Welcome Back
+      </h2>
+      {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 mt-6">
+        <input
+          {...register("email")}
+          placeholder="Email"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary shadow-sm"
+        />
         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
-        {/* ✅ Password Field with Show/Hide Toggle */}
         <div className="relative">
           <input
             {...register("password")}
             type={showPassword ? "text" : "password"}
             placeholder="Password"
-            className="input pr-10"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary shadow-sm pr-10"
           />
           <button
             type="button"
@@ -73,22 +88,29 @@ const Login = () => {
           <p className="text-red-500">{errors.password.message}</p>
         )}
 
-        <button type="submit" className="btn-primary w-full" disabled={loading}>
+        <motion.button
+          type="submit"
+          className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700 text-lg hover:opacity-80"
+          whileTap={{ scale: 0.95 }}
+          disabled={loading}
+        >
           {loading ? "Logging in..." : "Login"}
-        </button>
+        </motion.button>
       </form>
 
       <p className="text-center mt-4 text-gray-600">
         Don't have an account?{" "}
         <Link to="/register" className="text-blue-600 hover:underline">
-          Sign up here
-        </Link>
-        Forgot your password?{" "}
-        <Link to="/forgot-password" className="text-blue-600 hover:underline">
-          Reset it here
+          Sign up
         </Link>
       </p>
-    </div>
+      <p className="text-center mt-4 text-gray-600">
+        Forgot your password?{" "}
+        <Link to="/forgot-password" className="text-blue-600 hover:underline">
+          Reset Password
+        </Link>
+      </p>
+    </motion.div>
   );
 };
 

@@ -4,9 +4,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { registerUser } from "../api/auth";
-import { useAuth } from "../hooks/useAuth"; // ✅ Fixed import
+import { useAuth } from "../hooks/useAuth";
 import { registerSchema } from "../Utils/validationSchemas";
-import { Eye, EyeOff } from "lucide-react"; // ✅ Icons for show/hide password
+import { Eye, EyeOff } from "lucide-react";
+import colors from "../styles/colors"; // ✅ Use theme colors
 
 type RegisterData = {
   name: string;
@@ -19,7 +20,7 @@ const Register = () => {
   const { setUser } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // ✅ Password visibility state
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -49,31 +50,39 @@ const Register = () => {
 
   return (
     <motion.div
-      className="max-w-md mx-auto p-8 shadow-lg bg-white rounded-lg"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-3xl font-bold text-center text-primary">Sign Up</h2>
+      <h2
+        className="text-3xl font-bold text-center"
+        style={{ color: colors.primary }}
+      >
+        Create an Account
+      </h2>
       {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 mt-6">
         <input
           {...register("name")}
           placeholder="Full Name"
-          className="input"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary shadow-sm"
         />
         {errors.name && <p className="text-red-500">{errors.name.message}</p>}
 
-        <input {...register("email")} placeholder="Email" className="input" />
+        <input
+          {...register("email")}
+          placeholder="Email"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary shadow-sm"
+        />
         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
-        {/* ✅ Password Field with Show/Hide Toggle */}
         <div className="relative">
           <input
             {...register("password")}
             type={showPassword ? "text" : "password"}
             placeholder="Password"
-            className="input pr-10"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary shadow-sm pr-10"
           />
           <button
             type="button"
@@ -89,20 +98,17 @@ const Register = () => {
 
         <motion.button
           type="submit"
-          className="btn-primary w-full"
+          className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700 text-lg hover:opacity-80"
           whileTap={{ scale: 0.95 }}
           disabled={loading}
         >
-          {loading ? "Creating Account..." : "Sign Up"}
+          {loading ? "Signing up..." : "Sign Up"}
         </motion.button>
       </form>
 
-      <p className="mt-4 text-center text-lightText">
+      <p className="text-center mt-4 text-gray-600">
         Already have an account?{" "}
-        <Link
-          to="/login"
-          className="text-primary font-semibold hover:underline"
-        >
+        <Link to="/login" className="text-blue-600 hover:underline">
           Log in
         </Link>
       </p>

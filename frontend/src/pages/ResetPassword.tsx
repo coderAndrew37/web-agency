@@ -6,6 +6,7 @@ import { resetPassword } from "../api/auth";
 import { resetPasswordSchema } from "../Utils/validationSchemas";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
+import colors from "../styles/colors";
 
 type ResetPasswordData = {
   password: string;
@@ -48,22 +49,26 @@ const ResetPassword = () => {
 
   return (
     <motion.div
-      className="max-w-md mx-auto p-8 shadow-lg bg-white rounded-lg"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-2xl font-bold text-center">Reset Password</h2>
+      <h2
+        className="text-2xl font-bold text-center"
+        style={{ color: colors.primary }}
+      >
+        Reset Your Password
+      </h2>
       {error && <p className="text-red-500 text-center mt-2">{error}</p>}
       {message && <p className="text-green-500 text-center mt-2">{message}</p>}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
         <div className="relative">
           <input
             {...register("password")}
             type={showPassword ? "text" : "password"}
             placeholder="New Password"
-            className="input pr-10"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary shadow-sm pr-10"
           />
           <button
             type="button"
@@ -79,7 +84,7 @@ const ResetPassword = () => {
 
         <motion.button
           type="submit"
-          className="btn-primary w-full"
+          className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-white text-lg hover:opacity-80"
           whileTap={{ scale: 0.95 }}
           disabled={loading}
         >

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { forgotPassword } from "../api/auth";
 import { forgotPasswordSchema } from "../Utils/validationSchemas";
 import { motion } from "framer-motion";
+import colors from "../styles/colors";
 
 type ForgotPasswordData = {
   email: string;
@@ -42,26 +43,34 @@ const ForgotPassword = () => {
 
   return (
     <motion.div
-      className="max-w-md mx-auto p-8 shadow-lg bg-white rounded-lg"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-2xl font-bold text-center">Forgot Password</h2>
+      <h2
+        className="text-2xl font-bold text-center"
+        style={{ color: colors.primary }}
+      >
+        Forgot Password?
+      </h2>
+      <p className="text-center text-gray-600">
+        Enter your email to receive a reset link.
+      </p>
+
       {error && <p className="text-red-500 text-center mt-2">{error}</p>}
       {message && <p className="text-green-500 text-center mt-2">{message}</p>}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
         <input
           {...register("email")}
           placeholder="Enter your email"
-          className="input"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary shadow-sm"
         />
         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
         <motion.button
           type="submit"
-          className="btn-primary w-full"
+          className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700 text-lg hover:opacity-80"
           whileTap={{ scale: 0.95 }}
           disabled={loading}
         >
