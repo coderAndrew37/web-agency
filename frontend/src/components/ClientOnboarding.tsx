@@ -1,19 +1,17 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { submitClientForm } from "../api/apiClient";
 import colors from "../styles/colors";
 import {
   Mail,
   Phone,
-  Globe,
   User,
   Briefcase,
-  DollarSign,
-  MessageCircle,
   ArrowRight,
   ArrowLeft,
+  Loader,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -23,11 +21,10 @@ const clientSchema = z.object({
   email: z.string().email("Enter a valid email"),
   phone: z.string().min(10, "Phone number must be at least 10 digits"),
   businessName: z.string().min(2, "Business name is required"),
-  website: z.string().url("Enter a valid URL").optional().or(z.literal("")),
   servicesInterested: z
     .array(z.string())
     .nonempty("Please select at least one service"),
-  budget: z.number().min(1000, "Budget must be at least Ksh 1,000"),
+  budget: z.number().min(5000, "Budget must be at least Ksh 5,000"),
   message: z
     .string()
     .max(500, "Message cannot exceed 500 characters")
@@ -41,18 +38,17 @@ const ClientOnboarding = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<ClientData>({
     resolver: zodResolver(clientSchema),
-    mode: "onChange", // Validate fields as users type
+    mode: "onChange",
     defaultValues: {
       fullName: "",
       email: "",
       phone: "",
       businessName: "",
-      website: "",
       servicesInterested: [],
-      budget: 1000,
+      budget: 5000, // ✅ Set default minimum budget
       message: "",
     },
   });
@@ -75,7 +71,7 @@ const ClientOnboarding = () => {
     }
   };
 
-  // Validate if user can proceed to the next step
+  // ✅ Validate step completion before allowing Next
   const isStepValid = () => {
     switch (step) {
       case 1:
@@ -92,7 +88,7 @@ const ClientOnboarding = () => {
       case 3:
         return (
           watch("servicesInterested").length > 0 &&
-          watch("budget") >= 1000 &&
+          watch("budget") >= 5000 &&
           !errors.servicesInterested &&
           !errors.budget
         );
@@ -110,16 +106,13 @@ const ClientOnboarding = () => {
         🚀 Get Started with SleekSites
       </h2>
 
-      {/* Progress Bar (Animated) */}
-      <motion.div
-        className="relative w-full bg-gray-300 h-2 rounded-full overflow-hidden mb-6"
-        initial={{ width: "0%" }}
-        animate={{ width: `${(step / 3) * 100}%` }}
-        transition={{ duration: 0.5 }}
-      >
-        <div
+      {/* ✅ Progress Bar (Animated) */}
+      <motion.div className="relative w-full bg-gray-300 h-2 rounded-full overflow-hidden mb-6">
+        <motion.div
           className="absolute top-0 left-0 h-full bg-primary"
-          style={{ width: `${(step / 3) * 100}%` }}
+          initial={{ width: "0%" }}
+          animate={{ width: `${(step / 3) * 100}%` }}
+          transition={{ duration: 0.5 }}
         />
       </motion.div>
 
@@ -141,7 +134,7 @@ const ClientOnboarding = () => {
           exit={{ opacity: 0, x: 20 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Step 1: Personal Info */}
+          {/* ✅ Step 1: Personal Info */}
           {step === 1 && (
             <>
               <div className="relative">
@@ -192,7 +185,7 @@ const ClientOnboarding = () => {
             </>
           )}
 
-          {/* Step 2: Business Details */}
+          {/* ✅ Step 2: Business Details */}
           {step === 2 && (
             <>
               <div className="relative">
@@ -212,7 +205,7 @@ const ClientOnboarding = () => {
             </>
           )}
 
-          {/* Step 3: Services & Budget */}
+          {/* ✅ Step 3: Services & Budget */}
           {step === 3 && (
             <>
               <div>
@@ -240,7 +233,7 @@ const ClientOnboarding = () => {
           )}
         </motion.div>
 
-        {/* Navigation Buttons */}
+        {/* ✅ Navigation Buttons */}
         <div className="flex justify-between">
           {step > 1 && (
             <button
@@ -265,7 +258,11 @@ const ClientOnboarding = () => {
               type="submit"
               className="bg-primary text-blue-700 text-lg px-6 py-2 rounded-lg"
             >
-              Submit
+              {loading ? (
+                <Loader className="animate-spin" size={18} />
+              ) : (
+                "Submit"
+              )}
             </button>
           )}
         </div>
