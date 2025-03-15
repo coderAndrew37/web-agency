@@ -55,11 +55,11 @@ export const logoutUser = async () => {
 };
 
 export const forgotPassword = (data: { email: string }) => {
-  return axiosInstance.post("/auth/forgot-password", data);
+  return axiosInstance.post("/password/forgot-password", data);
 };
 
 export const resetPassword = (token: string, data: { password: string }) => {
-  return axiosInstance.post(`/auth/reset-password/${token}`, data);
+  return axiosInstance.post(`/password/reset-password/${token}`, data);
 };
 
 export default axiosInstance;

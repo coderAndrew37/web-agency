@@ -1,8 +1,16 @@
 import express from "express";
 import clientRoutes from "../routes/clients";
 import bookingRoutes from "../routes/bookings";
+import newsletterRoutes from "../routes/newsletter";
+import authRoutes from "../routes/authRoutes";
+import passwordRoutes from "../routes/passwordRoutes";
+import testimonialRoutes from "../routes/testimonialRoutes";
 
 export default function setupRoutes(app: express.Application) {
   app.use("/api/clients", clientRoutes);
   app.use("/api/bookings", bookingRoutes);
+  app.use("/api/newsletter", newsletterRoutes);
+  app.use("/api/auth", authRoutes);
+  app.use("/api/password", passwordRoutes);
+  app.use("/api/testimonials", testimonialRoutes);
 }
