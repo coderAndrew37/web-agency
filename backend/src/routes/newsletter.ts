@@ -1,46 +1,38 @@
 import express, { Request, Response } from "express";
-import Subscriber, { validateSubscriber } from "../models/subscriber";
-import { sendEmail } from "../utils/emailService";
-import logger from "../utils/logger";
-
+import Newsletter from "../models/subscriber";
 const router = express.Router();
 
-// ✅ [POST] Subscribe to Newsletter
-router.post("/", async (req: Request, res: Response) => {
-  const { error } = validateSubscriber(req.body);
-  if (error) {
-    logger.warn(`⚠️ Validation Error: ${error.details[0].message}`);
-    return res.status(400).json({ error: error.details[0].message });
-  }
-
-  const { email } = req.body;
-
+// ✅ Subscribe to Newsletter
+router.post("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    // Check if email is already subscribed
-    const existingSubscriber = await Subscriber.findOne({ email });
+    const { email } = req.body;
+
+    // Check if email already exists
+    const existingSubscriber = await Newsletter.findOne({ email });
     if (existingSubscriber) {
-      return res.status(400).json({ error: "Email already subscribed." });
+      res.status(400).json({ error: "Email is already subscribed" });
+      return;
     }
 
-    // Save to database
-    const subscriber = new Subscriber({ email });
-    await subscriber.save();
-    logger.info(`✅ New subscriber: ${subscriber.email}`);
+    // Save new subscriber
+    const newSubscriber = new Newsletter({ email });
+    await newSubscriber.save();
 
-    // ✅ Send Welcome Email
-    const emailContent = `
-      <h2>Welcome to Sleek Sites, ${subscriber.email}!</h2>
-      <p>You’re now part of our exclusive updates. Stay tuned for tips & offers.</p>
-      <p>Visit our <a href="https://sleeksites.com">website</a> for more!</p>
-    `;
+    res.status(201).json({ message: "Subscribed successfully!" });
+  } catch (error) {
+    console.error("Newsletter Subscription Error:", error);
+    res.status(500).json({ error: "Failed to subscribe" });
+  }
+});
 
-    await sendEmail(subscriber.email, "Welcome to Sleek Sites!", emailContent);
-
-    return res.status(201).json({ message: "Subscription successful!" });
-  } catch (err: unknown) {
-    const errorMessage = (err as Error).message;
-    logger.error(`❌ Error subscribing: ${errorMessage}`);
-    return res.status(500).json({ error: "Subscription failed." });
+// ✅ Fetch All Subscribers (Admin)
+router.get("/", async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const subscribers = await Newsletter.find();
+    res.json(subscribers);
+  } catch (error) {
+    console.error("Fetch Subscribers Error:", error);
+    res.status(500).json({ error: "Failed to fetch subscribers" });
   }
 });
 

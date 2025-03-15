@@ -1,6 +1,6 @@
 import { useEffect, useState, ReactNode } from "react";
-import axiosInstance from "../api/auth";
-import { AuthContext } from "./AuthContext"; // ✅ Import from new file
+import axiosInstance from "../api/axiosInstance"; // ✅ Correct import
+import { AuthContext } from "./AuthContext"; // ✅ Correct import
 
 interface User {
   id: string;
