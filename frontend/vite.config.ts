@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: process.env.VITE_BACKEND_URL, // ✅ Uses env variable
+        target: process.env.VITE_API_URL, // ✅ Uses env variable
         changeOrigin: true,
         secure: false,
       },
