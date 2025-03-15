@@ -1,5 +1,4 @@
 import CTA from "../components/CTA";
-import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 import Services from "../components/Services";
 import Features from "../components/Features";
@@ -27,7 +26,6 @@ const Home = () => {
       {/* 5️⃣ Address Concerns & Close the Sale */}
       <FAQ />
       <Newsletter />
-      <Footer />
     </div>
   );
 };

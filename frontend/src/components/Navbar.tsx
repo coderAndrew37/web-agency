@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import colors from "../styles/colors";
@@ -16,6 +18,7 @@ const services = [
 ];
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
 
@@ -27,36 +30,33 @@ const Navbar = () => {
         end: "100px top",
         scrub: true,
       },
-      backgroundColor: "rgba(255, 255, 255, 0.95)", // Light navbar
+      backgroundColor: "rgba(255, 255, 255, 0.95)",
       padding: "12px 0",
       boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
     });
   }, []);
 
   return (
-    <nav
-      className="navbar fixed top-0 left-0 w-full z-50 transition-all duration-300"
-      style={{ backgroundColor: "transparent" }}
-    >
+    <nav className="navbar fixed top-0 left-0 w-full z-50 transition-all duration-300">
       <div className="container mx-auto flex items-center justify-between py-6 px-6">
-        <a
-          href="/"
+        <Link
+          to="/"
           className="text-2xl font-bold"
           style={{ color: colors.primary }}
         >
           Sleek<span style={{ color: colors.darkText }}>Sites</span>
-        </a>
+        </Link>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-8 text-lg">
           <motion.li whileHover={{ scale: 1.1 }}>
-            <a
-              href="/"
+            <Link
+              to="/"
               className="hover:opacity-80 transition"
               style={{ color: colors.darkText }}
             >
               Home
-            </a>
+            </Link>
           </motion.li>
 
           {/* Services Dropdown */}
@@ -82,12 +82,12 @@ const Navbar = () => {
                 >
                   {services.map((service, index) => (
                     <li key={index} className="border-b last:border-0">
-                      <a
-                        href={service.link}
+                      <Link
+                        to={service.link}
                         className="block px-4 py-3 text-dark hover:bg-gray-100 transition"
                       >
                         {service.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </motion.ul>
@@ -96,48 +96,77 @@ const Navbar = () => {
           </motion.li>
 
           <motion.li whileHover={{ scale: 1.1 }}>
-            <a
-              href="/portfolio"
+            <Link
+              to="/portfolio"
               className="hover:opacity-80 transition"
               style={{ color: colors.darkText }}
             >
               Portfolio
-            </a>
+            </Link>
           </motion.li>
 
           <motion.li whileHover={{ scale: 1.1 }}>
-            <a
-              href="/testimonials"
+            <Link
+              to="/testimonials"
               className="hover:opacity-80 transition"
               style={{ color: colors.darkText }}
             >
               Testimonials
-            </a>
+            </Link>
           </motion.li>
 
           <motion.li whileHover={{ scale: 1.1 }}>
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="hover:opacity-80 transition"
               style={{ color: colors.darkText }}
             >
               Contact
-            </a>
+            </Link>
           </motion.li>
+
+          {/* Auth Links */}
+          {user ? (
+            <>
+              <motion.li whileHover={{ scale: 1.1 }}>
+                <Link
+                  to="/dashboard"
+                  className="hover:opacity-80 transition flex items-center gap-1"
+                >
+                  <User size={18} />
+                  Dashboard
+                </Link>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.1 }}>
+                <button
+                  onClick={logout}
+                  className="hover:opacity-80 transition flex items-center gap-1 text-red-500"
+                >
+                  <LogOut size={18} />
+                  Logout
+                </button>
+              </motion.li>
+            </>
+          ) : (
+            <motion.li whileHover={{ scale: 1.1 }}>
+              <Link
+                to="/login"
+                className="hover:opacity-80 transition text-primary"
+              >
+                Login
+              </Link>
+            </motion.li>
+          )}
         </ul>
 
         {/* CTA Button (Desktop) */}
-        <a
-          href="/contact"
+        <Link
+          to="/contact"
           className="hidden md:block px-6 py-3 font-bold rounded-full shadow-md hover:opacity-80 transition"
-          style={{
-            backgroundColor: colors.primary,
-            color: "#fff",
-            cursor: "pointer",
-          }}
+          style={{ backgroundColor: colors.primary, color: "#fff" }}
         >
           Book a Call
-        </a>
+        </Link>
 
         {/* Mobile Menu Button */}
         <button
@@ -160,13 +189,13 @@ const Navbar = () => {
           >
             <ul className="flex flex-col items-center py-4 space-y-4">
               <li>
-                <a
-                  href="/"
+                <Link
+                  to="/"
                   className="text-lg hover:opacity-80 transition"
                   onClick={() => setIsOpen(false)}
                 >
                   Home
-                </a>
+                </Link>
               </li>
 
               {/* Services Dropdown (Mobile) */}
@@ -176,13 +205,13 @@ const Navbar = () => {
                   <ul className="mt-2 pl-4">
                     {services.map((service, index) => (
                       <li key={index}>
-                        <a
-                          href={service.link}
+                        <Link
+                          to={service.link}
                           className="block py-2 hover:text-primary transition"
                           onClick={() => setIsOpen(false)}
                         >
                           {service.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -190,47 +219,65 @@ const Navbar = () => {
               </li>
 
               <li>
-                <a
-                  href="/portfolio"
+                <Link
+                  to="/portfolio"
                   className="text-lg hover:opacity-80 transition"
                   onClick={() => setIsOpen(false)}
                 >
                   Portfolio
-                </a>
+                </Link>
               </li>
-
               <li>
-                <a
-                  href="/testimonials"
+                <Link
+                  to="/testimonials"
                   className="text-lg hover:opacity-80 transition"
                   onClick={() => setIsOpen(false)}
                 >
                   Testimonials
-                </a>
+                </Link>
               </li>
-
               <li>
-                <a
-                  href="/contact"
+                <Link
+                  to="/contact"
                   className="text-lg hover:opacity-80 transition"
                   onClick={() => setIsOpen(false)}
                 >
                   Contact
-                </a>
+                </Link>
               </li>
 
-              {/* CTA Button (Mobile) */}
-              <a
-                href="/contact"
-                className="px-6 py-3 font-bold rounded-full shadow-md hover:opacity-80 transition"
-                style={{
-                  backgroundColor: colors.primary,
-                  color: "#fff",
-                  cursor: "pointer",
-                }}
-              >
-                Book a Call
-              </a>
+              {/* Auth Links (Mobile) */}
+              {user ? (
+                <>
+                  <li>
+                    <Link
+                      to="/dashboard"
+                      className="text-lg hover:opacity-80 transition"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={logout}
+                      className="text-lg text-red-500 hover:opacity-80 transition"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Link
+                    to="/login"
+                    className="text-lg text-primary hover:opacity-80 transition"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Login
+                  </Link>
+                </li>
+              )}
             </ul>
           </motion.div>
         )}
