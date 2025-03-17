@@ -25,15 +25,4 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-// ✅ Fetch All Subscribers (Admin)
-router.get("/", async (_req: Request, res: Response): Promise<void> => {
-  try {
-    const subscribers = await Newsletter.find();
-    res.json(subscribers);
-  } catch (error) {
-    console.error("Fetch Subscribers Error:", error);
-    res.status(500).json({ error: "Failed to fetch subscribers" });
-  }
-});
-
 export default router;

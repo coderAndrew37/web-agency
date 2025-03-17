@@ -105,20 +105,4 @@ router.get(
   }
 );
 
-// ✅ Get All Users (Admin Only)
-router.get(
-  "/",
-  protect,
-  admin,
-  async (_req: Request, res: Response): Promise<void> => {
-    try {
-      const users = await User.find().select("-password");
-      res.json(users);
-    } catch (error) {
-      console.error("Fetch Users Error:", error);
-      res.status(500).json({ error: "Failed to retrieve users" });
-    }
-  }
-);
-
 export default router;

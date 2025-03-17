@@ -1,13 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth"; // ✅ Use our auth hook
+import { useAuth } from "../hooks/useAuth";
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ adminOnly = false }) => {
   const { user, loading } = useAuth();
 
-  if (loading)
-    return <div className="text-center mt-10">Checking authentication...</div>;
+  if (loading) return <p>Loading...</p>;
+  if (!user) return <Navigate to="/login" replace />;
+  if (adminOnly && user.role !== "admin")
+    return <Navigate to="/dashboard" replace />;
 
-  return user ? <Outlet /> : <Navigate to="/login" replace />;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
