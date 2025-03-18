@@ -3,6 +3,7 @@ import { protect, admin } from "../middleware/authMiddleware";
 import User from "../models/User";
 import Testimonial from "../models/testimonial";
 import Newsletter from "../models/subscriber";
+import { sendEmail } from "../utils/emailService";
 
 const router = express.Router();
 
@@ -156,6 +157,41 @@ router.delete(
       res.json({ message: "Subscriber removed successfully" });
     } catch {
       res.status(500).json({ error: "Failed to remove subscriber" });
+    }
+  }
+);
+
+// ✅ [POST] Send Bulk Email to Subscribers (Admin)
+router.post(
+  "/newsletter/send-bulk",
+  protect,
+  admin,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { subject, message } = req.body;
+
+      if (!subject || !message) {
+        res.status(400).json({ error: "Subject and message are required" });
+        return;
+      }
+
+      const subscribers = await Newsletter.find();
+      if (subscribers.length === 0) {
+        res.status(400).json({ error: "No subscribers found." });
+        return;
+      }
+
+      // Send emails to all subscribers
+      for (const subscriber of subscribers) {
+        await sendEmail(subscriber.email, subject, message);
+      }
+
+      res.json({
+        message: `✅ Email sent to ${subscribers.length} subscribers!`,
+      });
+    } catch (error) {
+      console.error("❌ Bulk Email Sending Failed:", error);
+      res.status(500).json({ error: "Failed to send bulk emails" });
     }
   }
 );

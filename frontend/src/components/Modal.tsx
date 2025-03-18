@@ -1,13 +1,15 @@
 import { motion } from "framer-motion";
+import { ReactNode } from "react";
 
 interface ModalProps {
   isOpen: boolean;
   title: string;
-  message: string;
+  message?: string;
   onClose: () => void;
   onConfirm: () => void;
   confirmText?: string;
   cancelText?: string;
+  children?: ReactNode; // ✅ Accept children
 }
 
 const Modal = ({
@@ -18,6 +20,7 @@ const Modal = ({
   onConfirm,
   confirmText = "Confirm",
   cancelText = "Cancel",
+  children, // ✅ Receive children elements
 }: ModalProps) => {
   if (!isOpen) return null;
 
@@ -30,8 +33,9 @@ const Modal = ({
         exit={{ opacity: 0, scale: 0.9 }}
       >
         <h2 className="text-lg font-bold">{title}</h2>
-        <p className="text-gray-700 mt-2">{message}</p>
-
+        {message && <p className="text-gray-700 mt-2">{message}</p>}
+        {children && <div className="mt-4">{children}</div>}{" "}
+        {/* ✅ Render children if provided */}
         <div className="flex justify-end space-x-3 mt-4">
           <button
             onClick={onClose}

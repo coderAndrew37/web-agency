@@ -33,3 +33,11 @@ export const fetchSubscribers = async () =>
 // ✅ Delete subscriber
 export const deleteSubscriber = async (id: string) =>
   axiosInstance.delete(`/admin/subscribers/${id}`);
+
+// ✅ Send Bulk Email to Subscribers
+export const sendBulkEmail = async (emailData: {
+  subject: string;
+  message: string;
+}) => {
+  return axiosInstance.post("/admin/subscribers/send-email", emailData);
+};

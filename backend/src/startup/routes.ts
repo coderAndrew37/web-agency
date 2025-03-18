@@ -5,6 +5,7 @@ import newsletterRoutes from "../routes/newsletter";
 import authRoutes from "../routes/authRoutes";
 import passwordRoutes from "../routes/passwordRoutes";
 import testimonialRoutes from "../routes/testimonialRoutes";
+import adminRoutes from "../routes/adminRoutes";
 
 export default function setupRoutes(app: express.Application) {
   app.use("/api/clients", clientRoutes);
@@ -13,4 +14,5 @@ export default function setupRoutes(app: express.Application) {
   app.use("/api/auth", authRoutes);
   app.use("/api/password", passwordRoutes);
   app.use("/api/testimonials", testimonialRoutes);
+  app.use("/api/admin", adminRoutes);
 }
