@@ -3,6 +3,7 @@ import { protect, admin } from "../middleware/authMiddleware";
 import User from "../models/User";
 import Testimonial from "../models/testimonial";
 import Newsletter from "../models/subscriber";
+import { Contact, validateContact } from "../models/contact";
 import { sendEmail } from "../utils/emailService";
 
 const router = express.Router();
@@ -192,6 +193,22 @@ router.post(
     } catch (error) {
       console.error("❌ Bulk Email Sending Failed:", error);
       res.status(500).json({ error: "Failed to send bulk emails" });
+    }
+  }
+);
+
+// ✅ GET: Fetch Contact Messages (Admin Only)
+router.get(
+  "/",
+  protect,
+  admin,
+  async (_req: Request, res: Response): Promise<void> => {
+    try {
+      const messages = await Contact.find().sort({ createdAt: -1 });
+      res.json(messages);
+    } catch (err) {
+      console.error("❌ Failed to fetch messages:", err);
+      res.status(500).json({ error: "Failed to fetch messages." });
     }
   }
 );
