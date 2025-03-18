@@ -128,6 +128,18 @@ const Navbar = () => {
           {/* Auth Links */}
           {user ? (
             <>
+              {/* ✅ Admin Panel (Only for Admins) */}
+              {user.role === "admin" && (
+                <motion.li whileHover={{ scale: 1.1 }}>
+                  <Link
+                    to="/admin"
+                    className="hover:opacity-80 transition flex items-center gap-1 text-yellow-600 font-bold"
+                  >
+                    ⚡ Admin Panel
+                  </Link>
+                </motion.li>
+              )}
+
               <motion.li whileHover={{ scale: 1.1 }}>
                 <Link
                   to="/dashboard"
@@ -137,6 +149,7 @@ const Navbar = () => {
                   Dashboard
                 </Link>
               </motion.li>
+
               <motion.li whileHover={{ scale: 1.1 }}>
                 <button
                   onClick={logout}
@@ -249,6 +262,19 @@ const Navbar = () => {
               {/* Auth Links (Mobile) */}
               {user ? (
                 <>
+                  {/* ✅ Admin Panel (Only for Admins) */}
+                  {user.role === "admin" && (
+                    <li>
+                      <Link
+                        to="/admin"
+                        className="text-lg text-yellow-600 font-bold hover:opacity-80 transition"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        ⚡ Admin Panel
+                      </Link>
+                    </li>
+                  )}
+
                   <li>
                     <Link
                       to="/dashboard"

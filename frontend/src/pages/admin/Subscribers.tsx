@@ -3,9 +3,9 @@ import {
   fetchSubscribers,
   deleteSubscriber,
   sendBulkEmail,
-} from "../api/adminApi";
-import Table from "../components/Table";
-import Modal from "../components/Modal";
+} from "../../api/adminApi";
+import Table from "../../components/Table";
+import Modal from "../../components/Modal";
 import { motion } from "framer-motion";
 
 type Subscriber = {

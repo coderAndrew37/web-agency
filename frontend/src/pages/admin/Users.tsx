@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { fetchUsers, deleteUser, updateUserRole } from "../api/adminApi";
-import Modal from "../components/Modal";
+import { fetchUsers, deleteUser, updateUserRole } from "../../api/adminApi";
+import Modal from "../../components/Modal";
 import { motion } from "framer-motion";
-import Table from "../components/Table";
+import Table from "../../components/Table";
 
 type User = {
   id: string;

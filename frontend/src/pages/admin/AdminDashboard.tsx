@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchAdminStats } from "../api/adminApi";
-import StatsCard from "../components/StatsCard";
+import { fetchAdminStats } from "../../api/adminApi";
+import StatsCard from "../../components/StatsCard";
 import { motion } from "framer-motion";
 import { Users, MessageSquare, Mail } from "lucide-react"; // ✅ Icons for stats
 

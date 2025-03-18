@@ -10,10 +10,16 @@ import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
-import TestimonialPage from "./pages/Testimonial"; // ✅ Import Testimonial Page
+import TestimonialPage from "./pages/Testimonial";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthProvider";
+import { AdminProvider } from "./context/AdminProvider"; // ✅ Admin Context
 import AuthLayout from "./layouts/AuthLayout";
+import AdminLayout from "./layouts/AdminLayout"; // ✅ Import Admin Layout
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import Users from "./pages/admin/Users";
+import Testimonials from "./pages/admin/Testimonials";
+import Subscribers from "./pages/admin/Subscribers";
 
 const App = () => {
   return (
@@ -51,8 +57,6 @@ const App = () => {
               </>
             }
           />
-
-          {/* ✅ Add Testimonial Page (Publicly Accessible) */}
           <Route
             path="/testimonials"
             element={
@@ -63,7 +67,6 @@ const App = () => {
               </>
             }
           />
-
           <Route
             path="*"
             element={
@@ -83,7 +86,7 @@ const App = () => {
             <Route path="/reset-password/:token" element={<ResetPassword />} />
           </Route>
 
-          {/* ✅ Protected Routes (For Logged-In Users) */}
+          {/* ✅ Protected Routes (For Regular Users) */}
           <Route element={<ProtectedRoute />}>
             <Route
               path="/dashboard"
@@ -95,6 +98,23 @@ const App = () => {
                 </>
               }
             />
+          </Route>
+
+          {/* ✅ Admin Routes (Protected & Uses AdminLayout) */}
+          <Route element={<ProtectedRoute adminOnly />}>
+            <Route
+              path="/admin/*"
+              element={
+                <AdminProvider>
+                  <AdminLayout />
+                </AdminProvider>
+              }
+            >
+              <Route index element={<AdminDashboard />} />
+              <Route path="users" element={<Users />} />
+              <Route path="testimonials" element={<Testimonials />} />
+              <Route path="subscribers" element={<Subscribers />} />
+            </Route>
           </Route>
         </Routes>
       </AuthProvider>
