@@ -1,11 +1,7 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
 import Testimonial, { validateTestimonial } from "../models/testimonial";
-import {
-  protect,
-  admin,
-  AuthenticatedRequest,
-} from "../middleware/authMiddleware";
+import { protect, AuthenticatedRequest } from "../middleware/authMiddleware";
 
 const router = express.Router();
 

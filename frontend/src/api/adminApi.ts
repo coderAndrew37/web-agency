@@ -51,3 +51,11 @@ export const fetchContactMessages = async () => {
 export const deleteContactMessage = async (id: string) => {
   return axiosInstance.delete(`/admin/contacts/${id}`);
 };
+
+// ✅ Send Reply to Contact Message
+export const replyToContactMessage = async (
+  id: string,
+  replyData: { subject: string; message: string }
+) => {
+  return axiosInstance.post(`/contacts/${id}/reply`, replyData);
+};

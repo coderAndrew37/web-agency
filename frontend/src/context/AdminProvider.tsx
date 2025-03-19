@@ -6,6 +6,7 @@ interface AdminStats {
   users: number;
   testimonials: number;
   subscribers: number;
+  contactMessages: number; // ✅ Add Contact Messages Count
 }
 
 export const AdminProvider = ({ children }: { children: ReactNode }) => {
@@ -13,6 +14,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     users: 0,
     testimonials: 0,
     subscribers: 0,
+    contactMessages: 0, // ✅ Initialize contactMessages
   });
 
   const [loading, setLoading] = useState(true);

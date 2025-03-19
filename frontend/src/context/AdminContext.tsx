@@ -4,11 +4,12 @@ interface AdminStats {
   users: number;
   testimonials: number;
   subscribers: number;
+  contactMessages: number; // ✅ Add Contact Messages Count
 }
 
 interface AdminContextType {
   stats: AdminStats;
-  setStats: (stats: AdminStats) => void;
+  setStats: React.Dispatch<React.SetStateAction<AdminStats>>; // ✅ Update setStats type
   loading: boolean;
 }
 

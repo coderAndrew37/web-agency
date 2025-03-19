@@ -42,3 +42,10 @@ export const contactSchema = z.object({
   email: z.string().email("Enter a valid email."),
   message: z.string().min(10, "Message must be at least 10 characters."),
 });
+
+// ✅ Pricing Selection Schema
+export const pricingSchema = z.object({
+  email: z.string().email("Enter a valid email."),
+  selectedFeatures: z.array(z.string()).min(1, "Select at least one feature."),
+  totalPrice: z.number().min(0, "Total price must be a positive number."),
+});

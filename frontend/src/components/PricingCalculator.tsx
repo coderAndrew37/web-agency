@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import axios from "axios";
 import colors from "../styles/colors";
-
+import { pricingSchema } from "../Utils/validationSchemas";
 gsap.registerPlugin(ScrollTrigger);
 
 interface Feature {
@@ -23,21 +26,22 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState(basePrice);
 
-  const toggleFeature = (feature: string, price: number) => {
-    setSelectedFeatures((prev) =>
-      prev.includes(feature)
-        ? prev.filter((f) => f !== feature)
-        : [...prev, feature]
-    );
-
-    setTotalPrice((prevTotal) =>
-      selectedFeatures.includes(feature) ? prevTotal - price : prevTotal + price
-    );
-  };
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(pricingSchema),
+    defaultValues: {
+      email: "",
+      selectedFeatures: [],
+      totalPrice: basePrice,
+    },
+  });
 
   useEffect(() => {
     if (!sectionRef.current) return;
-
     gsap.fromTo(
       sectionRef.current.querySelectorAll(".feature-item"),
       { opacity: 0, y: 50 },
@@ -54,6 +58,34 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
       }
     );
   }, []);
+
+  const toggleFeature = (feature: string, price: number) => {
+    setSelectedFeatures((prev) =>
+      prev.includes(feature)
+        ? prev.filter((f) => f !== feature)
+        : [...prev, feature]
+    );
+
+    setTotalPrice((prevTotal) =>
+      selectedFeatures.includes(feature) ? prevTotal - price : prevTotal + price
+    );
+
+    setValue("selectedFeatures", selectedFeatures);
+    setValue("totalPrice", totalPrice);
+  };
+
+  const onSubmit = async (data: {
+    email: string;
+    selectedFeatures: string[];
+    totalPrice: number;
+  }) => {
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/pricing`, data);
+      alert("Request submitted successfully! 🎉");
+    } catch (error) {
+      console.error("Error submitting pricing request:", error);
+    }
+  };
 
   return (
     <section
@@ -90,9 +122,31 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
         </span>
       </div>
 
-      <button className="mt-6 px-8 py-3 bg-primary text-white font-bold rounded-full shadow-md hover:opacity-80 transition">
-        Get Started 🚀
-      </button>
+      {/* ✅ Add User Email for Booking */}
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 max-w-lg mx-auto">
+        <input
+          type="email"
+          placeholder="Enter your email"
+          className="w-full px-4 py-3 border border-gray-500 rounded-md focus:border-primary"
+          {...register("email")}
+        />
+        {errors.email && (
+          <p className="text-red-500 mt-2">{errors.email.message as string}</p>
+        )}
+
+        {errors.selectedFeatures && (
+          <p className="text-red-500 mt-2">
+            {errors.selectedFeatures.message as string}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          className="mt-4 px-8 py-3 bg-primary text-blue-700 text-lg font-bold rounded-full shadow-md hover:opacity-80 transition"
+        >
+          Get Started 🚀
+        </button>
+      </form>
     </section>
   );
 };
