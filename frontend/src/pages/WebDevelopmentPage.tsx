@@ -1,10 +1,11 @@
+import Pricing from "../components/Pricing";
 import PricingCalculator from "../components/PricingCalculator";
 import Features from "../components/Features";
 import Process from "../components/Process";
-import Pricing from "../components/Pricing";
 import CTA from "../components/CTA";
 import Newsletter from "../components/Newsletter";
 import Hero from "../components/Hero";
+import webDevPlans from "../data/webDevPlans";
 
 const webDevFeatures = [
   { name: "E-Commerce Functionality", price: 20000 },
@@ -34,8 +35,9 @@ const WebDevelopmentPage = () => {
       <Process />
 
       {/* 4️⃣ Pricing Plans */}
-      <Pricing />
+      <Pricing title="Web Development Pricing" plans={webDevPlans} />
       <PricingCalculator features={webDevFeatures} basePrice={0} />
+
       {/* 6️⃣ Call to Action */}
       <CTA />
 

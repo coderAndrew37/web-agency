@@ -7,6 +7,7 @@ import Pricing from "../components/Pricing";
 import FAQ from "../components/FAQ";
 import Newsletter from "../components/Newsletter";
 import colors from "../styles/colors";
+import webDevPlans from "../data/webDevPlans";
 
 const Home = () => {
   return (
@@ -21,7 +22,7 @@ const Home = () => {
       <Process />
 
       {/* 4️⃣ Offer Pricing After Showing Value */}
-      <Pricing />
+      <Pricing title="Web Development Pricing" plans={webDevPlans} />
 
       {/* 5️⃣ Address Concerns & Close the Sale */}
       <FAQ />
