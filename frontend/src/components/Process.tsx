@@ -1,7 +1,14 @@
 import { ClipboardCheck, Layout, Rocket, ShieldCheck } from "lucide-react";
 import colors from "../styles/colors";
 import CardGrid from "./CardGrid";
-const processSteps = [
+import { JSX } from "react";
+
+interface ProcessProps {
+  title?: string;
+  steps?: { title: string; description: string; icon: JSX.Element }[];
+}
+
+const defaultProcessSteps = [
   {
     title: "Consultation",
     description: "We discuss your vision and goals.",
@@ -24,6 +31,9 @@ const processSteps = [
   },
 ];
 
-const Process = () => <CardGrid title="Our Process" items={processSteps} />;
+const Process = ({
+  title = "Our Process",
+  steps = defaultProcessSteps,
+}: ProcessProps) => <CardGrid title={title} items={steps} />;
 
 export default Process;

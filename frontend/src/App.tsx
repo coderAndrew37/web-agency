@@ -23,8 +23,10 @@ import Testimonials from "./pages/admin/Testimonials";
 import Subscribers from "./pages/admin/Subscribers";
 import ContactMessages from "./pages/Contact";
 import WebDevelopmentPage from "./pages/WebDevelopmentPage";
+
 import { ToastProvider } from "./context/ToastProvider";
 import Toast from "./components/Toast";
+import AppDevelopmentPage from "./pages/AppDevelopmentPage";
 
 const App = () => {
   return (
@@ -79,6 +81,16 @@ const App = () => {
                 <>
                   <Navbar />
                   <WebDevelopmentPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/services/app-development" // Add the new route for app Development
+              element={
+                <>
+                  <Navbar />
+                  <AppDevelopmentPage />
                   <Footer />
                 </>
               }

@@ -7,14 +7,29 @@ import Pricing from "../components/Pricing";
 import FAQ from "../components/FAQ";
 import Newsletter from "../components/Newsletter";
 import colors from "../styles/colors";
-import webDevPlans from "../data/webDevPlans";
+import webDevPlans from "../data/pricingData";
 
 const Home = () => {
   return (
     <div style={{ backgroundColor: colors.background, color: colors.darkText }}>
       {/* 1️⃣ Hook Visitors Immediately */}
-      <Hero />
-      <CTA />
+      <Hero
+        title="Build a Premium Website That Converts 🚀"
+        subtitle="We design high-performance, conversion-focused websites that scale your business."
+        primaryButtonText="Get Started"
+        primaryButtonAction={() => console.log("Navigating to Get Started")}
+        secondaryButtonText="Book a Free Consultation"
+        secondaryButtonAction={() =>
+          console.log("Opening consultation booking")
+        }
+      />
+
+      <CTA
+        title="🚀 Ready to Scale Your Business?"
+        subtitle="Get a high-performance website that drives real results."
+        primaryCTA="Get Started"
+        showFormOption={true}
+      />
 
       {/* 2️⃣ Show Proof & Build Trust */}
       <Features />

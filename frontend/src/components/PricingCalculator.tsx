@@ -14,11 +14,13 @@ interface Feature {
 }
 
 interface PricingCalculatorProps {
+  title: string;
   features: Feature[];
   basePrice: number;
 }
 
 const PricingCalculator: React.FC<PricingCalculatorProps> = ({
+  title,
   features,
   basePrice,
 }) => {
@@ -93,7 +95,7 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
       className="py-16 text-center"
       style={{ backgroundColor: colors.background, color: colors.darkText }}
     >
-      <h2 className="text-4xl font-bold mb-6">Customize Your Package</h2>
+      <h2 className="text-4xl font-bold mb-6">{title}</h2>
       <p className="text-lg text-gray-500 mb-6">
         Select the features you need:
       </p>
