@@ -20,6 +20,8 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import Users from "./pages/admin/Users";
 import Testimonials from "./pages/admin/Testimonials";
 import Subscribers from "./pages/admin/Subscribers";
+import ContactMessages from "./pages/Contact";
+import WebDevelopmentPage from "./pages/WebDevelopmentPage";
 
 const App = () => {
   return (
@@ -63,6 +65,16 @@ const App = () => {
               <>
                 <Navbar />
                 <TestimonialPage />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/services/web-development" // Add the new route for Web Development
+            element={
+              <>
+                <Navbar />
+                <WebDevelopmentPage />
                 <Footer />
               </>
             }
@@ -114,6 +126,7 @@ const App = () => {
               <Route path="users" element={<Users />} />
               <Route path="testimonials" element={<Testimonials />} />
               <Route path="subscribers" element={<Subscribers />} />
+              <Route path="contact-messages" element={<ContactMessages />} />
             </Route>
           </Route>
         </Routes>

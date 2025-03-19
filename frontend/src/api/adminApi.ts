@@ -41,3 +41,13 @@ export const sendBulkEmail = async (emailData: {
 }) => {
   return axiosInstance.post("/admin/subscribers/send-email", emailData);
 };
+
+/** ✅ Fetch Contact Messages */
+export const fetchContactMessages = async () => {
+  return axiosInstance.get("/admin/contacts");
+};
+
+/** ✅ Delete Contact Message */
+export const deleteContactMessage = async (id: string) => {
+  return axiosInstance.delete(`/admin/contacts/${id}`);
+};

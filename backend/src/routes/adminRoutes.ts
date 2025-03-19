@@ -197,9 +197,9 @@ router.post(
   }
 );
 
-// ✅ GET: Fetch Contact Messages (Admin Only)
+// ✅ [GET] Fetch Contact Messages (Admin Only)
 router.get(
-  "/",
+  "/contacts",
   protect,
   admin,
   async (_req: Request, res: Response): Promise<void> => {
@@ -209,6 +209,28 @@ router.get(
     } catch (err) {
       console.error("❌ Failed to fetch messages:", err);
       res.status(500).json({ error: "Failed to fetch messages." });
+    }
+  }
+);
+
+// ✅ [DELETE] Remove Contact Message (Admin Only)
+router.delete(
+  "/contacts/:id",
+  protect,
+  admin,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const message = await Contact.findById(req.params.id);
+      if (!message) {
+        res.status(404).json({ error: "Message not found" });
+        return;
+      }
+
+      await message.deleteOne();
+      res.json({ message: "Contact message deleted successfully" });
+    } catch (err) {
+      console.error("❌ Failed to delete message:", err);
+      res.status(500).json({ error: "Failed to delete message." });
     }
   }
 );

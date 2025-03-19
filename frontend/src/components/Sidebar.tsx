@@ -1,5 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, Users, Star, Mail, Settings } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  Star,
+  Mail,
+  MessageSquare,
+  Settings,
+} from "lucide-react";
 import { useState, JSX } from "react";
 
 const Sidebar = () => {
@@ -41,6 +48,12 @@ const Sidebar = () => {
           to="/admin/subscribers"
           icon={<Mail size={20} />}
           label="Subscribers"
+          collapsed={collapsed}
+        />
+        <NavItem
+          to="/admin/contacts"
+          icon={<MessageSquare size={20} />}
+          label="Contact Messages"
           collapsed={collapsed}
         />
         <NavItem
