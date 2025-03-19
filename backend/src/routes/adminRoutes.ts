@@ -213,6 +213,40 @@ router.get(
   }
 );
 
+// ✅ [POST] Reply to a Contact Message (Admin Only)
+router.post(
+  "/contacts/:id/reply",
+  protect,
+  admin,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { subject, message } = req.body;
+      if (!subject || !message) {
+        res.status(400).json({ error: "Subject and message are required" });
+        return;
+      }
+
+      const contactMessage = await Contact.findById(req.params.id);
+      if (!contactMessage) {
+        res.status(404).json({ error: "Message not found" });
+        return;
+      }
+
+      // Send email reply
+      await sendEmail(
+        contactMessage.email,
+        subject,
+        `<p>Hello ${contactMessage.name},</p><p>${message}</p>`
+      );
+
+      res.json({ message: "Reply sent successfully!" });
+    } catch (err) {
+      console.error("❌ Failed to send reply:", err);
+      res.status(500).json({ error: "Failed to send reply." });
+    }
+  }
+);
+
 // ✅ [DELETE] Remove Contact Message (Admin Only)
 router.delete(
   "/contacts/:id",

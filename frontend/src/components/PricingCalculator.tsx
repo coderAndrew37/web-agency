@@ -5,18 +5,23 @@ import colors from "../styles/colors";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const features = [
-  { name: "E-Commerce Functionality", price: 20000 },
-  { name: "SEO Optimization", price: 5000 },
-  { name: "Speed Optimization", price: 3000 },
-  { name: "Security Enhancements", price: 4000 },
-  { name: "Custom Animations", price: 6000 },
-];
+interface Feature {
+  name: string;
+  price: number;
+}
 
-const PricingCalculator = () => {
+interface PricingCalculatorProps {
+  features: Feature[];
+  basePrice: number;
+}
+
+const PricingCalculator: React.FC<PricingCalculatorProps> = ({
+  features,
+  basePrice,
+}) => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(basePrice);
 
   const toggleFeature = (feature: string, price: number) => {
     setSelectedFeatures((prev) =>
