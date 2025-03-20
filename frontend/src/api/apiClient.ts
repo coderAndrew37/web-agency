@@ -12,6 +12,6 @@ export const submitClientForm = async (
 };
 
 // ✅ Fetch all clients (Admin only)
-export const fetchClients = async () => {
-  return axiosInstance.get("/clients");
+export const fetchClients = async (page: number, limit: number = 10) => {
+  return axiosInstance.get("/clients", { params: { page, limit } });
 };

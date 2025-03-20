@@ -1,11 +1,7 @@
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import {
-  protect,
-  admin,
-  AuthenticatedRequest,
-} from "../middleware/authMiddleware";
+import { protect, AuthenticatedRequest } from "../middleware/authMiddleware";
 import User from "../models/User";
 import { setTokens } from "../utils/tokenService";
 
@@ -86,7 +82,11 @@ router.post(
 
       const { accessToken } = setTokens(res, decoded.userId);
       res.json({ accessToken });
-    } catch {
+    } catch (error) {
+      // Clear invalid tokens
+      res.clearCookie("accessToken");
+      res.clearCookie("refreshToken");
+
       res.status(403).json({ error: "Invalid or expired refresh token" });
     }
   }

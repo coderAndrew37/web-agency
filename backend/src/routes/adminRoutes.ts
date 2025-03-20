@@ -5,6 +5,9 @@ import Testimonial from "../models/testimonial";
 import Newsletter from "../models/subscriber";
 import { Contact, validateContact } from "../models/contact";
 import { sendEmail } from "../utils/emailService";
+import logger from "../utils/logger";
+
+import Blog, { validateBlog } from "../models/Blog";
 
 const router = express.Router();
 
@@ -265,6 +268,80 @@ router.delete(
     } catch (err) {
       console.error("❌ Failed to delete message:", err);
       res.status(500).json({ error: "Failed to delete message." });
+    }
+  }
+);
+
+// ✅ [GET] Fetch All Blogs (Admin Only)
+router.get(
+  "/blogs",
+  protect,
+  admin,
+  async (_req: Request, res: Response): Promise<void> => {
+    try {
+      const blogs = await Blog.find()
+        .populate("author", "name")
+        .sort({ createdAt: -1 });
+      res.json(blogs);
+    } catch (err) {
+      logger.error("❌ Failed to fetch blogs:", err);
+      res.status(500).json({ error: "Failed to fetch blogs." });
+    }
+  }
+);
+
+// ✅ [PUT] Update a Blog (Admin Only)
+router.put(
+  "/:id",
+  protect,
+  admin,
+  async (req: Request, res: Response): Promise<void> => {
+    const { error } = validateBlog(req.body);
+    if (error) {
+      logger.warn(`⚠️ Validation Error: ${error.details[0].message}`);
+      res.status(400).json({ error: error.details[0].message });
+      return;
+    }
+
+    try {
+      const blog = await Blog.findById(req.params.id);
+      if (!blog) {
+        res.status(404).json({ error: "Blog not found" });
+        return;
+      }
+
+      Object.assign(blog, req.body);
+      await blog.save();
+      logger.info(`✅ Blog updated: ${blog.title}`);
+
+      res.json({ message: "Blog updated successfully", blog });
+    } catch (err) {
+      logger.error("❌ Error updating blog:", err);
+      res.status(500).json({ error: "Failed to update blog." });
+    }
+  }
+);
+
+// ✅ [PUT] Publish / Unpublish Blog (Admin Only)
+router.put(
+  "/blogs/:id/status",
+  protect,
+  admin,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const blog = await Blog.findById(req.params.id);
+      if (!blog) {
+        res.status(404).json({ error: "Blog not found" });
+        return;
+      }
+
+      blog.status = blog.status === "Draft" ? "Published" : "Draft";
+      await blog.save();
+
+      res.json({ message: `Blog status updated to ${blog.status}` });
+    } catch (err) {
+      logger.error("❌ Error updating blog status:", err);
+      res.status(500).json({ error: "Failed to update blog status." });
     }
   }
 );

@@ -159,3 +159,15 @@
 [2025-03-19T09:30:07.936Z] INFO: ✅ MongoDB Connected Successfully
 [2025-03-19T11:34:33.791Z] INFO: 🚀 Server running on port 5000
 [2025-03-19T11:34:33.884Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T08:54:58.829Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T08:54:58.870Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T08:58:27.099Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T08:58:27.135Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T10:19:23.616Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T10:19:23.701Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T12:41:14.378Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T12:41:14.424Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T13:00:00.072Z] INFO: Running reminder job...
+[2025-03-20T13:49:42.109Z] INFO: Shutting down server...
+[2025-03-20T13:50:19.518Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T13:50:19.537Z] INFO: ✅ MongoDB Connected Successfully

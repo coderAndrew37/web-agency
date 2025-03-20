@@ -39,3 +39,5 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
+
+console.log("AuthProvider rendered");
