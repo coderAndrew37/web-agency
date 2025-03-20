@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut, Phone, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import gsap from "gsap";
@@ -9,12 +9,63 @@ import colors from "../styles/colors";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// ✅ Service Categories for Dropdown
 const services = [
-  { name: "Web Development", link: "/services/web-development" },
-  { name: "App Development", link: "/services/app-development" },
-  { name: "Facebook Ads", link: "/services/facebook-ads" },
-  { name: "SEO Optimization", link: "/services/seo" },
-  { name: "E-commerce Solutions", link: "/services/ecommerce" },
+  {
+    category: "Development",
+    services: [
+      {
+        name: "Web Development",
+        link: "/services/web-development",
+        icon: <Globe size={20} />,
+      },
+      {
+        name: "App Development",
+        link: "/services/app-development",
+        icon: <Phone size={20} />,
+      },
+      {
+        name: "M-Pesa Integration",
+        link: "/services/mpesa-integration",
+        icon: <Phone size={20} />,
+      },
+    ],
+  },
+  {
+    category: "Marketing",
+    services: [
+      {
+        name: "SEO Optimization",
+        link: "/services/seo",
+        icon: <Globe size={20} />,
+      },
+      {
+        name: "Google Ads",
+        link: "/services/google-ads",
+        icon: <Globe size={20} />,
+      },
+      {
+        name: "Facebook Ads",
+        link: "/services/facebook-ads",
+        icon: <Globe size={20} />,
+      },
+      {
+        name: "Email Marketing",
+        link: "/services/email-marketing",
+        icon: <Globe size={20} />,
+      },
+    ],
+  },
+  {
+    category: "Automation",
+    services: [
+      {
+        name: "Marketing Automation",
+        link: "/services/marketing-automation",
+        icon: <Globe size={20} />,
+      },
+    ],
+  },
 ];
 
 const Navbar = () => {
@@ -59,7 +110,7 @@ const Navbar = () => {
             </Link>
           </motion.li>
 
-          {/* Services Dropdown */}
+          {/* ✅ Services Mega Dropdown */}
           <motion.li
             className="relative"
             onMouseEnter={() => setIsServicesOpen(true)}
@@ -74,23 +125,33 @@ const Navbar = () => {
 
             <AnimatePresence>
               {isServicesOpen && (
-                <motion.ul
+                <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute left-0 mt-2 w-56 bg-white shadow-lg rounded-lg overflow-hidden"
+                  className="absolute left-0 mt-2 w-[500px] bg-white shadow-lg rounded-lg p-4 grid grid-cols-2 gap-4"
                 >
-                  {services.map((service, index) => (
-                    <li key={index} className="border-b last:border-0">
-                      <Link
-                        to={service.link}
-                        className="block px-4 py-3 text-dark hover:bg-gray-100 transition"
-                      >
-                        {service.name}
-                      </Link>
-                    </li>
+                  {services.map((group, index) => (
+                    <div key={index} className="text-left">
+                      <h4 className="font-semibold text-lg mb-2 text-primary">
+                        {group.category}
+                      </h4>
+                      <ul>
+                        {group.services.map((service, i) => (
+                          <li key={i} className="border-b last:border-0">
+                            <Link
+                              to={service.link}
+                              className="flex items-center gap-2 px-4 py-2 text-dark hover:bg-gray-100 transition"
+                            >
+                              {service.icon}
+                              {service.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
-                </motion.ul>
+                </motion.div>
               )}
             </AnimatePresence>
           </motion.li>
@@ -211,24 +272,53 @@ const Navbar = () => {
                 </Link>
               </li>
 
-              {/* Services Dropdown (Mobile) */}
-              <li className="text-lg">
-                <details>
-                  <summary className="cursor-pointer">Services</summary>
-                  <ul className="mt-2 pl-4">
-                    {services.map((service, index) => (
-                      <li key={index}>
-                        <Link
-                          to={service.link}
-                          className="block py-2 hover:text-primary transition"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          {service.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
+              {/* ✅ Services Dropdown (Mobile) */}
+              <li className="text-lg w-full">
+                <button
+                  className="flex items-center justify-between w-full py-3 px-4 text-left font-semibold bg-gray-100 rounded-lg"
+                  onClick={() => setIsServicesOpen(!isServicesOpen)}
+                >
+                  Services{" "}
+                  <ChevronDown
+                    size={18}
+                    className={`${
+                      isServicesOpen ? "rotate-180" : ""
+                    } transition-transform`}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {isServicesOpen && (
+                    <motion.ul
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mt-2 overflow-hidden bg-white shadow-lg rounded-lg"
+                    >
+                      {services.map((group, index) => (
+                        <div key={index} className="text-left">
+                          <h4 className="px-4 py-2 text-primary font-bold">
+                            {group.category}
+                          </h4>
+                          {group.services.map((service, i) => (
+                            <li key={i}>
+                              <Link
+                                to={service.link}
+                                className="flex items-center gap-2 px-4 py-3 text-dark hover:bg-gray-100 transition"
+                                onClick={() => {
+                                  setIsOpen(false);
+                                  setIsServicesOpen(false);
+                                }}
+                              >
+                                {service.icon} {service.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </div>
+                      ))}
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
               </li>
 
               <li>

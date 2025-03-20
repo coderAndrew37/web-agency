@@ -10,22 +10,38 @@ const seoFeatures = [
   {
     title: "Keyword Optimization",
     description: "Target high-converting keywords to boost your rankings.",
-    icon: "🔍",
+    icon: (
+      <span role="img" aria-label="magnifying glass">
+        🔍
+      </span>
+    ),
   },
   {
     title: "Technical SEO Fixes",
     description: "Fix site speed, mobile usability, and technical errors.",
-    icon: "⚙️",
+    icon: (
+      <span role="img" aria-label="gear">
+        ⚙️
+      </span>
+    ),
   },
   {
     title: "Content Marketing Strategy",
     description: "Build authority with high-quality, SEO-friendly content.",
-    icon: "✍️",
+    icon: (
+      <span role="img" aria-label="writing hand">
+        ✍️
+      </span>
+    ),
   },
   {
     title: "Authority Link Building",
     description: "Earn backlinks from high-authority domains.",
-    icon: "🔗",
+    icon: (
+      <span role="img" aria-label="link">
+        🔗
+      </span>
+    ),
   },
 ];
 
@@ -33,27 +49,47 @@ const seoProcess = [
   {
     title: "SEO Audit & Research",
     description: "Analyze your current rankings & find growth opportunities.",
-    icon: "📊",
+    icon: (
+      <span role="img" aria-label="bar chart">
+        📊
+      </span>
+    ),
   },
   {
     title: "On-Page Optimization",
     description: "Optimize titles, meta tags, and content for better rankings.",
-    icon: "📄",
+    icon: (
+      <span role="img" aria-label="document">
+        📄
+      </span>
+    ),
   },
   {
     title: "Technical Fixes & Speed Optimization",
     description: "Improve page speed, mobile usability, and indexing.",
-    icon: "⚡",
+    icon: (
+      <span role="img" aria-label="high voltage">
+        ⚡
+      </span>
+    ),
   },
   {
     title: "Content & Link Building Strategy",
     description: "Develop a strategic plan for content and backlinks.",
-    icon: "📢",
+    icon: (
+      <span role="img" aria-label="megaphone">
+        📢
+      </span>
+    ),
   },
   {
     title: "Tracking & Analytics",
     description: "Monitor keyword rankings, traffic, and conversions.",
-    icon: "📊",
+    icon: (
+      <span role="img" aria-label="bar chart">
+        📊
+      </span>
+    ),
   },
 ];
 

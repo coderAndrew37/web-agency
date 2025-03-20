@@ -13,21 +13,27 @@ import Dashboard from "./pages/Dashboard";
 import TestimonialPage from "./pages/Testimonial";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthProvider";
-import { AdminProvider } from "./context/AdminProvider"; // ✅ Admin Context
+import { AdminProvider } from "./context/AdminProvider";
+import { ToastProvider } from "./context/ToastProvider";
+import Toast from "./components/Toast";
 
+// ✅ Admin Pages
 import AuthLayout from "./layouts/AuthLayout";
-import AdminLayout from "./layouts/AdminLayout"; // ✅ Import Admin Layout
+import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Users from "./pages/admin/Users";
 import Testimonials from "./pages/admin/Testimonials";
 import Subscribers from "./pages/admin/Subscribers";
-import ContactMessages from "./pages/Contact";
-import WebDevelopmentPage from "./pages/WebDevelopmentPage";
+import ContactMessages from "./pages/admin/ContactMessages";
 
-import { ToastProvider } from "./context/ToastProvider";
-import Toast from "./components/Toast";
+// ✅ Services Pages
+import WebDevelopmentPage from "./pages/WebDevelopmentPage";
 import AppDevelopmentPage from "./pages/AppDevelopmentPage";
 import FacebookAdsPage from "./pages/FacebookAdsPage";
+import EmailMarketingPage from "./pages/EmailMarketingService";
+import GoogleAdsPage from "./pages/GoogleAdsService";
+import MpesaIntegrationPage from "./pages/MpesaService";
+import SeoPage from "./pages/SeoPage";
 
 const App = () => {
   return (
@@ -35,7 +41,7 @@ const App = () => {
       <AuthProvider>
         <ToastProvider>
           <Routes>
-            {/* ✅ Public Pages (With Navbar & Footer) */}
+            {/* ✅ Public Pages */}
             <Route
               path="/"
               element={
@@ -76,8 +82,10 @@ const App = () => {
                 </>
               }
             />
+
+            {/* ✅ Services Pages */}
             <Route
-              path="/services/web-development" // Add the new route for Web Development
+              path="/services/web-development"
               element={
                 <>
                   <Navbar />
@@ -87,7 +95,7 @@ const App = () => {
               }
             />
             <Route
-              path="/services/app-development" // Add the new route for app Development
+              path="/services/app-development"
               element={
                 <>
                   <Navbar />
@@ -106,6 +114,48 @@ const App = () => {
                 </>
               }
             />
+            <Route
+              path="/services/seo"
+              element={
+                <>
+                  <Navbar />
+                  <SeoPage />
+                  <Footer />
+                </>
+              }
+            />
+
+            <Route
+              path="/services/google-ads"
+              element={
+                <>
+                  <Navbar />
+                  <GoogleAdsPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/services/mpesa-integration"
+              element={
+                <>
+                  <Navbar />
+                  <MpesaIntegrationPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/services/email-marketing"
+              element={
+                <>
+                  <Navbar />
+                  <EmailMarketingPage />
+                  <Footer />
+                </>
+              }
+            />
+
             <Route
               path="*"
               element={
@@ -142,7 +192,7 @@ const App = () => {
               />
             </Route>
 
-            {/* ✅ Admin Routes (Protected & Uses AdminLayout) */}
+            {/* ✅ Admin Routes (Protected) */}
             <Route element={<ProtectedRoute adminOnly />}>
               <Route
                 path="/admin/*"
@@ -160,6 +210,8 @@ const App = () => {
               </Route>
             </Route>
           </Routes>
+
+          {/* ✅ Global Toast Notifications */}
           <Toast />
         </ToastProvider>
       </AuthProvider>
