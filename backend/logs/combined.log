@@ -193,3 +193,10 @@
 [2025-03-20T18:37:58.278Z] INFO: 🚀 Server running on port 5000
 [2025-03-20T18:37:58.368Z] INFO: ✅ MongoDB Connected Successfully
 [2025-03-20T19:00:00.040Z] INFO: Running reminder job...
+[2025-03-20T19:57:19.854Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T19:57:19.874Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T20:00:00.039Z] INFO: Running reminder job...
+[2025-03-20T20:23:57.804Z] INFO: ✅ New user registered: devandrew66@gmail.com
+[2025-03-20T20:53:35.289Z] INFO: Shutting down server...
+[2025-03-20T20:54:06.618Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T20:54:06.649Z] INFO: ✅ MongoDB Connected Successfully

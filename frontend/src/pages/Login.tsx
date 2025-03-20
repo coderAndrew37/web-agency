@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useLoginUser as loginUser } from "../api/auth";
+import { useLoginUser } from "../api/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { loginSchema } from "../Utils/validationSchemas";
 import { Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
-import colors from "../styles/colors"; // ✅ Use theme colors
+import colors from "../styles/colors";
 
 type LoginData = {
   email: string;
@@ -17,9 +17,8 @@ type LoginData = {
 const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const loginUser = useLoginUser(); // ✅ Use Mutation Hook
 
   const {
     register,
@@ -30,21 +29,15 @@ const Login = () => {
   });
 
   const onSubmit = async (data: LoginData) => {
-    setError("");
-    setLoading(true);
-    try {
-      const response = await loginUser(data);
-      setUser(response.data.user);
-      navigate("/dashboard");
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message || "Invalid credentials");
-      } else {
-        setError("An unknown error occurred.");
-      }
-    } finally {
-      setLoading(false);
-    }
+    loginUser.mutateAsync(data, {
+      onSuccess: (response) => {
+        setUser(response.data.user); // ✅ Set user after success
+        navigate("/dashboard");
+      },
+      onError: (error) => {
+        console.error(error);
+      },
+    });
   };
 
   return (
@@ -59,7 +52,6 @@ const Login = () => {
       >
         Welcome Back
       </h2>
-      {error && <p className="text-red-500 text-center mt-2">{error}</p>}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 mt-6">
         <input
@@ -92,9 +84,9 @@ const Login = () => {
           type="submit"
           className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700 text-lg hover:opacity-80"
           whileTap={{ scale: 0.95 }}
-          disabled={loading}
+          disabled={loginUser.isPending}
         >
-          {loading ? "Logging in..." : "Login"}
+          {loginUser.isPending ? "Logging in..." : "Login"}
         </motion.button>
       </form>
 
