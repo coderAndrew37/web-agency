@@ -27,6 +27,7 @@ import WebDevelopmentPage from "./pages/WebDevelopmentPage";
 import { ToastProvider } from "./context/ToastProvider";
 import Toast from "./components/Toast";
 import AppDevelopmentPage from "./pages/AppDevelopmentPage";
+import FacebookAdsPage from "./pages/FacebookAdsPage";
 
 const App = () => {
   return (
@@ -91,6 +92,16 @@ const App = () => {
                 <>
                   <Navbar />
                   <AppDevelopmentPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/services/facebook-ads"
+              element={
+                <>
+                  <Navbar />
+                  <FacebookAdsPage />
                   <Footer />
                 </>
               }

@@ -27,22 +27,38 @@ const WebDevelopmentPage = () => {
           {
             title: "SEO-Optimized Websites",
             description: "Rank higher and drive organic traffic to your site.",
-            icon: "🔍",
+            icon: (
+              <span role="img" aria-label="search">
+                🔍
+              </span>
+            ),
           },
           {
             title: "E-Commerce Ready",
             description: "Boost sales with a user-friendly online store.",
-            icon: "🛒",
+            icon: (
+              <span role="img" aria-label="shopping cart">
+                🛒
+              </span>
+            ),
           },
           {
             title: "Mobile-Responsive Design",
             description: "Your website will look stunning on any device.",
-            icon: "📱",
+            icon: (
+              <span role="img" aria-label="mobile phone">
+                📱
+              </span>
+            ),
           },
           {
             title: "Fast & Secure",
             description: "Optimized for speed, security, and performance.",
-            icon: "⚡",
+            icon: (
+              <span role="img" aria-label="lightning bolt">
+                ⚡
+              </span>
+            ),
           },
         ]}
       />
@@ -54,24 +70,40 @@ const WebDevelopmentPage = () => {
           {
             title: "Consultation & Planning",
             description: "We define your goals and create a strategy.",
-            icon: "📌",
+            icon: (
+              <span role="img" aria-label="pushpin">
+                📌
+              </span>
+            ),
           },
           {
             title: "Design & Prototyping",
             description:
               "Wireframing and UI/UX design to bring your vision to life.",
-            icon: "🎨",
+            icon: (
+              <span role="img" aria-label="palette">
+                🎨
+              </span>
+            ),
           },
           {
             title: "Development & Testing",
             description: "Building a fast, secure, and scalable website.",
-            icon: "💻",
+            icon: (
+              <span role="img" aria-label="laptop">
+                💻
+              </span>
+            ),
           },
           {
             title: "Launch & Ongoing Support",
             description:
               "Ensuring smooth deployment and continuous maintenance.",
-            icon: "🚀",
+            icon: (
+              <span role="img" aria-label="rocket">
+                🚀
+              </span>
+            ),
           },
         ]}
       />

@@ -7,7 +7,7 @@ import Pricing from "../components/Pricing";
 import FAQ from "../components/FAQ";
 import Newsletter from "../components/Newsletter";
 import colors from "../styles/colors";
-import webDevPlans from "../data/pricingData";
+import { webDevPlans } from "../data/pricingData";
 
 const Home = () => {
   return (
