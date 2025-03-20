@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import {
-  fetchAllTestimonials,
-  approveTestimonial,
-  deleteTestimonial,
+  useFetchAllTestimonials as fetchAllTestimonials,
+  useApproveTestimonial as approveTestimonial,
+  useDeleteTestimonial as deleteTestimonial,
 } from "../../api/adminApi";
 import Table from "../../components/Table";
 import Modal from "../../components/Modal";

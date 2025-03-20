@@ -1,4 +1,5 @@
-import { useState, useEffect, ReactNode } from "react";
+import { ReactNode } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { AdminContext } from "./AdminContext";
 import axiosInstance from "../api/axiosInstance";
 
@@ -6,37 +7,25 @@ interface AdminStats {
   users: number;
   testimonials: number;
   subscribers: number;
-  contactMessages: number; // ✅ Add Contact Messages Count
+  contactMessages: number;
 }
 
 export const AdminProvider = ({ children }: { children: ReactNode }) => {
-  const [stats, setStats] = useState<AdminStats>({
-    users: 0,
-    testimonials: 0,
-    subscribers: 0,
-    contactMessages: 0, // ✅ Initialize contactMessages
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["admin-stats"],
+    queryFn: async (): Promise<AdminStats> => {
+      const { data } = await axiosInstance.get("/admin/stats");
+      return data;
+    },
+    staleTime: 5 * 60 * 1000,
+    refetchOnReconnect: true,
   });
 
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchAdminStats = async () => {
-      try {
-        const { data } = await axiosInstance.get("/admin/stats");
-        setStats(data);
-      } catch (error) {
-        console.error("Failed to fetch admin stats", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAdminStats();
-  }, []);
-
   return (
-    <AdminContext.Provider value={{ stats, setStats, loading }}>
-      {!loading && children}
+    <AdminContext.Provider
+      value={{ stats: data || null, loading: isLoading, refetch }}
+    >
+      {!isLoading && children}
     </AdminContext.Provider>
   );
 };

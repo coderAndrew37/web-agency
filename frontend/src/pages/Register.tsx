@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { registerUser } from "../api/auth";
+import { useRegisterUser as registerUser } from "../api/auth";
 import { useAuth } from "../hooks/useAuth";
 import { registerSchema } from "../Utils/validationSchemas";
 import { Eye, EyeOff } from "lucide-react";

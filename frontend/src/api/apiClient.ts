@@ -1,17 +1,26 @@
+import { useQuery, useMutation } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
 
-interface ApiResponse {
-  message: string;
-}
-
-// ✅ Submit client onboarding form
-export const submitClientForm = async (
-  clientData: Record<string, unknown>
-): Promise<ApiResponse> => {
-  return axiosInstance.post("/clients", clientData);
+// ✅ Fetch all clients
+export const useFetchClients = (page: number, limit: number = 10) => {
+  return useQuery({
+    queryKey: ["clients", page, limit],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get("/clients", {
+        params: { page, limit },
+      });
+      return data;
+    },
+    staleTime: 5 * 60 * 1000, // Cache data for 5 mins
+  });
 };
 
-// ✅ Fetch all clients (Admin only)
-export const fetchClients = async (page: number, limit: number = 10) => {
-  return axiosInstance.get("/clients", { params: { page, limit } });
+// ✅ Submit client onboarding form
+export const useSubmitClientForm = () => {
+  return useMutation({
+    mutationFn: async (clientData: Record<string, unknown>) => {
+      const { data } = await axiosInstance.post("/clients", clientData);
+      return data;
+    },
+  });
 };

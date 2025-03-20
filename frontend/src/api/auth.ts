@@ -1,28 +1,49 @@
+import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
 
-export const registerUser = async (userData: {
-  name: string;
-  email: string;
-  password: string;
-}) => {
-  return axiosInstance.post("/auth/register", userData);
+// ✅ Register User
+export const useRegisterUser = () => {
+  return useMutation({
+    mutationFn: async (userData: {
+      name: string;
+      email: string;
+      password: string;
+    }) => {
+      return axiosInstance.post("/auth/register", userData);
+    },
+  });
 };
 
-export const loginUser = async (loginData: {
-  email: string;
-  password: string;
-}) => {
-  return axiosInstance.post("/auth/login", loginData);
+// ✅ Login User
+export const useLoginUser = () => {
+  return useMutation({
+    mutationFn: async (loginData: { email: string; password: string }) => {
+      return axiosInstance.post("/auth/login", loginData);
+    },
+  });
 };
 
-export const logoutUser = async () => {
-  return axiosInstance.post("/auth/logout");
+// ✅ Logout User
+export const useLogoutUser = () => {
+  return useMutation({
+    mutationFn: async () => axiosInstance.post("/auth/logout"),
+  });
 };
 
-export const forgotPassword = (data: { email: string }) => {
-  return axiosInstance.post("/password/forgot-password", data);
+//Reset password
+export const useResetPassword = () => {
+  return useMutation({
+    mutationFn: async (resetData: { token: string; password: string }) => {
+      return axiosInstance.post("/auth/reset-password", resetData);
+    },
+  });
 };
 
-export const resetPassword = (token: string, data: { password: string }) => {
-  return axiosInstance.post(`/password/reset-password/${token}`, data);
+//Forgot password
+export const useForgotPassword = () => {
+  return useMutation({
+    mutationFn: async (forgotData: { email: string }) => {
+      return axiosInstance.post("/auth/forgot-password", forgotData);
+    },
+  });
 };

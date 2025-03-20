@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import {
-  fetchContactMessages,
-  deleteContactMessage,
-  replyToContactMessage,
+  useFetchContactMessages as fetchContactMessages,
+  useDeleteContactMessage as deleteContactMessage,
+  useReplyToContactMessage as replyToContactMessage,
 } from "../../api/adminApi";
 import Table from "../../components/Table";
 import Modal from "../../components/Modal";

@@ -1,6 +1,7 @@
-import { useEffect, useState, ReactNode } from "react";
-import axiosInstance from "../api/axiosInstance"; // ✅ Correct import
-import { AuthContext } from "./AuthContext"; // ✅ Correct import
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "../api/axiosInstance";
+import { AuthContext } from "./AuthContext";
+import { useState } from "react";
 
 interface User {
   id: string;
@@ -9,35 +10,36 @@ interface User {
   role: string;
 }
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null); // ✅ Correct type
 
-  useEffect(() => {
-    const verifySession = async () => {
-      try {
-        const { data } = await axiosInstance.get("/auth/me");
-        setUser(data);
-      } catch {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { isLoading, refetch } = useQuery({
+    queryKey: ["auth"],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get("/auth/me");
+      setUser(data); // ✅ Set user state correctly
+      return data;
+    },
+    staleTime: 5 * 60 * 1000, // Cache auth state for 5 mins
+    refetchOnReconnect: true, // ✅ Auto-refetch on network recovery
+  });
 
-    verifySession();
-  }, []);
-
+  // ✅ Logout Function
   const logout = async () => {
-    await axiosInstance.post("/auth/logout");
-    setUser(null);
+    try {
+      await axiosInstance.post("/auth/logout");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+    setUser(null); // ✅ Clear user on logout
+    refetch(); // ✅ Clear cache & trigger re-fetch
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
-      {!loading && children}
+    <AuthContext.Provider
+      value={{ user, setUser, loading: isLoading, refetch, logout }}
+    >
+      {!isLoading && children}
     </AuthContext.Provider>
   );
 };
-
-console.log("AuthProvider rendered");

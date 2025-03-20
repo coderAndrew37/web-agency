@@ -171,3 +171,25 @@
 [2025-03-20T13:49:42.109Z] INFO: Shutting down server...
 [2025-03-20T13:50:19.518Z] INFO: 🚀 Server running on port 5000
 [2025-03-20T13:50:19.537Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T13:59:29.025Z] INFO: Shutting down server...
+[2025-03-20T14:00:04.697Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T14:00:04.718Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T14:05:57.732Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T14:05:57.756Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T14:14:39.773Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T14:14:39.824Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T14:17:41.740Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T14:17:41.767Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T14:17:56.235Z] WARN: ⚠️ Registration Validation Error: Email is required.
+[2025-03-20T14:18:23.051Z] WARN: ⚠️ Registration Validation Error: "name" is required
+[2025-03-20T14:19:53.459Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T14:19:53.485Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T14:35:55.374Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T14:35:55.404Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T14:37:03.642Z] INFO: 📧 Email sent to john.doe@example.com | Message ID: <5a54544c-13d1-fb95-e03d-0c55972c34c1@gmail.com>
+[2025-03-20T15:00:00.093Z] INFO: Running reminder job...
+[2025-03-20T16:05:14.129Z] INFO: Running reminder job...
+[2025-03-20T17:00:02.958Z] INFO: Running reminder job...
+[2025-03-20T18:37:58.278Z] INFO: 🚀 Server running on port 5000
+[2025-03-20T18:37:58.368Z] INFO: ✅ MongoDB Connected Successfully
+[2025-03-20T19:00:00.040Z] INFO: Running reminder job...

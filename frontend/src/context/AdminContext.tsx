@@ -8,9 +8,9 @@ interface AdminStats {
 }
 
 interface AdminContextType {
-  stats: AdminStats;
-  setStats: React.Dispatch<React.SetStateAction<AdminStats>>; // ✅ Update setStats type
+  stats: AdminStats | null; // ✅ Allow null for loading state
   loading: boolean;
+  refetch: () => void; // ✅ Add refetch for manual refresh
 }
 
 export const AdminContext = createContext<AdminContextType | undefined>(

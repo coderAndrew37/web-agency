@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { contactSchema } from "../Utils/validationSchemas";
-import { submitContactForm as sendContactMessage } from "../api/contactApi";
+import { useSubmitContactForm as sendContactMessage } from "../api/contactApi";
 import colors from "../styles/colors";
 
 type ContactFormData = {

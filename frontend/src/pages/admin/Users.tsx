@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { fetchUsers, deleteUser, updateUserRole } from "../../api/adminApi";
+import {
+  useFetchUsers as fetchUsers,
+  useDeleteUser as deleteUser,
+  useUpdateUserRole as updateUserRole,
+} from "../../api/adminApi";
 import Modal from "../../components/Modal";
 import { motion } from "framer-motion";
 import Table from "../../components/Table";

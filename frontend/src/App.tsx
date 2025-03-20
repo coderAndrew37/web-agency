@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { QueryClientProvider } from "@tanstack/react-query"; // ✅ Import QueryClientProvider
+import { queryClient } from "./api/queryClient"; // ✅ Import Query Client
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -37,185 +39,192 @@ import SeoPage from "./pages/SeoPage";
 
 const App = () => {
   return (
-    <Router>
-      <AuthProvider>
-        <ToastProvider>
-          <Routes>
-            {/* ✅ Public Pages */}
-            <Route
-              path="/"
-              element={
-                <>
-                  <Navbar />
-                  <Home />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/about"
-              element={
-                <>
-                  <Navbar />
-                  <About />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/contact"
-              element={
-                <>
-                  <Navbar />
-                  <Contact />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/testimonials"
-              element={
-                <>
-                  <Navbar />
-                  <TestimonialPage />
-                  <Footer />
-                </>
-              }
-            />
-
-            {/* ✅ Services Pages */}
-            <Route
-              path="/services/web-development"
-              element={
-                <>
-                  <Navbar />
-                  <WebDevelopmentPage />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/services/app-development"
-              element={
-                <>
-                  <Navbar />
-                  <AppDevelopmentPage />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/services/facebook-ads"
-              element={
-                <>
-                  <Navbar />
-                  <FacebookAdsPage />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/services/seo"
-              element={
-                <>
-                  <Navbar />
-                  <SeoPage />
-                  <Footer />
-                </>
-              }
-            />
-
-            <Route
-              path="/services/google-ads"
-              element={
-                <>
-                  <Navbar />
-                  <GoogleAdsPage />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/services/mpesa-integration"
-              element={
-                <>
-                  <Navbar />
-                  <MpesaIntegrationPage />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/services/email-marketing"
-              element={
-                <>
-                  <Navbar />
-                  <EmailMarketingPage />
-                  <Footer />
-                </>
-              }
-            />
-
-            <Route
-              path="*"
-              element={
-                <>
-                  <Navbar />
-                  <NotFound />
-                  <Footer />
-                </>
-              }
-            />
-
-            {/* ✅ Auth Pages (No Navbar & Footer) */}
-            <Route element={<AuthLayout />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
+    <QueryClientProvider client={queryClient}>
+      {" "}
+      {/* ✅ Wrap App with QueryClientProvider */}
+      <Router>
+        <AuthProvider>
+          <ToastProvider>
+            <Routes>
+              {/* ✅ Public Pages */}
               <Route
-                path="/reset-password/:token"
-                element={<ResetPassword />}
-              />
-            </Route>
-
-            {/* ✅ Protected Routes (For Regular Users) */}
-            <Route element={<ProtectedRoute />}>
-              <Route
-                path="/dashboard"
+                path="/"
                 element={
                   <>
                     <Navbar />
-                    <Dashboard />
+                    <Home />
                     <Footer />
                   </>
                 }
               />
-            </Route>
-
-            {/* ✅ Admin Routes (Protected) */}
-            <Route element={<ProtectedRoute adminOnly />}>
               <Route
-                path="/admin/*"
+                path="/about"
                 element={
-                  <AdminProvider>
-                    <AdminLayout />
-                  </AdminProvider>
+                  <>
+                    <Navbar />
+                    <About />
+                    <Footer />
+                  </>
                 }
-              >
-                <Route index element={<AdminDashboard />} />
-                <Route path="users" element={<Users />} />
-                <Route path="testimonials" element={<Testimonials />} />
-                <Route path="subscribers" element={<Subscribers />} />
-                <Route path="contact-messages" element={<ContactMessages />} />
-              </Route>
-            </Route>
-          </Routes>
+              />
+              <Route
+                path="/contact"
+                element={
+                  <>
+                    <Navbar />
+                    <Contact />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/testimonials"
+                element={
+                  <>
+                    <Navbar />
+                    <TestimonialPage />
+                    <Footer />
+                  </>
+                }
+              />
 
-          {/* ✅ Global Toast Notifications */}
-          <Toast />
-        </ToastProvider>
-      </AuthProvider>
-    </Router>
+              {/* ✅ Services Pages */}
+              <Route
+                path="/services/web-development"
+                element={
+                  <>
+                    <Navbar />
+                    <WebDevelopmentPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/services/app-development"
+                element={
+                  <>
+                    <Navbar />
+                    <AppDevelopmentPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/services/facebook-ads"
+                element={
+                  <>
+                    <Navbar />
+                    <FacebookAdsPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/services/seo"
+                element={
+                  <>
+                    <Navbar />
+                    <SeoPage />
+                    <Footer />
+                  </>
+                }
+              />
+
+              <Route
+                path="/services/google-ads"
+                element={
+                  <>
+                    <Navbar />
+                    <GoogleAdsPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/services/mpesa-integration"
+                element={
+                  <>
+                    <Navbar />
+                    <MpesaIntegrationPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/services/email-marketing"
+                element={
+                  <>
+                    <Navbar />
+                    <EmailMarketingPage />
+                    <Footer />
+                  </>
+                }
+              />
+
+              <Route
+                path="*"
+                element={
+                  <>
+                    <Navbar />
+                    <NotFound />
+                    <Footer />
+                  </>
+                }
+              />
+
+              {/* ✅ Auth Pages (No Navbar & Footer) */}
+              <Route element={<AuthLayout />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route
+                  path="/reset-password/:token"
+                  element={<ResetPassword />}
+                />
+              </Route>
+
+              {/* ✅ Protected Routes (For Regular Users) */}
+              <Route element={<ProtectedRoute />}>
+                <Route
+                  path="/dashboard"
+                  element={
+                    <>
+                      <Navbar />
+                      <Dashboard />
+                      <Footer />
+                    </>
+                  }
+                />
+              </Route>
+
+              {/* ✅ Admin Routes (Protected) */}
+              <Route element={<ProtectedRoute adminOnly />}>
+                <Route
+                  path="/admin/*"
+                  element={
+                    <AdminProvider>
+                      <AdminLayout />
+                    </AdminProvider>
+                  }
+                >
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="users" element={<Users />} />
+                  <Route path="testimonials" element={<Testimonials />} />
+                  <Route path="subscribers" element={<Subscribers />} />
+                  <Route
+                    path="contact-messages"
+                    element={<ContactMessages />}
+                  />
+                </Route>
+              </Route>
+            </Routes>
+
+            {/* ✅ Global Toast Notifications */}
+            <Toast />
+          </ToastProvider>
+        </AuthProvider>
+      </Router>
+    </QueryClientProvider>
   );
 };
 

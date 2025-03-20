@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import {
-  fetchSubscribers,
-  deleteSubscriber,
-  sendBulkEmail,
+  useFetchSubscribers as fetchSubscribers,
+  useDeleteSubscriber as deleteSubscriber,
+  useSendBulkEmail as sendBulkEmail,
 } from "../../api/adminApi";
 import Table from "../../components/Table";
 import Modal from "../../components/Modal";

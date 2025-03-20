@@ -1,17 +1,26 @@
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import { protect, AuthenticatedRequest } from "../middleware/authMiddleware";
-import User from "../models/User";
+import User, { validateUser } from "../models/User"; // ✅ Import validation
 import { setTokens } from "../utils/tokenService";
+import logger from "../utils/logger"; // ✅ Use Logger
 
 const router = express.Router();
 
-// ✅ Register a New User
+// ✅ [POST] Register a New User
 router.post("/register", async (req: Request, res: Response): Promise<void> => {
-  const { name, email, password } = req.body;
+  const { error } = validateUser(req.body); // ✅ Validate input
+  if (error) {
+    logger.warn(
+      `⚠️ Registration Validation Error: ${error.details[0].message}`
+    );
+    res.status(400).json({ error: error.details[0].message });
+    return;
+  }
 
   try {
+    const { name, email, password } = req.body;
+
     let user = await User.findOne({ email });
     if (user) {
       res.status(400).json({ error: "User already exists" });
@@ -21,20 +30,21 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
     user = new User({ name, email, password });
     await user.save();
 
+    logger.info(`✅ New user registered: ${email}`);
     res.status(201).json({ message: "Registration successful! Please login." });
   } catch (error) {
-    console.error("Registration Error:", error);
+    logger.error(`❌ Registration Error: ${(error as Error).message}`);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-// ✅ Login User & Get Tokens
+// ✅ [POST] Login User & Get Tokens
 router.post("/login", async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user || !(await user.comparePassword(password))) {
       res.status(401).json({ error: "Invalid credentials" });
       return;
     }
@@ -52,24 +62,23 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
       },
     });
   } catch (error) {
-    console.error("Login Error:", error);
+    logger.error(`❌ Login Error: ${(error as Error).message}`);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-// ✅ Logout (Clear Cookies)
+// ✅ [POST] Logout (Clear Cookies)
 router.post("/logout", async (req: Request, res: Response): Promise<void> => {
   res.clearCookie("accessToken");
   res.clearCookie("refreshToken");
   res.json({ message: "Logged out successfully" });
 });
 
-// ✅ Refresh Token
+// ✅ [POST] Refresh Token
 router.post(
   "/refresh-token",
   async (req: Request, res: Response): Promise<void> => {
     const refreshToken = req.cookies?.refreshToken;
-
     if (!refreshToken) {
       res.status(401).json({ error: "No refresh token provided" });
       return;
@@ -79,20 +88,20 @@ router.post(
       const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET!) as {
         userId: string;
       };
-
       const { accessToken } = setTokens(res, decoded.userId);
+
       res.json({ accessToken });
     } catch (error) {
-      // Clear invalid tokens
       res.clearCookie("accessToken");
       res.clearCookie("refreshToken");
 
+      logger.warn("⚠️ Invalid refresh token");
       res.status(403).json({ error: "Invalid or expired refresh token" });
     }
   }
 );
 
-// ✅ Get Authenticated User
+// ✅ [GET] Get Authenticated User
 router.get(
   "/me",
   protect,

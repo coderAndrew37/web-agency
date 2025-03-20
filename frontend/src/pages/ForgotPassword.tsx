@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPassword } from "../api/auth";
+import { useForgotPassword as forgotPassword } from "../api/auth";
 import { forgotPasswordSchema } from "../Utils/validationSchemas";
 import { motion } from "framer-motion";
 import colors from "../styles/colors";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
-import { resetPassword } from "../api/auth";
+import { useResetPassword as resetPassword } from "../api/auth";
 import { resetPasswordSchema } from "../Utils/validationSchemas";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";

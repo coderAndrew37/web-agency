@@ -1,12 +1,25 @@
+import { useQuery, useMutation } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
 
-export const submitTestimonial = async (data: FormData) => {
-  return axiosInstance.post("/testimonials", data, {
-    headers: { "Content-Type": "multipart/form-data" },
+// ✅ Submit Testimonial
+export const useSubmitTestimonial = () => {
+  return useMutation({
+    mutationFn: async (data: FormData) => {
+      return axiosInstance.post("/testimonials", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    },
   });
 };
 
-export const fetchTestimonials = async () => {
-  const response = await axiosInstance.get("/testimonials");
-  return response.data; // ✅ Ensure correct data is returned
+// ✅ Fetch Testimonials
+export const useFetchTestimonials = () => {
+  return useQuery({
+    queryKey: ["testimonials"],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get("/testimonials");
+      return data;
+    },
+    staleTime: 5 * 60 * 1000, // ✅ Cache testimonials for 5 mins
+  });
 };

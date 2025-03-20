@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchTestimonials } from "../api/testimonialApi";
+import { useFetchTestimonials as fetchTestimonials } from "../api/testimonialApi";
 import { motion } from "framer-motion";
 import colors from "../styles/colors";
 

@@ -1,61 +1,130 @@
+import { useQuery, useMutation } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
 
-// ✅ Get admin dashboard stats
-export const fetchAdminStats = async () => axiosInstance.get("/admin/stats");
+// ✅ Fetch Admin Dashboard Stats
+export const useFetchAdminStats = () => {
+  return useQuery({
+    queryKey: ["admin-stats"],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get("/admin/stats");
+      return data;
+    },
+  });
+};
 
-// ✅ Fetch all users
-export const fetchUsers = async () => axiosInstance.get("/admin/users");
+// ✅ Fetch All Users
+export const useFetchUsers = () => {
+  return useQuery({
+    queryKey: ["admin-users"],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get("/admin/users");
+      return data;
+    },
+  });
+};
 
-// ✅ Update user role
-export const updateUserRole = async (userId: string, role: string) =>
-  axiosInstance.put(`/admin/users/${userId}/role`, { role });
+// ✅ Update User Role
+export const useUpdateUserRole = () => {
+  return useMutation({
+    mutationFn: async ({ userId, role }: { userId: string; role: string }) => {
+      return axiosInstance.put(`/admin/users/${userId}/role`, { role });
+    },
+  });
+};
 
-// ✅ Delete user
-export const deleteUser = async (userId: string) =>
-  axiosInstance.delete(`/admin/users/${userId}`);
+// ✅ Delete User
+export const useDeleteUser = () => {
+  return useMutation({
+    mutationFn: async (userId: string) =>
+      axiosInstance.delete(`/admin/users/${userId}`),
+  });
+};
 
-// ✅ Fetch all testimonials
-export const fetchAllTestimonials = async () =>
-  axiosInstance.get("/admin/testimonials");
+// ✅ Fetch All Testimonials
+export const useFetchAllTestimonials = () => {
+  return useQuery({
+    queryKey: ["admin-testimonials"],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get("/admin/testimonials");
+      return data;
+    },
+  });
+};
 
-// ✅ Approve testimonial
-export const approveTestimonial = async (id: string) =>
-  axiosInstance.put(`/admin/testimonials/${id}/approve`);
+// ✅ Approve Testimonial
+export const useApproveTestimonial = () => {
+  return useMutation({
+    mutationFn: async (id: string) =>
+      axiosInstance.put(`/admin/testimonials/${id}/approve`),
+  });
+};
 
-// ✅ Delete testimonial
-export const deleteTestimonial = async (id: string) =>
-  axiosInstance.delete(`/admin/testimonials/${id}`);
+// ✅ Delete Testimonial
+export const useDeleteTestimonial = () => {
+  return useMutation({
+    mutationFn: async (id: string) =>
+      axiosInstance.delete(`/admin/testimonials/${id}`),
+  });
+};
 
-// ✅ Fetch all newsletter subscribers
-export const fetchSubscribers = async () =>
-  axiosInstance.get("/admin/subscribers");
+// ✅ Fetch Newsletter Subscribers
+export const useFetchSubscribers = () => {
+  return useQuery({
+    queryKey: ["admin-subscribers"],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get("/admin/subscribers");
+      return data;
+    },
+  });
+};
 
-// ✅ Delete subscriber
-export const deleteSubscriber = async (id: string) =>
-  axiosInstance.delete(`/admin/subscribers/${id}`);
+// ✅ Delete Subscriber
+export const useDeleteSubscriber = () => {
+  return useMutation({
+    mutationFn: async (id: string) =>
+      axiosInstance.delete(`/admin/subscribers/${id}`),
+  });
+};
 
 // ✅ Send Bulk Email to Subscribers
-export const sendBulkEmail = async (emailData: {
-  subject: string;
-  message: string;
-}) => {
-  return axiosInstance.post("/admin/subscribers/send-email", emailData);
+export const useSendBulkEmail = () => {
+  return useMutation({
+    mutationFn: async (emailData: { subject: string; message: string }) => {
+      return axiosInstance.post("/admin/subscribers/send-email", emailData);
+    },
+  });
 };
 
-/** ✅ Fetch Contact Messages */
-export const fetchContactMessages = async () => {
-  return axiosInstance.get("/admin/contacts");
+// ✅ Fetch Contact Messages
+export const useFetchContactMessages = () => {
+  return useQuery({
+    queryKey: ["admin-contacts"],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get("/admin/contacts");
+      return data;
+    },
+  });
 };
 
-/** ✅ Delete Contact Message */
-export const deleteContactMessage = async (id: string) => {
-  return axiosInstance.delete(`/admin/contacts/${id}`);
+// ✅ Delete Contact Message
+export const useDeleteContactMessage = () => {
+  return useMutation({
+    mutationFn: async (id: string) =>
+      axiosInstance.delete(`/admin/contacts/${id}`),
+  });
 };
 
-// ✅ Send Reply to Contact Message
-export const replyToContactMessage = async (
-  id: string,
-  replyData: { subject: string; message: string }
-) => {
-  return axiosInstance.post(`/contacts/${id}/reply`, replyData);
+// ✅ Reply to Contact Message
+export const useReplyToContactMessage = () => {
+  return useMutation({
+    mutationFn: async ({
+      id,
+      replyData,
+    }: {
+      id: string;
+      replyData: { subject: string; message: string };
+    }) => {
+      return axiosInstance.post(`/contacts/${id}/reply`, replyData);
+    },
+  });
 };

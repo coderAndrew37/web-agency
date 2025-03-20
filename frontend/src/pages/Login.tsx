@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { loginUser } from "../api/auth";
+import { useLoginUser as loginUser } from "../api/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { loginSchema } from "../Utils/validationSchemas";

@@ -11,6 +11,7 @@ interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   loading: boolean;
+  refetch: () => void; // ✅ Added to allow manual re-fetching
   logout: () => Promise<void>;
 }
 
