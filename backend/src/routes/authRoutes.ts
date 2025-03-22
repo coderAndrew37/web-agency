@@ -88,14 +88,13 @@ router.post(
       const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET!) as {
         userId: string;
       };
-      const { accessToken } = setTokens(res, decoded.userId);
+      const { accessToken } = setTokens(res, decoded.userId); // 🚀 Issue new access token
 
       res.json({ accessToken });
     } catch (error) {
       res.clearCookie("accessToken");
       res.clearCookie("refreshToken");
 
-      logger.warn("⚠️ Invalid refresh token");
       res.status(403).json({ error: "Invalid or expired refresh token" });
     }
   }
