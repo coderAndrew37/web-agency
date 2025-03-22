@@ -2,7 +2,17 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import colors from "../styles/colors";
 
-const faqs = [
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface FAQProps {
+  title?: string;
+  faqs?: FAQItem[];
+}
+
+const defaultFAQs: FAQItem[] = [
   {
     question: "How long does it take to build a website?",
     answer:
@@ -23,7 +33,10 @@ const faqs = [
   },
 ];
 
-const FAQ = () => {
+const FAQ = ({
+  title = "Frequently Asked Questions",
+  faqs = defaultFAQs,
+}: FAQProps) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
@@ -33,7 +46,7 @@ const FAQ = () => {
       style={{ backgroundColor: colors.background, color: colors.darkText }}
     >
       <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold">Frequently Asked Questions</h2>
+        <h2 className="text-4xl font-bold">{title}</h2>
         <div className="mt-8 space-y-6">
           {faqs.map((faq, index) => (
             <div

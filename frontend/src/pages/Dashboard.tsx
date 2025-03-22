@@ -1,13 +1,15 @@
 import { useAuth } from "../hooks/useAuth";
 import { motion } from "framer-motion";
-import { LogOut, UserCog, ShieldCheck } from "lucide-react";
+import { LogOut, UserCog, ShieldCheck, Home } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
+  const isAdmin = user?.role === "admin";
 
   return (
     <motion.div
-      className="max-w-3xl mx-auto mt-12 p-8 bg-white shadow-xl rounded-lg border border-gray-200"
+      className="container mx-auto mt-28 p-8 bg-white shadow-xl rounded-lg border border-gray-200 max-w-3xl"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -21,15 +23,21 @@ const Dashboard = () => {
       </p>
 
       {/* User Info */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <motion.div
-          className="p-5 bg-primary text-white rounded-lg flex flex-col items-center shadow-md"
-          whileHover={{ scale: 1.05 }}
-        >
-          <ShieldCheck size={32} className="mb-2" />
-          <p className="text-lg font-semibold">Role</p>
-          <p className="text-sm">{user?.role.toUpperCase()}</p>
-        </motion.div>
+      <div
+        className={`mt-6 grid gap-6 ${
+          isAdmin ? "md:grid-cols-2" : "md:grid-cols-1"
+        }`}
+      >
+        {isAdmin && (
+          <motion.div
+            className="p-5 bg-primary text-black rounded-lg flex flex-col items-center shadow-md"
+            whileHover={{ scale: 1.05 }}
+          >
+            <ShieldCheck size={32} className="mb-2" />
+            <p className="text-lg font-semibold">Role</p>
+            <p className="text-sm">{user?.role.toUpperCase()}</p>
+          </motion.div>
+        )}
 
         <motion.div
           className="p-5 bg-gray-100 rounded-lg flex flex-col items-center shadow-md"
@@ -56,6 +64,17 @@ const Dashboard = () => {
         >
           Change Password
         </motion.button>
+      </div>
+
+      {/* Links Section */}
+      <div className="mt-6 flex flex-col md:flex-row justify-center items-center gap-4">
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-lg font-semibold text-primary hover:underline transition"
+        >
+          <Home size={20} />
+          Back to Homepage
+        </Link>
       </div>
 
       {/* Logout Button */}
