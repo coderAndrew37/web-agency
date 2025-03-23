@@ -2,8 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { z } from "zod";
-import { useSubmitClientForm } from "../api/apiClient"; //
-import { clientSchema } from "../Utils/validationSchemas"; // ✅ Updated Import
+import { useSubmitClientForm } from "../api/apiClient";
+import { clientSchema } from "../Utils/validationSchemas";
 import axios from "axios";
 import colors from "../styles/colors";
 import {
@@ -24,7 +24,7 @@ const ClientOnboarding = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     trigger,
   } = useForm<ClientData>({
     resolver: zodResolver(clientSchema),
@@ -80,6 +80,11 @@ const ClientOnboarding = () => {
       default:
         return true;
     }
+  };
+
+  const handleNextStep = async () => {
+    const isValid = await isStepValid();
+    if (isValid) setStep((prev) => prev + 1);
   };
 
   return (
@@ -255,11 +260,8 @@ const ClientOnboarding = () => {
           {step < 3 ? (
             <button
               type="button"
-              onClick={async () => {
-                const isValid = await isStepValid();
-                if (isValid) setStep(step + 1);
-              }}
-              disabled={!isStepValid()}
+              onClick={handleNextStep}
+              disabled={!isValid}
               className="bg-primary text-black px-6 py-2 rounded-lg flex items-center gap-2"
             >
               Next <ArrowRight size={18} />

@@ -8,6 +8,7 @@ import FAQ from "../components/FAQ";
 import Newsletter from "../components/Newsletter";
 import colors from "../styles/colors";
 import { webDevPlans } from "../data/pricingData";
+import Guarantees from "../components/Guarantees";
 
 const Home = () => {
   return (
@@ -36,6 +37,7 @@ const Home = () => {
       <Services />
       <Process />
 
+      <Guarantees />
       {/* 4️⃣ Offer Pricing After Showing Value */}
       <Pricing title="Web Development Pricing" plans={webDevPlans} />
 

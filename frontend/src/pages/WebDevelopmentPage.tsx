@@ -6,6 +6,8 @@ import PricingCalculator from "../components/PricingCalculator";
 import CTA from "../components/CTA";
 import Newsletter from "../components/Newsletter";
 import { webDevPlans, webDevFeatures } from "../data/pricingData";
+import Bonus from "../components/Bonus";
+import ServiceContent from "../components/ServiceContent";
 
 const WebDevelopmentPage = () => {
   return (
@@ -18,6 +20,21 @@ const WebDevelopmentPage = () => {
         primaryButtonAction={() => console.log("Consultation Clicked!")}
         secondaryButtonText="View Portfolio"
         secondaryButtonAction={() => console.log("Portfolio Clicked!")}
+      />
+
+      <ServiceContent
+        title="High-Performance Web Development"
+        tagline="A website is your 24/7 online storefront—let's build yours!"
+        whyNeed="In today's digital world, businesses without a website miss out on countless opportunities. A website builds trust, boosts credibility, and allows you to reach a global audience."
+        comparison="Unlike social media, a website gives you full control over branding, SEO, and lead generation. Social platforms change algorithms, but your website is always yours."
+        benefits={[
+          "Professional online presence",
+          "Higher ranking on Google (SEO benefits)",
+          "Full customization & branding control",
+          "Scalable as your business grows",
+        ]}
+        ctaText="Get Your Website Today"
+        ctaLink="/contact"
       />
 
       {/* 2️⃣ Why Choose Us */}
@@ -117,6 +134,8 @@ const WebDevelopmentPage = () => {
         features={webDevFeatures}
         basePrice={80000} // Minimum price for web development
       />
+
+      <Bonus />
 
       {/* 6️⃣ Call-to-Action */}
       <CTA
