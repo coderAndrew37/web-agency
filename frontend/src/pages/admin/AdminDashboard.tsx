@@ -1,27 +1,13 @@
-import { useEffect, useState } from "react";
-import { useFetchAdminStats as fetchAdminStats } from "../../api/adminApi";
+import { useFetchAdminStats } from "../../api/adminApi";
 import StatsCard from "../../components/StatsCard";
 import { motion } from "framer-motion";
-import { Users, MessageSquare, Mail } from "lucide-react"; // ✅ Icons for stats
+import { Users, MessageSquare, Mail } from "lucide-react";
 
 const Dashboard = () => {
-  const [stats, setStats] = useState({
-    users: 0,
-    testimonials: 0,
-    subscribers: 0,
-  });
+  const { data: stats, isLoading, error } = useFetchAdminStats(); // ✅ Hook inside component
 
-  useEffect(() => {
-    const loadStats = async () => {
-      try {
-        const response = await fetchAdminStats();
-        setStats(response.data);
-      } catch (error) {
-        console.error("Failed to fetch stats:", error);
-      }
-    };
-    loadStats();
-  }, []);
+  if (isLoading) return <p>Loading stats...</p>;
+  if (error) return <p>Error loading stats: {error.message}</p>;
 
   return (
     <motion.div
@@ -36,19 +22,19 @@ const Dashboard = () => {
         <StatsCard
           icon={<Users />}
           title="Total Users"
-          value={stats.users}
+          value={stats?.users || 0}
           color="bg-blue-500"
         />
         <StatsCard
           icon={<MessageSquare />}
           title="Testimonials"
-          value={stats.testimonials}
+          value={stats?.testimonials || 0}
           color="bg-green-500"
         />
         <StatsCard
           icon={<Mail />}
           title="Subscribers"
-          value={stats.subscribers}
+          value={stats?.subscribers || 0}
           color="bg-yellow-500"
         />
       </div>

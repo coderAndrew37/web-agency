@@ -4,6 +4,7 @@ import Process from "../components/Process";
 import Pricing from "../components/Pricing";
 import PricingCalculator from "../components/PricingCalculator";
 import CTA from "../components/CTA";
+import LeadMagnet from "../components/LeadMagnet";
 import Newsletter from "../components/Newsletter";
 import { facebookAdsPlans, facebookAdsFeatures } from "../data/pricingData";
 
@@ -27,22 +28,38 @@ const FacebookAdsPage = () => {
           {
             title: "Highly Targeted Campaigns",
             description: "Reach the right audience with precision.",
-            icon: "🎯",
+            icon: (
+              <span role="img" aria-label="target">
+                🎯
+              </span>
+            ),
           },
           {
             title: "Data-Driven Optimization",
             description: "We analyze data to maximize ROI.",
-            icon: "📊",
+            icon: (
+              <span role="img" aria-label="chart">
+                📊
+              </span>
+            ),
           },
           {
             title: "Creative Ad Copy & Design",
             description: "Engaging visuals and persuasive copy.",
-            icon: "🎨",
+            icon: (
+              <span role="img" aria-label="art">
+                🎨
+              </span>
+            ),
           },
           {
             title: "Conversion Tracking & Analytics",
             description: "Track results and improve performance.",
-            icon: "📈",
+            icon: (
+              <span role="img" aria-label="chart">
+                📈
+              </span>
+            ),
           },
         ]}
       />
@@ -54,22 +71,38 @@ const FacebookAdsPage = () => {
           {
             title: "Ad Strategy Planning",
             description: "We analyze your goals and audience.",
-            icon: "📌",
+            icon: (
+              <span role="img" aria-label="pin">
+                📌
+              </span>
+            ),
           },
           {
             title: "Creative Ad Design",
             description: "We craft compelling ads that convert.",
-            icon: "🎨",
+            icon: (
+              <span role="img" aria-label="art">
+                🎨
+              </span>
+            ),
           },
           {
             title: "Campaign Launch & Management",
             description: "We set up and optimize ad performance.",
-            icon: "🚀",
+            icon: (
+              <span role="img" aria-label="rocket">
+                🚀
+              </span>
+            ),
           },
           {
             title: "Analytics & Scaling",
             description: "We track, analyze, and scale successful ads.",
-            icon: "📊",
+            icon: (
+              <span role="img" aria-label="chart">
+                📊
+              </span>
+            ),
           },
         ]}
       />
@@ -90,6 +123,13 @@ const FacebookAdsPage = () => {
         subtitle="Let’s create a powerful ad campaign for your business."
         primaryCTA="Start Advertising"
         onPrimaryClick={() => console.log("Start Advertising Clicked!")}
+      />
+
+      {/* Lead Magnet */}
+      <LeadMagnet
+        title="🎯 Facebook Ads Mastery Guide"
+        description="Learn how to run profitable Facebook Ads."
+        resourceType="Facebook Ads Mastery"
       />
 
       {/* Newsletter Signup */}

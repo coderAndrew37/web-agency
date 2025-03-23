@@ -27,7 +27,7 @@ const LeadMagnet = ({ title, description, resourceType }: LeadMagnetProps) => {
 
   return (
     <motion.section
-      className="bg-primary text-white text-center p-8 rounded-lg shadow-lg"
+      className="bg-primary  text-center p-8 rounded-lg shadow-lg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >

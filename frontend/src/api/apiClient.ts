@@ -1,7 +1,12 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
 
-// ✅ Fetch all clients
+// ✅ Define API response type
+interface ClientResponse {
+  message: string;
+}
+
+// ✅ Fetch all clients with pagination
 export const useFetchClients = (page: number, limit: number = 10) => {
   return useQuery({
     queryKey: ["clients", page, limit],
@@ -17,10 +22,16 @@ export const useFetchClients = (page: number, limit: number = 10) => {
 
 // ✅ Submit client onboarding form
 export const useSubmitClientForm = () => {
-  return useMutation({
-    mutationFn: async (clientData: Record<string, unknown>) => {
-      const { data } = await axiosInstance.post("/clients", clientData);
+  return useMutation<ClientResponse, Error, Record<string, unknown>>({
+    mutationFn: async (clientData) => {
+      const { data } = await axiosInstance.post<ClientResponse>(
+        "/clients",
+        clientData
+      );
       return data;
+    },
+    onError: (error) => {
+      console.error("❌ Client submission failed:", error);
     },
   });
 };

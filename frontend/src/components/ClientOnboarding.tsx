@@ -2,7 +2,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { z } from "zod";
-import { useSubmitClientForm as submitClientForm } from "../api/apiClient"; // ✅ Correct import
+import { useSubmitClientForm } from "../api/apiClient"; //
+import { clientSchema } from "../Utils/validationSchemas"; // ✅ Updated Import
+import axios from "axios";
 import colors from "../styles/colors";
 import {
   Mail,
@@ -15,30 +17,15 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-// ✅ Define Schema with Zod
-const clientSchema = z.object({
-  fullName: z.string().min(3, "Full Name must be at least 3 characters"),
-  email: z.string().email("Enter a valid email"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  businessName: z.string().min(2, "Business name is required"),
-  servicesInterested: z
-    .array(z.string())
-    .nonempty("Please select at least one service"),
-  budget: z.number().min(5000, "Budget must be at least Ksh 5,000"),
-  message: z
-    .string()
-    .max(500, "Message cannot exceed 500 characters")
-    .optional(),
-});
-
 type ClientData = z.infer<typeof clientSchema>;
 
 const ClientOnboarding = () => {
+  const { mutateAsync: submitClientForm } = useSubmitClientForm();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
+    trigger,
   } = useForm<ClientData>({
     resolver: zodResolver(clientSchema),
     mode: "onChange",
@@ -48,7 +35,7 @@ const ClientOnboarding = () => {
       phone: "",
       businessName: "",
       servicesInterested: [],
-      budget: 5000, // ✅ Set default minimum budget
+      budget: 5000,
       message: "",
     },
   });
@@ -56,42 +43,40 @@ const ClientOnboarding = () => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
   const onSubmit = async (data: ClientData) => {
+    const formData = { ...data, servicesInterested: selectedServices };
     setLoading(true);
     setMessage("");
 
     try {
-      const response = await submitClientForm(data);
+      const response = await submitClientForm(formData);
       setMessage("✅ " + response.message);
-    } catch {
-      setMessage("❌ Submission failed. Please try again.");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setMessage(
+          `❌ ${
+            error.response?.data?.message ||
+            "Submission failed. Please try again."
+          }`
+        );
+      } else {
+        setMessage("❌ An unexpected error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // ✅ Validate step completion before allowing Next
-  const isStepValid = () => {
+  const isStepValid = async () => {
     switch (step) {
       case 1:
-        return (
-          watch("fullName") &&
-          watch("email") &&
-          watch("phone") &&
-          !errors.fullName &&
-          !errors.email &&
-          !errors.phone
-        );
+        return await trigger(["fullName", "email", "phone"]);
       case 2:
-        return watch("businessName") && !errors.businessName;
+        return await trigger(["businessName"]);
       case 3:
-        return (
-          watch("servicesInterested").length > 0 &&
-          watch("budget") >= 5000 &&
-          !errors.servicesInterested &&
-          !errors.budget
-        );
+        return await trigger(["servicesInterested", "budget"]);
       default:
         return true;
     }
@@ -106,7 +91,7 @@ const ClientOnboarding = () => {
         🚀 Get Started with SleekSites
       </h2>
 
-      {/* ✅ Progress Bar (Animated) */}
+      {/* Progress Bar */}
       <motion.div className="relative w-full bg-gray-300 h-2 rounded-full overflow-hidden mb-6">
         <motion.div
           className="absolute top-0 left-0 h-full bg-primary"
@@ -134,7 +119,7 @@ const ClientOnboarding = () => {
           exit={{ opacity: 0, x: 20 }}
           transition={{ duration: 0.5 }}
         >
-          {/* ✅ Step 1: Personal Info */}
+          {/* Step 1: Personal Info */}
           {step === 1 && (
             <>
               <div className="relative">
@@ -185,7 +170,7 @@ const ClientOnboarding = () => {
             </>
           )}
 
-          {/* ✅ Step 2: Business Details */}
+          {/* Step 2: Business Details */}
           {step === 2 && (
             <>
               <div className="relative">
@@ -205,7 +190,7 @@ const ClientOnboarding = () => {
             </>
           )}
 
-          {/* ✅ Step 3: Services & Budget */}
+          {/* Step 3: Services & Budget */}
           {step === 3 && (
             <>
               <div>
@@ -213,7 +198,17 @@ const ClientOnboarding = () => {
                   Services Interested In
                 </label>
                 <select
-                  {...register("servicesInterested")}
+                  value={selectedServices}
+                  onChange={(e) => {
+                    const options = e.target.options;
+                    const selected = [];
+                    for (let i = 0; i < options.length; i++) {
+                      if (options[i].selected) {
+                        selected.push(options[i].value);
+                      }
+                    }
+                    setSelectedServices(selected);
+                  }}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
                   multiple
                 >
@@ -229,11 +224,24 @@ const ClientOnboarding = () => {
                   {errors.servicesInterested.message}
                 </p>
               )}
+
+              <div>
+                <label className="block font-semibold mb-2">Budget</label>
+                <input
+                  {...register("budget", { valueAsNumber: true })}
+                  type="number"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                  placeholder="Budget"
+                />
+              </div>
+              {errors.budget && (
+                <p className="text-red-500">{errors.budget.message}</p>
+              )}
             </>
           )}
         </motion.div>
 
-        {/* ✅ Navigation Buttons */}
+        {/* Navigation Buttons */}
         <div className="flex justify-between">
           {step > 1 && (
             <button
@@ -247,7 +255,10 @@ const ClientOnboarding = () => {
           {step < 3 ? (
             <button
               type="button"
-              onClick={() => isStepValid() && setStep(step + 1)}
+              onClick={async () => {
+                const isValid = await isStepValid();
+                if (isValid) setStep(step + 1);
+              }}
               disabled={!isStepValid()}
               className="bg-primary text-black px-6 py-2 rounded-lg flex items-center gap-2"
             >

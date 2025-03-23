@@ -346,4 +346,29 @@ router.put(
   }
 );
 
+// ✅ [GET] Fetch Admin Dashboard Stats
+router.get(
+  "/stats",
+  protect,
+  admin,
+  async (_req: Request, res: Response): Promise<void> => {
+    try {
+      const userCount = await User.countDocuments();
+      const testimonialCount = await Testimonial.countDocuments();
+      const subscriberCount = await Newsletter.countDocuments();
+      const contactMessageCount = await Contact.countDocuments();
+
+      res.json({
+        users: userCount,
+        testimonials: testimonialCount,
+        subscribers: subscriberCount,
+        contactMessages: contactMessageCount,
+      });
+    } catch (error) {
+      console.error("❌ Failed to fetch admin stats:", error);
+      res.status(500).json({ error: "Failed to fetch admin stats." });
+    }
+  }
+);
+
 export default router;

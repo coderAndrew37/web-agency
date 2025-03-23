@@ -49,3 +49,19 @@ export const pricingSchema = z.object({
   selectedFeatures: z.array(z.string()).min(1, "Select at least one feature."),
   totalPrice: z.number().min(0, "Total price must be a positive number."),
 });
+
+// ✅ Client Onboarding Schema (Moved from ClientOnboarding.tsx)
+export const clientSchema = z.object({
+  fullName: z.string().min(3, "Full Name must be at least 3 characters"),
+  email: z.string().email("Enter a valid email"),
+  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  businessName: z.string().min(2, "Business name is required"),
+  servicesInterested: z
+    .array(z.string())
+    .nonempty("Please select at least one service"),
+  budget: z.number().min(5000, "Budget must be at least Ksh 5,000"),
+  message: z
+    .string()
+    .max(500, "Message cannot exceed 500 characters")
+    .optional(),
+});

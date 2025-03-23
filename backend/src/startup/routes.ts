@@ -6,7 +6,7 @@ import authRoutes from "../routes/authRoutes";
 import passwordRoutes from "../routes/passwordRoutes";
 import testimonialRoutes from "../routes/testimonialRoutes";
 import adminRoutes from "../routes/adminRoutes";
-import leads from "../routes/leads";
+//import leads from "../routes/leads";
 
 export default function setupRoutes(app: express.Application) {
   app.use("/api/clients", clientRoutes);
@@ -16,5 +16,5 @@ export default function setupRoutes(app: express.Application) {
   app.use("/api/password", passwordRoutes);
   app.use("/api/testimonials", testimonialRoutes);
   app.use("/api/admin", adminRoutes);
-  app.use("api/lead-magnet", leads);
+  //app.use("api/lead-magnet", leads);
 }
