@@ -1,5 +1,7 @@
+// Modal.tsx
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
+import { Loader2 } from "lucide-react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,7 +11,9 @@ interface ModalProps {
   onConfirm: () => void;
   confirmText?: string;
   cancelText?: string;
-  children?: ReactNode; // ✅ Accept children
+  children?: ReactNode;
+  isConfirming?: boolean;
+  confirmButtonDisabled?: boolean;
 }
 
 const Modal = ({
@@ -20,7 +24,9 @@ const Modal = ({
   onConfirm,
   confirmText = "Confirm",
   cancelText = "Cancel",
-  children, // ✅ Receive children elements
+  children,
+  isConfirming = false,
+  confirmButtonDisabled = false,
 }: ModalProps) => {
   if (!isOpen) return null;
 
@@ -34,20 +40,25 @@ const Modal = ({
       >
         <h2 className="text-lg font-bold">{title}</h2>
         {message && <p className="text-gray-700 mt-2">{message}</p>}
-        {children && <div className="mt-4">{children}</div>}{" "}
-        {/* ✅ Render children if provided */}
+        {children && <div className="mt-4">{children}</div>}
         <div className="flex justify-end space-x-3 mt-4">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            disabled={isConfirming}
           >
             {cancelText}
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 flex items-center justify-center min-w-20"
+            disabled={isConfirming || confirmButtonDisabled}
           >
-            {confirmText}
+            {isConfirming ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              confirmText
+            )}
           </button>
         </div>
       </motion.div>

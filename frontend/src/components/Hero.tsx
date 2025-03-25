@@ -21,7 +21,7 @@ const Hero = ({
 }: HeroProps) => {
   return (
     <section
-      className="hero relative flex flex-col items-center justify-center text-center h-screen px-6"
+      className="hero relative flex flex-col items-center justify-center text-center min-h-screen px-6 pt-20 md:pt-32"
       style={{ backgroundColor, color: colors.darkText }}
     >
       <div className="relative z-10 max-w-4xl">

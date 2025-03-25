@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { useFetchTestimonials as fetchTestimonials } from "../api/testimonialApi";
 import { motion } from "framer-motion";
+import { useFetchTestimonials } from "../api/testimonialApi";
 import colors from "../styles/colors";
+import { TestimonialSkeleton } from "./TestimonialSkeleton";
 
 type Testimonial = {
   _id: string;
@@ -11,23 +11,25 @@ type Testimonial = {
 };
 
 const TestimonialList = () => {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    data: testimonials = [],
+    isLoading,
+    isError,
+  } = useFetchTestimonials();
 
-  useEffect(() => {
-    const loadTestimonials = async () => {
-      try {
-        const testimonialsData = await fetchTestimonials();
-        setTestimonials(testimonialsData); // ✅ Directly setting response data
-      } catch (err) {
-        console.error("Failed to fetch testimonials", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  if (isLoading) {
+    return <TestimonialSkeleton />;
+  }
 
-    loadTestimonials();
-  }, []);
+  if (isError) {
+    return (
+      <div className="max-w-2xl mx-auto my-10">
+        <p className="text-center text-red-500">
+          Failed to load testimonials. Please try again later.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto my-10">
@@ -38,13 +40,11 @@ const TestimonialList = () => {
         🌟 What Our Clients Say
       </h2>
 
-      {loading ? (
-        <p className="text-center text-gray-600">Loading testimonials...</p>
-      ) : testimonials.length === 0 ? (
+      {testimonials.length === 0 ? (
         <p className="text-center text-gray-600">No testimonials yet.</p>
       ) : (
         <div className="space-y-6">
-          {testimonials.map((testimonial) => (
+          {testimonials.map((testimonial: Testimonial) => (
             <motion.div
               key={testimonial._id}
               className="p-6 border rounded-lg shadow-md bg-white"
@@ -57,6 +57,7 @@ const TestimonialList = () => {
                   src={testimonial.image}
                   alt="User"
                   className="w-16 h-16 rounded-full mx-auto mb-4"
+                  loading="lazy"
                 />
               )}
               <p className="text-lg text-gray-800">"{testimonial.message}"</p>

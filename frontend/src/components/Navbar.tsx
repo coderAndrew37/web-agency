@@ -89,7 +89,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar fixed top-0 left-0 w-full z-50 transition-all duration-300">
-      <div className="container mx-auto flex items-center justify-between py-6 px-6">
+      <div className="container mx-auto flex items-center justify-between py-4 md:py-6 px-6">
         <Link
           to="/"
           className="text-2xl font-bold"
