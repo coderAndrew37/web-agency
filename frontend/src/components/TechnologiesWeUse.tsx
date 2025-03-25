@@ -1,9 +1,10 @@
 // src/components/TechnologiesWeUse.tsx
 import { motion } from "framer-motion";
+import { JSX } from "react";
 
 interface Tech {
   name: string;
-  logo: string;
+  icon: JSX.Element;
 }
 
 interface TechnologiesWeUseProps {
@@ -21,11 +22,7 @@ const TechnologiesWeUse = ({ technologies }: TechnologiesWeUseProps) => {
             className="p-4 border border-gray-300 rounded-lg shadow-md hover:shadow-xl transition"
             whileHover={{ scale: 1.1 }}
           >
-            <img
-              src={tech.logo}
-              alt={tech.name}
-              className="w-16 mx-auto mb-2"
-            />
+            <div className="w-16 mx-auto mb-2">{tech.icon}</div>
             <p className="text-gray-700">{tech.name}</p>
           </motion.div>
         ))}

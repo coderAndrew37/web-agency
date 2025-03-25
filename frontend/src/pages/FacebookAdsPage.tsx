@@ -7,7 +7,30 @@ import CTA from "../components/CTA";
 import LeadMagnet from "../components/LeadMagnet";
 import Newsletter from "../components/Newsletter";
 import { facebookAdsPlans, facebookAdsFeatures } from "../data/pricingData";
+import FAQ from "../components/FAQ";
 
+const facebookAdsFAQs = [
+  {
+    question: "How long does it take to see results with Facebook Ads?",
+    answer:
+      "You can start seeing results within a few days, but optimization may take 2-4 weeks for best performance.",
+  },
+  {
+    question: "What budget do I need for Facebook Ads?",
+    answer:
+      "We recommend a minimum budget of Ksh 20000/month to see meaningful results, but we tailor campaigns to your needs.",
+  },
+  {
+    question: "Do you handle ad creatives and copy?",
+    answer:
+      "Yes! We provide professionally designed ads and persuasive copy to maximize engagement and conversions.",
+  },
+  {
+    question: "Can I track the performance of my ads?",
+    answer:
+      "Absolutely! We provide detailed reports on performance, conversions, and return on investment (ROI).",
+  },
+];
 const FacebookAdsPage = () => {
   return (
     <div>
@@ -131,6 +154,9 @@ const FacebookAdsPage = () => {
         description="Learn how to run profitable Facebook Ads."
         resourceType="Facebook Ads Mastery"
       />
+
+      {/* Frequently Asked Questions */}
+      <FAQ title="Facebook Ads FAQs" faqs={facebookAdsFAQs} />
 
       {/* Newsletter Signup */}
       <Newsletter />

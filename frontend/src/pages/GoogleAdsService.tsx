@@ -5,6 +5,10 @@ import Pricing from "../components/Pricing";
 import CTA from "../components/CTA";
 import Newsletter from "../components/Newsletter";
 import { googleAdsPlans } from "../data/pricingData";
+import Bonus from "../components/Bonus";
+import { Search, PenTool, TrendingUp } from "lucide-react";
+import FAQ from "../components/FAQ";
+import ServiceContent from "../components/ServiceContent";
 
 const googleAdsFeatures = [
   {
@@ -94,6 +98,48 @@ const googleAdsProcess = [
   },
 ];
 
+const googleAdsBonuses = [
+  {
+    title: "Free Google Ads Audit",
+    description:
+      "Get a comprehensive audit of your current Google Ads performance.",
+    icon: Search,
+  },
+  {
+    title: "Custom Ad Copywriting",
+    description: "Receive high-converting ad copy written by experts.",
+    icon: PenTool,
+  },
+  {
+    title: "Landing Page Optimization Guide",
+    description: "Optimize your landing pages to increase conversions.",
+    icon: TrendingUp,
+  },
+];
+
+const googleAdsFAQs = [
+  {
+    question: "How much should I budget for Google Ads?",
+    answer:
+      "Your budget depends on your industry, competition, and goals. We recommend starting with at least KES 20,000 per month.",
+  },
+  {
+    question: "How long does it take to see results?",
+    answer:
+      "Some campaigns generate leads immediately, while others may take 2-4 weeks for optimal performance.",
+  },
+  {
+    question: "Do you provide ad copy and creatives?",
+    answer:
+      "Yes! We handle everything from ad copy to image and video creatives.",
+  },
+  {
+    question: "Can I track my ad performance?",
+    answer:
+      "Absolutely! We provide detailed reports with key performance metrics.",
+  },
+];
+
 const GoogleAdsPage = () => {
   return (
     <div>
@@ -105,6 +151,22 @@ const GoogleAdsPage = () => {
         primaryButtonAction={() => console.log("Google Ads Audit Requested")}
         secondaryButtonText="Learn More"
         secondaryButtonAction={() => console.log("Learn More About Google Ads")}
+      />
+
+      {/* 2️⃣ Service Content - SEO Optimized */}
+      <ServiceContent
+        title="High-Performance Google Ads Management"
+        tagline="Dominate search results and drive targeted traffic with Google Ads."
+        whyNeed="Google Ads offer instant visibility for businesses looking to attract high-intent customers. Without Google Ads, you're missing out on a massive audience actively searching for your services."
+        comparison="Unlike organic SEO, Google Ads provide immediate traffic and measurable ROI, ensuring your business stays ahead of competitors."
+        benefits={[
+          "Instant search engine visibility",
+          "Precise audience targeting for better conversion rates",
+          "Data-driven optimization for maximum ROI",
+          "Scalable campaigns to grow your business",
+        ]}
+        ctaText="Launch Your Google Ads Campaign Today"
+        ctaLink="/contact"
       />
 
       {/* 2️⃣ Why Choose Us */}
@@ -119,6 +181,9 @@ const GoogleAdsPage = () => {
         steps={googleAdsProcess}
       />
 
+      {/* 4️⃣ Bonus */}
+      <Bonus bonuses={googleAdsBonuses} />
+
       {/* 4️⃣ Pricing Plans */}
       <Pricing title="Google Ads Management Pricing" plans={googleAdsPlans} />
 
@@ -129,6 +194,9 @@ const GoogleAdsPage = () => {
         primaryCTA="Start Your Google Ads Campaign"
         onPrimaryClick={() => console.log("Google Ads Started!")}
       />
+
+      {/* 5️⃣ FAQs */}
+      <FAQ faqs={googleAdsFAQs} />
 
       {/* 6️⃣ Newsletter Signup */}
       <Newsletter />

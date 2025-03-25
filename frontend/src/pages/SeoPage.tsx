@@ -5,6 +5,10 @@ import Pricing from "../components/Pricing";
 import CTA from "../components/CTA";
 import Newsletter from "../components/Newsletter";
 import { seoPlans } from "../data/pricingData";
+import { Search, FileText } from "lucide-react";
+import Bonus from "../components/Bonus";
+import FAQ from "../components/FAQ";
+import ServiceContent from "../components/ServiceContent";
 
 const seoFeatures = [
   {
@@ -93,6 +97,49 @@ const seoProcess = [
   },
 ];
 
+const seoFAQs = [
+  {
+    question: "How long does SEO take to show results?",
+    answer:
+      "SEO is a long-term strategy, and you can start seeing results within 3-6 months, depending on competition and website authority.",
+  },
+  {
+    question: "Do you guarantee #1 rankings on Google?",
+    answer:
+      "No ethical SEO agency can guarantee #1 rankings, but we use proven strategies to improve rankings and increase traffic.",
+  },
+  {
+    question: "Will I need to keep doing SEO?",
+    answer:
+      "Yes! SEO requires ongoing effort to maintain rankings and keep up with search engine updates.",
+  },
+  {
+    question: "How much does SEO cost in Kenya?",
+    answer:
+      "Our SEO services start at KES 15,000 per month, depending on the scope of work.",
+  },
+];
+
+const seoBonuses = [
+  {
+    title: "Free SEO Audit",
+    description: "Get a detailed analysis of your website’s SEO performance.",
+    icon: Search,
+  },
+  {
+    title: "Content Optimization Guide",
+    description:
+      "Receive a step-by-step guide to optimize your website’s content.",
+    icon: FileText,
+  },
+  {
+    title: "Backlink Strategy Report",
+    description:
+      "A customized plan to earn high-quality backlinks for your website.",
+    icon: Search, // Replace 'Link' with a valid SVG icon like 'Search'
+  },
+];
+
 const SeoPage = () => {
   return (
     <div>
@@ -106,6 +153,22 @@ const SeoPage = () => {
         secondaryButtonAction={() => console.log("Learn More About SEO")}
       />
 
+      {/* 2️⃣ Service Content - SEO Optimized */}
+      <ServiceContent
+        title="SEO That Drives Real Business Growth"
+        tagline="Increase visibility, rank higher, and dominate search results."
+        whyNeed="SEO is essential for any business looking to increase online visibility and attract organic traffic. Without proper SEO, your website won’t reach its full potential."
+        comparison="Unlike paid ads, SEO provides long-term organic traffic without ongoing ad spend, making it a cost-effective marketing strategy."
+        benefits={[
+          "Higher Google rankings and increased traffic",
+          "Long-term, sustainable results",
+          "Improved website performance and user experience",
+          "More qualified leads and conversions",
+        ]}
+        ctaText="Start Ranking Higher Today"
+        ctaLink="/contact"
+      />
+
       {/* 2️⃣ Why Choose Us */}
       <Features title="Why Choose Our SEO Services?" features={seoFeatures} />
 
@@ -114,6 +177,10 @@ const SeoPage = () => {
 
       {/* 4️⃣ Pricing Plans */}
       <Pricing title="SEO Pricing Plans" plans={seoPlans} />
+
+      <Bonus bonuses={seoBonuses} />
+
+      <FAQ title="SEO FAQs" faqs={seoFAQs} />
 
       {/* 5️⃣ Call to Action */}
       <CTA

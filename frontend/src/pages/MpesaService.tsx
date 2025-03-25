@@ -5,6 +5,10 @@ import Pricing from "../components/Pricing";
 import CTA from "../components/CTA";
 import Newsletter from "../components/Newsletter";
 import { mpesaPlans } from "../data/pricingData";
+import { FileText, BarChart, Wrench } from "lucide-react";
+import Bonus from "../components/Bonus";
+import FAQ from "../components/FAQ";
+import ServiceContent from "../components/ServiceContent";
 
 const mpesaFeatures = [
   {
@@ -93,6 +97,50 @@ const mpesaProcess = [
   },
 ];
 
+const mpesaFAQs = [
+  {
+    question: "How long does Mpesa integration take?",
+    answer:
+      "Integration typically takes between 3-7 days, depending on business requirements.",
+  },
+  {
+    question: "Do I need a Paybill or Till Number?",
+    answer:
+      "Yes, you need a registered Mpesa Paybill or Till Number for seamless integration.",
+  },
+  {
+    question: "What are the transaction fees?",
+    answer:
+      "Mpesa charges standard transaction fees. We help you optimize costs by recommending the best payment structure.",
+  },
+  {
+    question: "Can I automate payment confirmations?",
+    answer:
+      "Yes! Our integration ensures automatic confirmation and reconciliation of transactions.",
+  },
+];
+
+const mpesaBonuses = [
+  {
+    title: "Free API Setup Guide",
+    description:
+      "A step-by-step guide to help you understand Mpesa API integration.",
+    icon: FileText,
+  },
+  {
+    title: "One-Month Free Support",
+    description:
+      "Get technical support for your integration at no extra cost for the first month.",
+    icon: Wrench,
+  },
+  {
+    title: "Transaction Cost Optimization Report",
+    description:
+      "We analyze your business needs and suggest ways to reduce transaction costs.",
+    icon: BarChart,
+  },
+];
+
 const MpesaIntegrationPage = () => {
   return (
     <div>
@@ -106,6 +154,22 @@ const MpesaIntegrationPage = () => {
         secondaryButtonAction={() => console.log("Learn More About Mpesa")}
       />
 
+      {/* 2️⃣ Service Content - SEO Optimized */}
+      <ServiceContent
+        title="Effortless Mpesa Payment Integration"
+        tagline="Enable secure and seamless transactions for your business."
+        whyNeed="Mpesa is the leading mobile money service in Kenya, allowing businesses to receive payments instantly. Without a proper integration, you risk losing potential customers who prefer Mpesa over other payment options."
+        comparison="Unlike manual transactions, automated Mpesa integration ensures real-time payments, instant confirmations, and efficient bookkeeping."
+        benefits={[
+          "Secure, encrypted transactions",
+          "Automated payment processing",
+          "Real-time transaction tracking",
+          "Scalability to handle large transaction volumes",
+        ]}
+        ctaText="Get Your Mpesa Integration Today"
+        ctaLink="/contact"
+      />
+
       {/* 2️⃣ Why Choose Us */}
       <Features
         title="Why Choose Our Mpesa Integration?"
@@ -117,6 +181,12 @@ const MpesaIntegrationPage = () => {
 
       {/* 4️⃣ Pricing Plans */}
       <Pricing title="Mpesa Integration Pricing" plans={mpesaPlans} />
+
+      {/* 6️⃣ Bonuses Section */}
+      <Bonus bonuses={mpesaBonuses} />
+
+      {/* 7️⃣ Frequently Asked Questions */}
+      <FAQ title="Mpesa Integration FAQs" faqs={mpesaFAQs} />
 
       {/* 5️⃣ Call to Action */}
       <CTA

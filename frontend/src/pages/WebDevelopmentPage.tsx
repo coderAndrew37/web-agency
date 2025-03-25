@@ -8,6 +8,51 @@ import Newsletter from "../components/Newsletter";
 import { webDevPlans, webDevFeatures } from "../data/pricingData";
 import Bonus from "../components/Bonus";
 import ServiceContent from "../components/ServiceContent";
+import { Search, Palette, Laptop } from "lucide-react";
+import FAQ from "../components/FAQ";
+
+const webDevFAQs = [
+  {
+    question: "How long does it take to build a website?",
+    answer: "Depending on complexity, we typically deliver within 2-6 weeks.",
+  },
+  {
+    question: "Do you offer SEO services?",
+    answer:
+      "Yes! All our websites are built with SEO best practices to help rank higher on Google.",
+  },
+  {
+    question: "Can I update my website myself?",
+    answer:
+      "Absolutely! We provide an easy-to-use CMS, so you can manage content without coding knowledge.",
+  },
+  {
+    question: "What if I need additional features later?",
+    answer:
+      "We offer scalable solutions and ongoing support to add features as your business grows.",
+  },
+];
+
+const webDevBonuses = [
+  {
+    title: "SEO Starter Guide",
+    description:
+      "Get a step-by-step guide to optimize your website for search engines.",
+    icon: Search,
+  },
+  {
+    title: "Content Strategy Session",
+    description:
+      "A 1-hour consultation to help you craft a winning content strategy.",
+    icon: Palette,
+  },
+
+  {
+    title: "Website Maintenance Guide",
+    description: "Learn how to keep your website secure, fast, and up-to-date.",
+    icon: Laptop,
+  },
+];
 
 const WebDevelopmentPage = () => {
   return (
@@ -135,7 +180,11 @@ const WebDevelopmentPage = () => {
         basePrice={80000} // Minimum price for web development
       />
 
-      <Bonus />
+      {/* 6️⃣ Bonuses Section */}
+      <Bonus bonuses={webDevBonuses} />
+
+      {/* 7️⃣ Frequently Asked Questions */}
+      <FAQ title="Web Development FAQs" faqs={webDevFAQs} />
 
       {/* 6️⃣ Call-to-Action */}
       <CTA
