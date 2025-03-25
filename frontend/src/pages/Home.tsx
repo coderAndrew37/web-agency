@@ -16,14 +16,12 @@ const Home = () => {
     <div style={{ backgroundColor: colors.background, color: colors.darkText }}>
       {/* 1️⃣ Hook Visitors Immediately */}
       <Hero
-        title="Build a Premium Website That Converts 🚀"
-        subtitle="We design high-performance, conversion-focused websites that scale your business."
-        primaryButtonText="Get Started"
-        primaryButtonAction={() => console.log("Navigating to Get Started")}
-        secondaryButtonText="Book a Free Consultation"
-        secondaryButtonAction={() =>
-          console.log("Opening consultation booking")
-        }
+        title="We Don’t Just Build Websites—We Build Sales Machines 🚀"
+        subtitle="From high-performance websites to conversion-driven marketing, we help businesses generate leads, increase sales, and scale effortlessly."
+        primaryButtonText="Get a Custom Growth Strategy"
+        primaryButtonAction={() => console.log("Navigating to Growth Strategy")}
+        secondaryButtonText="See How We Scale Businesses"
+        secondaryButtonAction={() => console.log("Viewing Success Stories")}
       />
 
       <CTA
