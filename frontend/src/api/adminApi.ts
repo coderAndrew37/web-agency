@@ -42,6 +42,9 @@ export const useFetchAdminStats = () => {
   });
 };
 
+// Add this to all admin queries
+// Removed unused adminQueryDefaults as it was not being used in the code.
+
 // ✅ Fetch All Users with pagination
 export const useFetchUsers = (params?: { page?: number; limit?: number }) => {
   return useQuery<ListResponse<User>, ApiErrorResponse>({

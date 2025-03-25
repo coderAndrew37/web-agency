@@ -21,11 +21,15 @@ type Testimonial = {
 
 const AdminTestimonials = () => {
   const {
-    data: testimonials = [],
+    data: testimonialsData,
     isLoading,
     isError,
     refetch,
   } = useFetchAllTestimonials();
+
+  const testimonials: Testimonial[] = Array.isArray(testimonialsData)
+    ? testimonialsData
+    : [];
 
   const { mutateAsync: approveTestimonial, isPending: isApproving } =
     useApproveTestimonial();
