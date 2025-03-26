@@ -177,7 +177,7 @@ const WebDevelopmentPage = () => {
       <PricingCalculator
         title="Customize Your Website Package"
         features={webDevFeatures}
-        basePrice={80000} // Minimum price for web development
+        basePrice={20000} // Minimum price for web development
       />
 
       {/* 6️⃣ Bonuses Section */}

@@ -3,19 +3,19 @@
 export const webDevPlans = [
   {
     name: "Basic",
-    price: "Ksh 80,000",
+    price: "Ksh 20,000",
     features: ["1-Page Website", "Basic SEO", "Mobile Friendly"],
   },
   {
     name: "Business",
-    price: "Ksh 150,000",
-    features: ["Up to 5 Pages", "SEO Optimization", "E-commerce Ready"],
+    price: "Ksh 40,000",
+    features: ["Up to 15 Pages", "SEO Optimization", "E-commerce Ready"],
+    highlight: true, // ⭐ Premium plan gets the "Popular" tag
   },
   {
     name: "Premium",
-    price: "Ksh 250,000+",
+    price: "Ksh 50,000+",
     features: ["Custom Features", "Advanced SEO", "Full Branding"],
-    highlight: true, // ⭐ Premium plan gets the "Popular" tag
   },
 ];
 
@@ -24,6 +24,7 @@ export const appDevPlans = [
     name: "Basic",
     price: "Ksh 100,000",
     features: ["Simple UI", "Core Features", "Basic Support"],
+    highlight: true,
   },
   {
     name: "Standard",
@@ -34,7 +35,6 @@ export const appDevPlans = [
     name: "Premium",
     price: "Ksh 300,000+",
     features: ["Custom Features", "Full Branding", "Ongoing Maintenance"],
-    highlight: true,
   },
 ];
 
@@ -52,6 +52,7 @@ export const facebookAdsPlans = [
       "A/B Testing",
       "Advanced Performance Report",
     ],
+    highlight: true, // 🚀 Premium plan gets the "Popular" tag
   },
   {
     name: "Enterprise Package",
@@ -61,7 +62,6 @@ export const facebookAdsPlans = [
       "Sales Funnel Optimization",
       "Dedicated Ad Specialist",
     ],
-    highlight: true, // 🚀 Premium plan gets the "Popular" tag
   },
 ];
 
@@ -113,12 +113,12 @@ export const mpesaPlans = [
     name: "Advanced Integration",
     price: "Ksh 40,000",
     features: ["STK + B2C Payments", "Automated Refunds", "Detailed Analytics"],
+    highlight: true, // ⭐ Premium Plan
   },
   {
     name: "Enterprise Solution",
     price: "Ksh 80,000+",
     features: ["Full API Integration", "Custom Webhooks", "Advanced Security"],
-    highlight: true, // ⭐ Premium Plan
   },
 ];
 
@@ -132,12 +132,12 @@ export const seoPlans = [
     name: "Advanced SEO",
     price: "Ksh 30,000/month",
     features: ["Technical SEO", "Content Optimization", "Backlink Strategy"],
+    highlight: true, // ⭐ Premium Plan
   },
   {
     name: "Enterprise SEO",
     price: "Ksh 50,000+/month",
     features: ["Full-Site SEO Strategy", "Competitor Analysis", "ROI Tracking"],
-    highlight: true, // ⭐ Premium Plan
   },
 ];
 
@@ -155,6 +155,7 @@ export const googleAdsPlans = [
       "Conversion Optimization",
       "Bi-Weekly Performance Reports",
     ],
+    highlight: true, // ⭐ Popular Plan
   },
   {
     name: "Premium Package",
@@ -164,7 +165,6 @@ export const googleAdsPlans = [
       "A/B Testing",
       "Dedicated Account Manager",
     ],
-    highlight: true, // ⭐ Popular Plan
   },
 ];
 
@@ -186,6 +186,7 @@ export const emailMarketingPlans = [
       "Up to 5,000 Contacts",
       "A/B Testing & Optimization",
     ],
+    highlight: true, // ⭐ Popular Plan
   },
   {
     name: "Premium Plan",
@@ -195,6 +196,5 @@ export const emailMarketingPlans = [
       "Unlimited Contacts",
       "Dedicated Email Manager",
     ],
-    highlight: true, // ⭐ Popular Plan
   },
 ];

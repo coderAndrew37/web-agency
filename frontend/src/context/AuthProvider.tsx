@@ -12,6 +12,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const checkAuthState = async (): Promise<void> => {
     try {
       setIsLoading(true);
+      // Skip auth check if no cookies exist
+      if (!document.cookie.includes("accessToken")) {
+        setUser(null);
+        return;
+      }
       const { data } = await axiosInstance.get("/auth/me");
       setUser(data);
       setError(null);
