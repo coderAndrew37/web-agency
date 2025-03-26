@@ -1,67 +1,76 @@
-import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../api/axiosInstance";
-import { AuthContext } from "./AuthContext";
+import { AuthContext, type User } from "./AuthContext";
+import { FullPageSkeleton } from "../components/FullPageSkeleton";
 import { useState, useEffect } from "react";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    // ✅ Restore user from localStorage on first load
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const [isAuthCheckNeeded, setIsAuthCheckNeeded] = useState(false);
+  // Centralized auth state check
+  const checkAuthState = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const { data } = await axiosInstance.get("/auth/me");
+      setUser(data);
+      setError(null);
+    } catch {
+      setUser(null);
+      setError("Session expired - please login again");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // ✅ Only check auth if session cookies exist
+  // Initialize auth state
   useEffect(() => {
-    const hasSession = document.cookie.includes("accessToken"); // ✅ Check session
-    setIsAuthCheckNeeded(hasSession);
+    checkAuthState();
   }, []);
 
-  const { isLoading, refetch } = useQuery({
-    queryKey: ["auth"],
-    queryFn: async () => {
-      if (!isAuthCheckNeeded) return null; // ✅ Skip request if no session
-      try {
-        const { data } = await axiosInstance.get("/auth/me", {
-          withCredentials: true,
-        });
-        setUser(data);
-        localStorage.setItem("user", JSON.stringify(data)); // ✅ Store user persistently
-        return data;
-      } catch (error) {
-        setUser(null);
-        localStorage.removeItem("user"); // ✅ Clear storage if session expired
-        throw error;
-      }
-    },
-    enabled: isAuthCheckNeeded, // ✅ Prevents unnecessary requests
-    staleTime: 30 * 60 * 1000, // ✅ Keep session for 30 minutes
-    retry: false, // ✅ Avoid unnecessary retries
-  });
-
-  // ✅ Logout Function
-  const logout = async () => {
+  const login = async (credentials: {
+    email: string;
+    password: string;
+  }): Promise<void> => {
     try {
-      await axiosInstance.post("/auth/logout", {}, { withCredentials: true });
+      setIsLoading(true);
+      await axiosInstance.post("/auth/login", credentials);
+      await checkAuthState(); // Verify the login was successful
     } catch (err) {
-      console.error("Logout failed:", err);
+      setError("Invalid email or password");
+      throw err; // Re-throw for form handling
+    } finally {
+      setIsLoading(false);
     }
-    setUser(null);
-    localStorage.removeItem("user"); // ✅ Clear user from storage
-    refetch(); // ✅ Re-check session
   };
+
+  const logout = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      await axiosInstance.post("/auth/logout");
+      setUser(null);
+      setError(null);
+    } catch (err) {
+      console.error("Logout error:", err);
+      setError("Failed to logout properly");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <FullPageSkeleton />;
+  }
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, loading: isLoading, refetch, logout }}
+      value={{
+        user,
+        loading: isLoading,
+        error,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

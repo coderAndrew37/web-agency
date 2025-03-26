@@ -5,53 +5,55 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
-  withCredentials: true, // ✅ Send cookies & authentication
+  withCredentials: true,
   headers: { "Content-Type": "application/json" },
 });
 
-// ✅ Interceptor: Handle Expired Tokens Automatically
+// Track active requests to prevent duplicates
+const activeRequests = new Set();
+
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    activeRequests.delete(response.config.url);
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
+    activeRequests.delete(originalRequest.url);
 
-    // Handle network errors
+    // Network error handling
     if (error.code === "ERR_NETWORK") {
-      console.error("Network error. Please check your internet connection.");
+      console.error("Network error - please check your connection");
       return Promise.reject(error);
     }
 
-    // Handle 401 Unauthorized errors (only for authenticated users)
+    // Handle 401 Unauthorized
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // Prevent multiple concurrent refresh attempts
+      if (activeRequests.has("/auth/refresh-token")) {
+        return Promise.reject(error);
+      }
+
       originalRequest._retry = true;
+      activeRequests.add("/auth/refresh-token");
 
       try {
-        // Attempt to refresh the token
         await axiosInstance.post("/auth/refresh-token");
-
-        // ✅ After refreshing, retry the original request
+        activeRequests.delete("/auth/refresh-token");
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        console.error("Token refresh failed:", refreshError);
+        activeRequests.delete("/auth/refresh-token");
 
-        // ✅ Ensure logout API is called to clear HttpOnly cookies
+        // Clean up auth state
         try {
           await axiosInstance.post("/auth/logout");
         } catch (logoutError) {
-          console.error("Logout API failed:", logoutError);
+          console.error("Logout failed:", logoutError);
         }
 
-        // ✅ Clear non-HttpOnly cookies (if any exist)
-        document.cookie =
-          "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie =
-          "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-        // ✅ Reset auth state & redirect after cleanup
-        queryClient.invalidateQueries({ queryKey: ["auth"] }); // Clear cached auth data
-        setTimeout(() => {
-          window.location.href = "/login"; // ✅ Redirect after clearing state
-        }, 100); // Small delay to ensure state resets
+        // Clear client-side state
+        queryClient.clear();
+        window.location.href = "/login";
 
         return Promise.reject(refreshError);
       }

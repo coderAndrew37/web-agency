@@ -1,6 +1,7 @@
+// AuthContext.ts
 import { createContext } from "react";
 
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
@@ -9,10 +10,11 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  setUser: (user: User | null) => void;
   loading: boolean;
-  refetch: () => void; // ✅ Added to allow manual re-fetching
+  error: string | null;
   logout: () => Promise<void>;
+  login: (credentials: { email: string; password: string }) => Promise<void>;
+  checkAuth: () => Promise<void>; // Add this line
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(

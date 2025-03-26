@@ -1,17 +1,37 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { useEffect } from "react";
 
-const ProtectedRoute = ({ adminOnly = false }) => {
-  const { user, loading } = useAuth();
+const ProtectedRoute = ({
+  adminOnly = false,
+  redirectPath = "/",
+  adminRedirectPath = "/dashboard",
+}) => {
+  const { user, loading, checkAuth } = useAuth();
 
-  if (loading) return <p>Loading...</p>;
+  // Verify auth state if loading but no user
+  useEffect(() => {
+    if (loading && !user) {
+      checkAuth();
+    }
+  }, [loading, user, checkAuth]);
 
-  // ✅ If user is not logged in, send them to home instead of login
-  if (!user) return <Navigate to="/" replace />;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <LoadingSpinner size={60} />
+      </div>
+    );
+  }
 
-  // ✅ If admin-only but user is not an admin, redirect to dashboard
-  if (adminOnly && user.role !== "admin")
-    return <Navigate to="/dashboard" replace />;
+  if (!user) {
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  if (adminOnly && user.role !== "admin") {
+    return <Navigate to={adminRedirectPath} replace />;
+  }
 
   return <Outlet />;
 };
