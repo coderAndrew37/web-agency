@@ -1,60 +1,39 @@
 import axios from "axios";
 import { queryClient } from "./queryClient";
+import { User } from "../context/AuthContext";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
-  withCredentials: true,
+  withCredentials: true, // ✅ Ensure cookies are always sent
   headers: { "Content-Type": "application/json" },
 });
 
-// Track active requests to prevent duplicates
-const activeRequests = new Set();
-
+// ✅ Prevent refresh spam for anonymous users
 axiosInstance.interceptors.response.use(
-  (response) => {
-    activeRequests.delete(response.config.url);
-    return response;
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    activeRequests.delete(originalRequest.url);
 
-    // Network error handling
-    if (error.code === "ERR_NETWORK") {
-      console.error("Network error - please check your connection");
-      return Promise.reject(error);
-    }
-
-    // Handle 401 Unauthorized
     if (error.response?.status === 401 && !originalRequest._retry) {
-      // Prevent multiple concurrent refresh attempts
-      if (activeRequests.has("/auth/refresh-token")) {
-        return Promise.reject(error);
+      const user = queryClient.getQueryData<User | null>(["user"]);
+
+      if (!user) {
+        return Promise.reject(error); // ✅ Skip refresh if user is anonymous
       }
 
       originalRequest._retry = true;
-      activeRequests.add("/auth/refresh-token");
-
       try {
-        await axiosInstance.post("/auth/refresh-token");
-        activeRequests.delete("/auth/refresh-token");
-        return axiosInstance(originalRequest);
+        await axiosInstance.post(
+          "/auth/refresh-token",
+          {},
+          { withCredentials: true }
+        );
+        return axiosInstance(originalRequest); // ✅ Retry original request
       } catch (refreshError) {
-        activeRequests.delete("/auth/refresh-token");
-
-        // Clean up auth state
-        try {
-          await axiosInstance.post("/auth/logout");
-        } catch (logoutError) {
-          console.error("Logout failed:", logoutError);
-        }
-
-        // Clear client-side state
         queryClient.clear();
-        window.location.href = "/login";
-
+        window.location.href = "/login"; // ✅ Force login for expired session
         return Promise.reject(refreshError);
       }
     }

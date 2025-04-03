@@ -10,12 +10,12 @@ const ProtectedRoute = ({
 }) => {
   const { user, loading, checkAuth } = useAuth();
 
-  // Verify auth state if loading but no user
+  // ✅ Only check auth if accessing a protected route
   useEffect(() => {
-    if (loading && !user) {
+    if (!user && !loading) {
       checkAuth();
     }
-  }, [loading, user, checkAuth]);
+  }, [user, loading, checkAuth]);
 
   if (loading) {
     return (

@@ -31,10 +31,9 @@ const Register = () => {
 
   const onSubmit = async (data: RegisterData) => {
     try {
-      // 1. Register the user
-      await axiosInstance.post("/auth/register", data);
-
-      // 2. Automatically log them in
+      await axiosInstance.post("/auth/register", data, {
+        withCredentials: true,
+      });
       await login({
         email: data.email,
         password: data.password,
