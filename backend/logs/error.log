@@ -1,3 +1,7 @@
 [2025-03-14T03:28:21.964Z] ERROR: ❌ Unexpected Error: Expected ',' or '}' after property value in JSON at position 27 (line 2 column 25)
 [2025-03-14T08:04:39.867Z] ERROR: ❌ Error adding event to Google Calendar: Not Found
 [2025-03-14T08:04:39.869Z] ERROR: ❌ Error booking call: Failed to add event to Google Calendar
+[2025-04-09T06:05:30.093Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-09T06:24:57.134Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-09T06:38:10.743Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-09T06:40:52.109Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017

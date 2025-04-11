@@ -1,16 +1,16 @@
-import express, { Request, Response, NextFunction } from "express";
-import dotenv from "dotenv";
 import cors from "cors";
+import dotenv from "dotenv";
+import { cleanEnv, num, str } from "envalid";
+import express, { NextFunction, Request, Response } from "express";
+import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import mongoose from "mongoose";
-import rateLimit from "express-rate-limit";
 import schedule from "node-schedule";
-import { cleanEnv, str, num } from "envalid";
+import Booking from "./models/booking";
+import { connectDB } from "./startup/db";
+import setupRoutes from "./startup/routes";
 import logger from "./utils/logger";
 import { sendReminder } from "./utils/reminderService";
-import Booking from "./models/booking";
-import setupRoutes from "./startup/routes";
-import { connectDB } from "./startup/db";
 
 // Load environment variables
 dotenv.config();

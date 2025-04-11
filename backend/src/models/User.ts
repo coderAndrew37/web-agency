@@ -2,42 +2,40 @@ import mongoose, { Document } from "mongoose";
 import bcrypt from "bcryptjs";
 import Joi from "joi";
 
-// ✅ Define User Interface
 export interface IUser extends Document {
   _id: mongoose.Types.ObjectId;
   name: string;
   email: string;
   password: string;
   role: "user" | "admin";
+  isVerified: boolean;
   comparePassword(password: string): Promise<boolean>;
 }
 
-// ✅ User Schema
 const userSchema = new mongoose.Schema<IUser>(
   {
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true, minlength: 6 },
     role: { type: String, enum: ["user", "admin"], default: "user" },
+    isVerified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
-// ✅ Hash Password Before Saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 12);
+  const salt = await bcrypt.genSalt(12);
+  this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-// ✅ Compare Password Method
 userSchema.methods.comparePassword = async function (
   candidatePassword: string
 ): Promise<boolean> {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-// ✅ Joi Validation Schema
 export const validateUser = (user: any) => {
   const schema = Joi.object({
     name: Joi.string().min(3).max(100).required().messages({

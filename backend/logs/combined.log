@@ -247,3 +247,58 @@
 [2025-03-26T11:00:00.028Z] INFO: Running reminder job...
 [2025-03-26T12:00:00.078Z] INFO: Running reminder job...
 [2025-03-26T13:00:03.915Z] INFO: Running reminder job...
+[2025-04-03T12:32:13.782Z] INFO: 🚀 Server running on port 5000
+[2025-04-03T12:32:13.814Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-03T13:00:00.092Z] INFO: Running reminder job...
+[2025-04-08T07:31:47.535Z] INFO: 🚀 Server running on port 5000
+[2025-04-08T07:31:47.599Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T06:05:00.191Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T06:05:30.093Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-09T06:24:27.086Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T06:24:57.134Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-09T06:37:40.043Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T06:38:10.743Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-09T06:40:22.235Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T06:40:52.109Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-09T06:50:29.276Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T06:50:29.299Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T06:53:06.232Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T06:53:06.256Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T06:54:28.938Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T06:54:28.990Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T06:55:35.581Z] INFO: 📧 Email sent to devandrew66@gmail.com | Message ID: <9152853c-5fea-ea50-c71d-9584105afd26@gmail.com>
+[2025-04-09T06:57:32.188Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T06:57:32.221Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T06:59:13.979Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T06:59:14.043Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T07:04:47.731Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T07:04:47.753Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T07:06:07.690Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T07:06:07.727Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T07:10:10.708Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T07:10:10.738Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T07:12:05.623Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T07:12:05.651Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T07:13:02.308Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T07:13:02.338Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T07:16:41.956Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T07:16:41.986Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T07:23:02.251Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T07:23:02.278Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T07:26:31.299Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T07:26:31.319Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-09T07:29:04.635Z] INFO: 🚀 Server running on port 5000
+[2025-04-09T07:29:04.719Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-11T11:00:05.948Z] INFO: 🚀 Server running on port 5000
+[2025-04-11T11:00:06.043Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-11T11:01:45.880Z] INFO: 📧 Email sent to devandrew66@gmail.com | Message ID: <26131e8d-6917-3a7b-60c0-45e45337e265@gmail.com>
+[2025-04-11T11:08:56.593Z] INFO: 🚀 Server running on port 5000
+[2025-04-11T11:08:56.626Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-11T11:11:24.085Z] INFO: 🚀 Server running on port 5000
+[2025-04-11T11:11:24.106Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-11T11:12:32.419Z] INFO: 🚀 Server running on port 5000
+[2025-04-11T11:12:32.451Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-11T11:14:34.864Z] INFO: 🚀 Server running on port 5000
+[2025-04-11T11:14:34.888Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-11T11:15:26.897Z] INFO: 🚀 Server running on port 5000
+[2025-04-11T11:15:26.937Z] INFO: ✅ MongoDB Connected Successfully

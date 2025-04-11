@@ -1,13 +1,12 @@
+// middleware/authMiddleware.ts
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User, { IUser } from "../models/User";
 
-// ✅ Extend Request to Include User Property
 export interface AuthenticatedRequest extends Request {
   user?: IUser;
 }
 
-// ✅ Extract Token from Headers or Cookies
 const getToken = (req: Request): string | null => {
   if (req.cookies?.accessToken) return req.cookies.accessToken;
   if (req.headers.authorization?.startsWith("Bearer ")) {
@@ -16,7 +15,6 @@ const getToken = (req: Request): string | null => {
   return null;
 };
 
-// ✅ Protect Routes Middleware (Requires Auth)
 export const protect = async (
   req: AuthenticatedRequest,
   res: Response,
@@ -46,7 +44,6 @@ export const protect = async (
   }
 };
 
-// ✅ Optional Auth Middleware (Attaches User If Logged In)
 export const optionalAuth = async (
   req: AuthenticatedRequest,
   _res: Response,
@@ -61,13 +58,10 @@ export const optionalAuth = async (
       const user = await User.findById(decoded.userId).select("-password");
       if (user) req.user = user;
     }
-  } catch (error) {
-    // Do nothing, user stays unauthenticated
-  }
+  } catch (_) {}
   next();
 };
 
-// ✅ Admin Middleware (Requires Auth & Admin Role)
 export const admin = (
   req: AuthenticatedRequest,
   res: Response,
