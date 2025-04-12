@@ -32,6 +32,12 @@ class HttpClient {
       .then((res: AxiosResponse<T>) => res.data);
   }
 
+  patch<T, D>(url: string, data: D, config?: AxiosRequestConfig): Promise<T> {
+    return this.instance
+      .patch<T>(url, data, config)
+      .then((res: AxiosResponse<T>) => res.data);
+  }
+
   delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     return this.instance
       .delete<T>(url, config)

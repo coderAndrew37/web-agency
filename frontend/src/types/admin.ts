@@ -1,7 +1,6 @@
-// src/types/admin.ts
 import { AxiosError } from "axios";
 
-/* Core Types */
+/* ──────── 📦 Core Models ──────── */
 export interface User {
   _id: string;
   name: string;
@@ -36,6 +35,7 @@ export interface ContactMessage {
   createdAt: string;
 }
 
+/* ──────── 📊 Admin Stats ──────── */
 export interface AdminStats {
   users: number;
   activeUsers: number;
@@ -45,7 +45,7 @@ export interface AdminStats {
   unreadMessages: number;
 }
 
-/* API Response Types */
+/* ──────── ✅ Generic Response Types ──────── */
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
@@ -59,7 +59,7 @@ export interface ListResponse<T> {
   limit: number;
 }
 
-/* Error Types */
+/* ──────── ❌ Error Types ──────── */
 export interface ApiError {
   statusCode: number;
   message: string;
@@ -69,21 +69,21 @@ export interface ApiError {
 
 export type ApiErrorResponse = AxiosError<ApiError>;
 
-/* Utility Types */
-export type QueryParams = {
+/* ──────── 🧰 Utility Types ──────── */
+export interface QueryParams {
   page?: number;
   limit?: number;
   sort?: string;
-  filter?: Record<string, unknown>;
-};
+  filter?: Record<string, string | number | boolean>;
+}
 
-export type BulkEmailData = {
+export interface BulkEmailData {
   subject: string;
   message: string;
   templateId?: string;
-};
+}
 
-export type ContactReplyData = {
+export interface ContactReplyData {
   subject: string;
   message: string;
-};
+}
