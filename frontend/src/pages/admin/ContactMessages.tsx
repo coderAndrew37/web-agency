@@ -5,14 +5,13 @@ import {
   useFetchContactMessages,
   useDeleteContactMessage,
   useReplyToContactMessage,
-} from "../../api/adminApi";
+} from "../../hooks/admin/useAdmin";
 import { ContactMessage, ContactReplyData } from "../../types/admin";
 import { handleApiError } from "../../Utils/apiErrorHandler";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
 const ContactMessages = () => {
-  // Fetch messages with React Query
   const {
     data: messagesResponse,
     isLoading,
@@ -20,13 +19,11 @@ const ContactMessages = () => {
     refetch,
   } = useFetchContactMessages();
 
-  // Mutations
   const { mutateAsync: deleteMessage, isPending: isDeleting } =
     useDeleteContactMessage();
   const { mutateAsync: replyToMessage, isPending: isReplying } =
     useReplyToContactMessage();
 
-  // State
   const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(
     null
   );
@@ -37,10 +34,8 @@ const ContactMessages = () => {
     message: "",
   });
 
-  // Extract messages from response
   const messages = messagesResponse?.items || [];
 
-  /** Handle Delete Message */
   const handleDeleteMessage = async () => {
     if (!selectedMessage) return;
     try {
@@ -53,7 +48,6 @@ const ContactMessages = () => {
     }
   };
 
-  /** Handle Send Reply */
   const handleSendReply = async () => {
     if (!selectedMessage || !replyData.subject || !replyData.message) return;
 
@@ -148,7 +142,6 @@ const ContactMessages = () => {
         ])}
       />
 
-      {/* Delete Confirmation Modal */}
       <Modal
         isOpen={showDeleteModal}
         title="Delete Message?"
@@ -160,7 +153,6 @@ const ContactMessages = () => {
         isConfirming={isDeleting}
       />
 
-      {/* Reply Modal */}
       <Modal
         isOpen={showReplyModal}
         title="Reply to Message"

@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { AdminProvider } from "./context/AdminProvider";
 import AuthLayout from "./layouts/AuthLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import LoadingSpinner from "./components/LoadingSpinner";
@@ -167,14 +166,7 @@ const AppRoutes = () => {
 
       {/* Admin Routes (Protected) */}
       <Route element={<ProtectedRoute adminOnly />}>
-        <Route
-          path="/admin/*"
-          element={
-            <AdminProvider>
-              <AdminLayout />
-            </AdminProvider>
-          }
-        >
+        <Route path="/admin/*" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<Users />} />
           <Route path="testimonials" element={<Testimonials />} />

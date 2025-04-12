@@ -1,23 +1,15 @@
 import {
-  useFetchAllTestimonials,
+  useFetchTestimonials,
   useApproveTestimonial,
   useDeleteTestimonial,
-} from "../../api/adminApi";
+} from "../../hooks/admin/useAdmin";
 import Table from "../../components/Table";
 import Modal from "../../components/Modal";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { TestimonialSkeleton } from "../../components/TestimonialSkeleton";
 import { useState } from "react";
-
-type Testimonial = {
-  _id: string; // Changed back to _id for MongoDB
-  name: string;
-  message: string;
-  image?: string;
-  approved: boolean;
-  createdAt?: string;
-};
+import { Testimonial } from "../../types/admin";
 
 const AdminTestimonials = () => {
   const {
@@ -25,11 +17,9 @@ const AdminTestimonials = () => {
     isLoading,
     isError,
     refetch,
-  } = useFetchAllTestimonials();
+  } = useFetchTestimonials();
 
-  const testimonials: Testimonial[] = Array.isArray(testimonialsData)
-    ? testimonialsData
-    : [];
+  const testimonials = testimonialsData?.items || [];
 
   const { mutateAsync: approveTestimonial, isPending: isApproving } =
     useApproveTestimonial();
@@ -43,31 +33,17 @@ const AdminTestimonials = () => {
 
   const handleApproveTestimonial = async () => {
     if (!selectedTestimonial) return;
-    try {
-      await approveTestimonial(selectedTestimonial._id);
-      refetch();
-    } catch (error) {
-      console.error("Failed to approve testimonial", error);
-    } finally {
-      setShowModal(false);
-    }
+    await approveTestimonial(selectedTestimonial._id);
+    setShowModal(false);
   };
 
   const handleDeleteTestimonial = async () => {
     if (!selectedTestimonial) return;
-    try {
-      await deleteTestimonial(selectedTestimonial._id);
-      refetch();
-    } catch (error) {
-      console.error("Failed to delete testimonial", error);
-    } finally {
-      setShowModal(false);
-    }
+    await deleteTestimonial(selectedTestimonial._id);
+    setShowModal(false);
   };
 
-  if (isLoading) {
-    return <TestimonialSkeleton />;
-  }
+  if (isLoading) return <TestimonialSkeleton />;
 
   if (isError) {
     return (
@@ -104,7 +80,6 @@ const AdminTestimonials = () => {
       <Table
         headers={["Name", "Message", "Image", "Status", "Actions"]}
         data={testimonials.map((testimonial: Testimonial) => [
-          // Explicitly typed parameter
           testimonial.name,
           <p key={`msg-${testimonial._id}`} className="truncate max-w-sm">
             {testimonial.message}

@@ -1,10 +1,10 @@
-import { useFetchAdminStats } from "../../api/adminApi";
-import StatsCard from "../../components/StatsCard";
 import { motion } from "framer-motion";
 import { Users, MessageSquare, Mail } from "lucide-react";
+import StatsCard from "../../components/StatsCard";
+import { useAdminStats } from "../../hooks/admin/useAdmin";
 
 const Dashboard = () => {
-  const { data: stats, isLoading, error } = useFetchAdminStats(); // ✅ Hook inside component
+  const { data: stats, isLoading, error } = useAdminStats();
 
   if (isLoading) return <p>Loading stats...</p>;
   if (error) return <p>Error loading stats: {error.message}</p>;
@@ -17,7 +17,6 @@ const Dashboard = () => {
       transition={{ duration: 0.5 }}
     >
       <h2 className="text-3xl font-bold mb-6">📊 Admin Dashboard</h2>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatsCard
           icon={<Users />}

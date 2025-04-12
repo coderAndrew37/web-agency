@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AdminService } from "../../services/adminService";
 import {
   AdminStats,
@@ -12,77 +12,111 @@ import {
   ContactReplyData,
   QueryParams,
 } from "../../types/admin";
+import { handleApiError } from "../../Utils/apiErrorHandler";
 
-// ✅ Stats
 export const useAdminStats = () =>
   useQuery<AdminStats, ApiErrorResponse>({
     queryKey: ["admin-stats"],
-    queryFn: async () => (await AdminService.getStats()).data,
+    queryFn: async () => {
+      const response = await AdminService.getStats();
+      return response.data;
+    },
     staleTime: 5 * 60 * 1000,
   });
 
-// ✅ Users
 export const useFetchUsers = (params?: QueryParams) =>
   useQuery<ListResponse<User>, ApiErrorResponse>({
     queryKey: ["admin-users", params],
-    queryFn: async () => (await AdminService.getUsers(params)).data,
+    queryFn: async () => {
+      const response = await AdminService.getUsers(params);
+      return response.data;
+    },
   });
 
 export const useUpdateUserRole = () =>
   useMutation<User, ApiErrorResponse, { _id: string; role: User["role"] }>({
-    mutationFn: ({ _id, role }) =>
-      AdminService.updateUserRole(_id, role).then((res) => res.data),
+    mutationFn: async ({ _id, role }) => {
+      const response = await AdminService.updateUserRole(_id, role);
+      return response.data;
+    },
+    onError: (error) => handleApiError(error, { showToast: true }),
   });
 
-export const useDeleteUser = () =>
-  useMutation<{ success: boolean }, ApiErrorResponse, string>({
-    mutationFn: (_id) => AdminService.deleteUser(_id).then((res) => res.data),
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation<{ success: boolean }, ApiErrorResponse, string>({
+    mutationFn: AdminService.deleteUser,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] }),
+    onError: (error) => handleApiError(error, { showToast: true }),
   });
+};
 
 export const useToggleUserStatus = () =>
   useMutation<User, ApiErrorResponse, { _id: string; isActive: boolean }>({
-    mutationFn: ({ _id, isActive }) =>
-      AdminService.toggleUserStatus(_id, isActive).then((res) => res.data),
+    mutationFn: async ({ _id, isActive }) => {
+      const response = await AdminService.toggleUserStatus(_id, isActive);
+      return response.data;
+    },
+    onError: (error) => handleApiError(error, { showToast: true }),
   });
 
 export const useGetUser = (_id: string) =>
   useQuery<User, ApiErrorResponse>({
     queryKey: ["admin-user", _id],
-    queryFn: async () => (await AdminService.getUserById(_id)).data,
+    queryFn: async () => {
+      const response = await AdminService.getUserById(_id);
+      return response.data;
+    },
     enabled: !!_id,
   });
 
-// ✅ Testimonials
 export const useFetchTestimonials = (params?: { approved?: boolean }) =>
   useQuery<ListResponse<Testimonial>, ApiErrorResponse>({
     queryKey: ["admin-testimonials", params],
-    queryFn: async () => (await AdminService.getTestimonials(params)).data,
+    queryFn: async () => {
+      const response = await AdminService.getTestimonials(params);
+      return response.data;
+    },
   });
 
 export const useApproveTestimonial = () =>
   useMutation<Testimonial, ApiErrorResponse, string>({
-    mutationFn: (_id) =>
-      AdminService.approveTestimonial(_id).then((res) => res.data),
+    mutationFn: async (_id: string) => {
+      const response = await AdminService.approveTestimonial(_id);
+      return response.data;
+    },
+    onError: (error) => handleApiError(error, { showToast: true }),
   });
 
-export const useDeleteTestimonial = () =>
-  useMutation<{ success: boolean }, ApiErrorResponse, string>({
-    mutationFn: (_id) =>
-      AdminService.deleteTestimonial(_id).then((res) => res.data),
+export const useDeleteTestimonial = () => {
+  const queryClient = useQueryClient();
+  return useMutation<{ success: boolean }, ApiErrorResponse, string>({
+    mutationFn: AdminService.deleteTestimonial,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["admin-testimonials"] }),
+    onError: (error) => handleApiError(error, { showToast: true }),
   });
+};
 
-// ✅ Subscribers
 export const useFetchSubscribers = (params?: { active?: boolean }) =>
   useQuery<ListResponse<Subscriber>, ApiErrorResponse>({
     queryKey: ["admin-subscribers", params],
-    queryFn: async () => (await AdminService.getSubscribers(params)).data,
+    queryFn: async () => {
+      const response = await AdminService.getSubscribers(params);
+      return response.data;
+    },
   });
 
-export const useDeleteSubscriber = () =>
-  useMutation<{ success: boolean }, ApiErrorResponse, string>({
-    mutationFn: (_id) =>
-      AdminService.deleteSubscriber(_id).then((res) => res.data),
+export const useDeleteSubscriber = () => {
+  const queryClient = useQueryClient();
+  return useMutation<{ success: boolean }, ApiErrorResponse, string>({
+    mutationFn: AdminService.deleteSubscriber,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["admin-subscribers"] }),
+    onError: (error) => handleApiError(error, { showToast: true }),
   });
+};
 
 export const useSendBulkEmail = () =>
   useMutation<
@@ -90,22 +124,31 @@ export const useSendBulkEmail = () =>
     ApiErrorResponse,
     BulkEmailData
   >({
-    mutationFn: (data) =>
-      AdminService.sendBulkEmail(data).then((res) => res.data),
+    mutationFn: async (emailData: BulkEmailData) => {
+      const response = await AdminService.sendBulkEmail(emailData);
+      return response.data;
+    },
+    onError: (error) => handleApiError(error, { showToast: true }),
   });
 
-// ✅ Contact Messages
 export const useFetchContactMessages = (params?: { replied?: boolean }) =>
   useQuery<ListResponse<ContactMessage>, ApiErrorResponse>({
     queryKey: ["admin-contacts", params],
-    queryFn: async () => (await AdminService.getContactMessages(params)).data,
+    queryFn: async () => {
+      const response = await AdminService.getContactMessages(params);
+      return response.data;
+    },
   });
 
-export const useDeleteContactMessage = () =>
-  useMutation<{ success: boolean }, ApiErrorResponse, string>({
-    mutationFn: (_id) =>
-      AdminService.deleteContactMessage(_id).then((res) => res.data),
+export const useDeleteContactMessage = () => {
+  const queryClient = useQueryClient();
+  return useMutation<{ success: boolean }, ApiErrorResponse, string>({
+    mutationFn: AdminService.deleteContactMessage,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["admin-contacts"] }),
+    onError: (error) => handleApiError(error, { showToast: true }),
   });
+};
 
 export const useReplyToContactMessage = () =>
   useMutation<
@@ -114,7 +157,6 @@ export const useReplyToContactMessage = () =>
     { _id: string; replyData: ContactReplyData }
   >({
     mutationFn: ({ _id, replyData }) =>
-      AdminService.replyToContactMessage(_id, replyData).then(
-        (res) => res.data
-      ),
+      AdminService.replyToContactMessage(_id, replyData),
+    onError: (error) => handleApiError(error, { showToast: true }),
   });

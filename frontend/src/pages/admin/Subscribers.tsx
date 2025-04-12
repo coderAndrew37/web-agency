@@ -5,14 +5,12 @@ import {
   useFetchSubscribers,
   useDeleteSubscriber,
   useSendBulkEmail,
-} from "../../api/adminApi";
+} from "../../hooks/admin/useAdmin";
 import { Subscriber, BulkEmailData } from "../../types/admin";
-import { handleApiError } from "../../Utils/apiErrorHandler";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
 const Subscribers = () => {
-  // Fetch subscribers with React Query
   const {
     data: subscribersResponse,
     isLoading,
@@ -20,13 +18,11 @@ const Subscribers = () => {
     refetch,
   } = useFetchSubscribers();
 
-  // Mutations
   const { mutateAsync: deleteSubscriber, isPending: isDeleting } =
     useDeleteSubscriber();
   const { mutateAsync: sendBulkEmail, isPending: isSending } =
     useSendBulkEmail();
 
-  // State
   const [selectedSubscriber, setSelectedSubscriber] =
     useState<Subscriber | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -36,34 +32,19 @@ const Subscribers = () => {
     message: "",
   });
 
-  // Extract subscribers from response
   const subscribers = subscribersResponse?.items || [];
 
-  /** Handle Delete Subscriber */
   const handleDeleteSubscriber = async () => {
     if (!selectedSubscriber) return;
-    try {
-      await deleteSubscriber(selectedSubscriber._id);
-      refetch();
-    } catch (error) {
-      handleApiError(error, { showToast: true });
-    } finally {
-      setShowDeleteModal(false);
-    }
+    await deleteSubscriber(selectedSubscriber._id);
+    setShowDeleteModal(false);
   };
 
-  /** Handle Sending Bulk Email */
   const handleSendEmail = async () => {
     if (!emailData.subject || !emailData.message) return;
-
-    try {
-      await sendBulkEmail(emailData);
-      setEmailData({ subject: "", message: "" });
-    } catch (error) {
-      handleApiError(error, { showToast: true });
-    } finally {
-      setShowEmailModal(false);
-    }
+    await sendBulkEmail(emailData);
+    setEmailData({ subject: "", message: "" });
+    setShowEmailModal(false);
   };
 
   if (isLoading) {
@@ -110,7 +91,6 @@ const Subscribers = () => {
     >
       <h2 className="text-3xl font-bold mb-6">📧 Newsletter Subscribers</h2>
 
-      {/* Bulk Email Button */}
       <button
         className="mb-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
         onClick={() => setShowEmailModal(true)}
@@ -145,7 +125,6 @@ const Subscribers = () => {
         ])}
       />
 
-      {/* Confirmation Modal for Delete */}
       <Modal
         isOpen={showDeleteModal}
         title="Remove Subscriber?"
@@ -157,7 +136,6 @@ const Subscribers = () => {
         isConfirming={isDeleting}
       />
 
-      {/* Modal for Sending Bulk Email */}
       <Modal
         isOpen={showEmailModal}
         title="Send Email to All Subscribers"

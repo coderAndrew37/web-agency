@@ -5,57 +5,35 @@ import {
   useFetchUsers,
   useDeleteUser,
   useUpdateUserRole,
-} from "../../api/adminApi";
+} from "../../hooks/admin/useAdmin";
 import { User } from "../../types/admin";
-import { handleApiError } from "../../Utils/apiErrorHandler";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
 const Users = () => {
-  // Fetch users with React Query
   const { data: usersResponse, isLoading, isError, refetch } = useFetchUsers();
 
-  // Mutations
   const { mutateAsync: deleteUser, isPending: isDeleting } = useDeleteUser();
   const { mutateAsync: updateUserRole, isPending: isUpdating } =
     useUpdateUserRole();
 
-  // State
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showRoleModal, setShowRoleModal] = useState(false);
 
-  // Extract users from response
   const users = usersResponse?.items || [];
 
-  /** Handle Delete User */
   const handleDeleteUser = async () => {
     if (!selectedUser) return;
-    try {
-      await deleteUser(selectedUser._id);
-      refetch();
-    } catch (error) {
-      handleApiError(error, { showToast: true });
-    } finally {
-      setShowDeleteModal(false);
-    }
+    await deleteUser(selectedUser._id);
+    setShowDeleteModal(false);
   };
 
-  /** Handle Update Role */
   const handleUpdateRole = async () => {
     if (!selectedUser) return;
-    try {
-      const newRole = selectedUser.role === "user" ? "admin" : "user";
-      await updateUserRole({
-        _id: selectedUser._id,
-        role: newRole,
-      });
-      refetch();
-    } catch (error) {
-      handleApiError(error, { showToast: true });
-    } finally {
-      setShowRoleModal(false);
-    }
+    const newRole = selectedUser.role === "user" ? "admin" : "user";
+    await updateUserRole({ _id: selectedUser._id, role: newRole });
+    setShowRoleModal(false);
   };
 
   if (isLoading) {
@@ -140,7 +118,6 @@ const Users = () => {
         ])}
       />
 
-      {/* Delete Confirmation Modal */}
       <Modal
         isOpen={showDeleteModal}
         title="Delete User?"
@@ -152,7 +129,6 @@ const Users = () => {
         isConfirming={isDeleting}
       />
 
-      {/* Role Update Modal */}
       <Modal
         isOpen={showRoleModal}
         title="Change User Role?"
@@ -170,9 +146,3 @@ const Users = () => {
 };
 
 export default Users;
-
-// In the above code, we have created a new component called  Users  which will be used to display a list of users. We are using the  useFetchUsers  hook to fetch users from the API. We are also using  useDeleteUser  and  useUpdateUserRole  hooks to delete a user and update the user’s role, respectively.
-// We are using the  Table  component to display the list of users in a tabular format. We are also using the  Modal  component to display a confirmation modal when the user tries to delete a user or update the user’s role.
-// Now, let’s create the  Table  and  Modal  components.
-// Create Table Component
-// Create a new file called  Table.tsx  inside the  components  folder and add the following code:
