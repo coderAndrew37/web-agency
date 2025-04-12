@@ -1,11 +1,3 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { z } from "zod";
-import { useSubmitClientForm } from "../api/apiClient";
-import { clientSchema } from "../Utils/validationSchemas";
-import axios from "axios";
-import colors from "../styles/colors";
 import {
   Mail,
   Phone,
@@ -16,76 +8,24 @@ import {
   Loader,
 } from "lucide-react";
 import { motion } from "framer-motion";
-
-type ClientData = z.infer<typeof clientSchema>;
+import { useClientOnboardingForm } from "../hooks/forms/useClientOnboardingForm";
+import colors from "../styles/colors";
 
 const ClientOnboarding = () => {
-  const { mutateAsync: submitClientForm } = useSubmitClientForm();
   const {
+    step,
     register,
+    errors,
+    isValid,
+    message,
+    loading,
+    selectedServices,
     handleSubmit,
-    formState: { errors, isValid },
-    trigger,
-  } = useForm<ClientData>({
-    resolver: zodResolver(clientSchema),
-    mode: "onChange",
-    defaultValues: {
-      fullName: "",
-      email: "",
-      phone: "",
-      businessName: "",
-      servicesInterested: [],
-      budget: 5000,
-      message: "",
-    },
-  });
-
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
-
-  const onSubmit = async (data: ClientData) => {
-    const formData = { ...data, servicesInterested: selectedServices };
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const response = await submitClientForm(formData);
-      setMessage("✅ " + response.message);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setMessage(
-          `❌ ${
-            error.response?.data?.message ||
-            "Submission failed. Please try again."
-          }`
-        );
-      } else {
-        setMessage("❌ An unexpected error occurred. Please try again.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const isStepValid = async () => {
-    switch (step) {
-      case 1:
-        return await trigger(["fullName", "email", "phone"]);
-      case 2:
-        return await trigger(["businessName"]);
-      case 3:
-        return await trigger(["servicesInterested", "budget"]);
-      default:
-        return true;
-    }
-  };
-
-  const handleNextStep = async () => {
-    const isValid = await isStepValid();
-    if (isValid) setStep((prev) => prev + 1);
-  };
+    handleNextStep,
+    handleBackStep,
+    handleServiceChange,
+    onSubmit,
+  } = useClientOnboardingForm();
 
   return (
     <div className="max-w-lg mx-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-80 backdrop-blur-lg border border-gray-200">
@@ -96,7 +36,6 @@ const ClientOnboarding = () => {
         🚀 Get Started with SleekSites
       </h2>
 
-      {/* Progress Bar */}
       <motion.div className="relative w-full bg-gray-300 h-2 rounded-full overflow-hidden mb-6">
         <motion.div
           className="absolute top-0 left-0 h-full bg-primary"
@@ -124,7 +63,6 @@ const ClientOnboarding = () => {
           exit={{ opacity: 0, x: 20 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Step 1: Personal Info */}
           {step === 1 && (
             <>
               <div className="relative">
@@ -175,7 +113,6 @@ const ClientOnboarding = () => {
             </>
           )}
 
-          {/* Step 2: Business Details */}
           {step === 2 && (
             <>
               <div className="relative">
@@ -195,7 +132,6 @@ const ClientOnboarding = () => {
             </>
           )}
 
-          {/* Step 3: Services & Budget */}
           {step === 3 && (
             <>
               <div>
@@ -204,16 +140,7 @@ const ClientOnboarding = () => {
                 </label>
                 <select
                   value={selectedServices}
-                  onChange={(e) => {
-                    const options = e.target.options;
-                    const selected = [];
-                    for (let i = 0; i < options.length; i++) {
-                      if (options[i].selected) {
-                        selected.push(options[i].value);
-                      }
-                    }
-                    setSelectedServices(selected);
-                  }}
+                  onChange={handleServiceChange}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
                   multiple
                 >
@@ -246,12 +173,11 @@ const ClientOnboarding = () => {
           )}
         </motion.div>
 
-        {/* Navigation Buttons */}
         <div className="flex justify-between">
           {step > 1 && (
             <button
               type="button"
-              onClick={() => setStep(step - 1)}
+              onClick={handleBackStep}
               className="text-primary flex items-center gap-2"
             >
               <ArrowLeft size={18} /> Back
