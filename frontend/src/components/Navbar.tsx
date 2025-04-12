@@ -1,92 +1,17 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, User, LogOut, Phone, Globe } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ChevronDown, LogOut, Menu, User, X } from "lucide-react";
+import { Link } from "react-router-dom";
+import { services } from "../data/navData"; // Adjust the import path as necessary
+import { useNavbar } from "../hooks/ui/useNavBar";
 import colors from "../styles/colors";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ✅ Service Categories for Dropdown
-const services = [
-  {
-    category: "Development",
-    services: [
-      {
-        name: "Web Development",
-        link: "/services/web-development",
-        icon: <Globe size={20} />,
-      },
-      {
-        name: "App Development",
-        link: "/services/app-development",
-        icon: <Phone size={20} />,
-      },
-      {
-        name: "M-Pesa Integration",
-        link: "/services/mpesa-integration",
-        icon: <Phone size={20} />,
-      },
-    ],
-  },
-  {
-    category: "Marketing",
-    services: [
-      {
-        name: "SEO Optimization",
-        link: "/services/seo",
-        icon: <Globe size={20} />,
-      },
-      {
-        name: "Google Ads",
-        link: "/services/google-ads",
-        icon: <Globe size={20} />,
-      },
-      {
-        name: "Facebook Ads",
-        link: "/services/facebook-ads",
-        icon: <Globe size={20} />,
-      },
-      {
-        name: "Email Marketing",
-        link: "/services/email-marketing",
-        icon: <Globe size={20} />,
-      },
-    ],
-  },
-  {
-    category: "Automation",
-    services: [
-      {
-        name: "Marketing Automation",
-        link: "/services/marketing-automation",
-        icon: <Globe size={20} />,
-      },
-    ],
-  },
-];
-
 const Navbar = () => {
-  const { user, logout } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isServicesOpen, setIsServicesOpen] = useState(false);
-
-  useEffect(() => {
-    gsap.to(".navbar", {
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "100px top",
-        scrub: true,
-      },
-      backgroundColor: "rgba(255, 255, 255, 0.95)",
-      padding: "12px 0",
-      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-    });
-  }, []);
-
+  const { user, logout, isOpen, setIsOpen, isServicesOpen, setIsServicesOpen } =
+    useNavbar();
   return (
     <nav className="navbar fixed top-0 left-0 w-full z-50 transition-all duration-300">
       <div className="container mx-auto flex items-center justify-between py-4 md:py-6 px-6">
@@ -213,7 +138,7 @@ const Navbar = () => {
 
               <motion.li whileHover={{ scale: 1.1 }}>
                 <button
-                  onClick={logout}
+                  onClick={() => logout()}
                   className="hover:opacity-80 transition flex items-center gap-1 text-red-500"
                 >
                   <LogOut size={18} />
@@ -376,7 +301,7 @@ const Navbar = () => {
                   </li>
                   <li>
                     <button
-                      onClick={logout}
+                      onClick={() => logout()}
                       className="text-lg text-red-500 hover:opacity-80 transition"
                     >
                       Logout

@@ -1,27 +1,54 @@
 // hooks/auth/useAuth.ts
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthService } from "../services/authService";
-import { LoginData, RegisterData } from "../types/authTypes";
+import { LoginData, RegisterData, User } from "../types/authTypes";
 import { useAuthContext } from "./useAuthContext";
 
-export const useLogin = () => {
+// 🔐 Internal reusable logic for login
+const useAuthInternal = () => {
+  const queryClient = useQueryClient();
   const { setUser } = useAuthContext();
 
-  return useMutation({
+  const loginMutation = useMutation({
     mutationFn: (data: LoginData) => AuthService.login(data),
     onSuccess: (user) => {
       setUser(user);
     },
   });
+
+  const logoutMutation = useMutation({
+    mutationFn: () => AuthService.logout(),
+    onSuccess: () => {
+      setUser(null);
+      queryClient.removeQueries({ queryKey: ["currentUser"] });
+    },
+  });
+
+  return {
+    loginMutation,
+    logoutMutation,
+    setUser,
+  };
 };
 
+// 🔓 Login Hook
+export const useLogin = () => {
+  const { loginMutation } = useAuthInternal();
+  return {
+    login: loginMutation.mutateAsync,
+    loading: loginMutation.isPending,
+    error: loginMutation.error as Error | null,
+  };
+};
+
+// ✍️ Register Hook (with auto-login)
 export const useRegister = () => {
-  const { mutateAsync: login } = useLogin();
+  const { loginMutation } = useAuthInternal();
 
   return useMutation({
     mutationFn: (data: RegisterData) => AuthService.register(data),
-    onSuccess: (_, variables) => {
-      return login({
+    onSuccess: async (_, variables) => {
+      await loginMutation.mutateAsync({
         email: variables.email,
         password: variables.password,
       });
@@ -29,22 +56,26 @@ export const useRegister = () => {
   });
 };
 
+// 👤 Fetch Current User
 export const useCurrentUser = () => {
-  return useQuery({
+  return useQuery<User>({
     queryKey: ["currentUser"],
-    queryFn: () => AuthService.getCurrentUser(),
+    queryFn: AuthService.getCurrentUser,
     retry: false,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 };
 
+// 🚪 Logout Hook
 export const useLogout = () => {
   const { setUser } = useAuthContext();
 
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: () => AuthService.logout(),
     onSuccess: () => {
       setUser(null);
     },
   });
+
+  return mutation; // 👈 return the full mutation object (has mutate, status, etc.)
 };

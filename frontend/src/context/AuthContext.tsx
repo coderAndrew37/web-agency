@@ -2,9 +2,10 @@
 import { createContext } from "react";
 import { User } from "../types/authTypes";
 
-type AuthContextType = {
+export type AuthContextType = {
   user: User | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   setUser: (user: User | null) => void;
 };
 

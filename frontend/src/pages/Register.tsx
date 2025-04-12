@@ -2,29 +2,26 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "../hooks/useAuth";
+import { useRegister } from "../hooks/useAuth";
 import { registerSchema } from "../Utils/validationSchemas";
-import axiosInstance from "../api/axiosInstance";
 import AuthForm from "../components/AuthForm";
 import PasswordInput from "../components/PasswordInput";
 import SubmitButton from "../components/SubmitButton";
 import FormError from "../components/FormError";
 import TextInput from "../components/TextInput";
+import { z } from "zod";
 
-type RegisterData = {
-  name: string;
-  email: string;
-  password: string;
-};
+// 🔐 Infer types from schema
+type RegisterData = z.infer<typeof registerSchema>;
 
 const Register = () => {
-  const { login, loading: authLoading, error: authError } = useAuth();
+  const { mutateAsync: register, isPending, error } = useRegister();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
-    register,
+    register: formRegister,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     setError: setFormError,
   } = useForm<RegisterData>({
     resolver: zodResolver(registerSchema),
@@ -32,21 +29,11 @@ const Register = () => {
 
   const onSubmit = async (data: RegisterData) => {
     try {
-      await axiosInstance.post("/auth/register", data, {
-        withCredentials: true,
-      });
-      await login({
-        email: data.email,
-        password: data.password,
-      });
+      await register(data);
     } catch {
-      if (authError) {
-        setFormError("root", { message: authError });
-      } else {
-        setFormError("root", {
-          message: "Registration failed. Please try again.",
-        });
-      }
+      setFormError("root", {
+        message: error?.message || "Registration failed. Try again.",
+      });
     }
   };
 
@@ -69,32 +56,29 @@ const Register = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <TextInput
-          register={register}
+          register={formRegister}
           name="name"
           placeholder="Full Name"
-          disabled={isSubmitting || authLoading}
+          disabled={isPending}
           error={errors.name?.message}
         />
-
         <TextInput
-          register={register}
+          register={formRegister}
           name="email"
           placeholder="Email"
-          disabled={isSubmitting || authLoading}
+          disabled={isPending}
           error={errors.email?.message}
         />
-
         <PasswordInput
-          register={register}
+          register={formRegister}
           name="password"
-          disabled={isSubmitting || authLoading}
+          disabled={isPending}
           error={errors.password?.message}
           showPassword={showPassword}
           togglePasswordVisibility={() => setShowPassword(!showPassword)}
         />
-
         <SubmitButton
-          isLoading={isSubmitting || authLoading}
+          isLoading={isPending}
           label="Sign Up"
           loadingLabel="Creating account..."
         />

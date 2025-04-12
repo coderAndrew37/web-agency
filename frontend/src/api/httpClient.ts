@@ -1,5 +1,6 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
+// Generic, reusable HTTP client with full typing
 class HttpClient {
   private instance: AxiosInstance;
 
@@ -13,41 +14,32 @@ class HttpClient {
     });
   }
 
-  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const { data } = await this.instance.get<T>(url, config);
-    return data;
+  get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.instance
+      .get<T>(url, config)
+      .then((res: AxiosResponse<T>) => res.data);
   }
 
-  async post<T, D = unknown>(
-    url: string,
-    data?: D,
-    config?: AxiosRequestConfig
-  ): Promise<T> {
-    const { data: responseData } = await this.instance.post<T>(
-      url,
-      data,
-      config
-    );
-    return responseData;
+  post<T, D>(url: string, data: D, config?: AxiosRequestConfig): Promise<T> {
+    return this.instance
+      .post<T>(url, data, config)
+      .then((res: AxiosResponse<T>) => res.data);
   }
 
-  async put<T, D = unknown>(
-    url: string,
-    data?: D,
-    config?: AxiosRequestConfig
-  ): Promise<T> {
-    const { data: responseData } = await this.instance.put<T>(
-      url,
-      data,
-      config
-    );
-    return responseData;
+  put<T, D>(url: string, data: D, config?: AxiosRequestConfig): Promise<T> {
+    return this.instance
+      .put<T>(url, data, config)
+      .then((res: AxiosResponse<T>) => res.data);
   }
 
-  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const { data } = await this.instance.delete<T>(url, config);
-    return data;
+  delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.instance
+      .delete<T>(url, config)
+      .then((res: AxiosResponse<T>) => res.data);
   }
 }
 
-export const apiClient = new HttpClient(import.meta.env.VITE_API_BASE_URL);
+// ✅ Provide type-safe client to rest of app
+export const apiClient = new HttpClient(
+  import.meta.env.VITE_API_BASE_URL as string
+);

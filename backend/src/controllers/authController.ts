@@ -266,6 +266,8 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+//get current user
+
 // ✅ Logout Controller
 export const logout = (req: Request, res: Response) => {
   try {

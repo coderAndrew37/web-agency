@@ -3,13 +3,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 import { loginSchema } from "../Utils/validationSchemas";
 import AuthForm from "../components/AuthForm";
 import PasswordInput from "../components/PasswordInput";
 import SubmitButton from "../components/SubmitButton";
 import FormError from "../components/FormError";
 import TextInput from "../components/TextInput";
+import { useLogin } from "../hooks/useAuth";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 type LoginData = {
   email: string;
@@ -17,7 +18,8 @@ type LoginData = {
 };
 
 const Login = () => {
-  const { login, loading, error: authError, user } = useAuth();
+  const { login, loading, error } = useLogin();
+  const { user } = useAuthContext();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,11 +40,9 @@ const Login = () => {
     try {
       await login(data);
     } catch {
-      if (authError) {
-        setFormError("root", { message: authError });
-      } else {
-        setFormError("root", { message: "Login failed. Please try again." });
-      }
+      setFormError("root", {
+        message: error?.message || "Login failed. Please try again.",
+      });
     }
   };
 
@@ -89,7 +89,7 @@ const Login = () => {
           disabled={isSubmitting}
           error={errors.password?.message}
           showPassword={showPassword}
-          togglePasswordVisibility={() => setShowPassword(!showPassword)}
+          togglePasswordVisibility={() => setShowPassword((prev) => !prev)}
         />
 
         <SubmitButton
