@@ -3,18 +3,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { contactSchema } from "../Utils/validationSchemas";
-import { useSubmitContactForm as sendContactMessage } from "../api/contactApi";
+import { useSubmitContactForm } from "../hooks/contact/useContactHooks";
 import colors from "../styles/colors";
-
-type ContactFormData = {
-  name: string;
-  email: string;
-  message: string;
-};
+import { ContactFormData } from "../types/contact";
 
 const ContactForm = () => {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -24,16 +18,15 @@ const ContactForm = () => {
     resolver: zodResolver(contactSchema),
   });
 
+  const { mutateAsync: submitContact, isPending } = useSubmitContactForm();
+
   const onSubmit = async (data: ContactFormData) => {
-    setLoading(true);
     setStatusMessage(null);
     try {
-      const response = await sendContactMessage(data);
-      setStatusMessage(response.data.message);
+      const res = await submitContact(data);
+      setStatusMessage("✅ " + res.message);
     } catch {
       setStatusMessage("❌ Failed to send message. Please try again.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -89,11 +82,11 @@ const ContactForm = () => {
 
         <motion.button
           type="submit"
-          className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700 text-lg text-lg hover:opacity-80"
+          className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700  text-lg text-center hover:opacity-80"
           whileTap={{ scale: 0.95 }}
-          disabled={loading}
+          disabled={isPending}
         >
-          {loading ? "Sending..." : "Send Message"}
+          {isPending ? "Sending..." : "Send Message"}
         </motion.button>
       </form>
     </motion.div>
