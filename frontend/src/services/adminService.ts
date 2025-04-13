@@ -1,4 +1,3 @@
-// src/services/adminService.ts
 import { apiClient } from "../api/httpClient";
 import {
   AdminStats,
