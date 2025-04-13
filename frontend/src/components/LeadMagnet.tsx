@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useCaptureLead } from "../api/leadMagnet";
+import { useCaptureLead } from "../hooks/lead-magnet/useLeadMagnet";
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 
@@ -13,15 +13,16 @@ const LeadMagnet = ({ title, description, resourceType }: LeadMagnetProps) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [success, setSuccess] = useState(false);
-  const captureLead = useCaptureLead();
+
+  const { mutateAsync: captureLead, isPending } = useCaptureLead();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await captureLead.mutateAsync({ email, name, resourceType });
+      await captureLead({ email, name, resourceType });
       setSuccess(true);
     } catch (error) {
-      console.error(error);
+      console.error("Lead capture failed", error);
     }
   };
 
@@ -46,6 +47,7 @@ const LeadMagnet = ({ title, description, resourceType }: LeadMagnetProps) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            disabled={isPending}
           />
           <input
             type="email"
@@ -54,13 +56,15 @@ const LeadMagnet = ({ title, description, resourceType }: LeadMagnetProps) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={isPending}
           />
           <motion.button
             type="submit"
             className="bg-blue-600 text-white font-semibold px-6 py-3 rounded-md mt-3"
             whileHover={{ scale: 1.05 }}
+            disabled={isPending}
           >
-            Get Free Guide
+            {isPending ? "Submitting..." : "Get Free Guide"}
           </motion.button>
         </form>
       ) : (
