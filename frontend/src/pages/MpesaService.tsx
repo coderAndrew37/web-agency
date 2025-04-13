@@ -10,6 +10,8 @@ import Bonus from "../components/Bonus";
 import FAQ from "../components/FAQ";
 import ServiceContent from "../components/ServiceContent";
 
+import { calendlyUrl } from "../config/constants";
+
 const mpesaFeatures = [
   {
     title: "Secure Transactions",
@@ -149,7 +151,7 @@ const MpesaIntegrationPage = () => {
         title="Seamless Mpesa Integration for Your Business 💰"
         subtitle="Accept payments directly into your bank or mobile wallet with our fast & secure Mpesa API integration."
         primaryButtonText="Get a Free Consultation"
-        primaryButtonAction={() => console.log("Mpesa Consultation Requested")}
+        calendlyUrl={calendlyUrl}
         secondaryButtonText="Learn More"
         secondaryButtonAction={() => console.log("Learn More About Mpesa")}
       />

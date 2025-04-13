@@ -8,6 +8,7 @@ import LeadMagnet from "../components/LeadMagnet";
 import Newsletter from "../components/Newsletter";
 import { facebookAdsPlans, facebookAdsFeatures } from "../data/pricingData";
 import FAQ from "../components/FAQ";
+import { calendlyUrl } from "../config/constants";
 
 const facebookAdsFAQs = [
   {
@@ -39,7 +40,7 @@ const FacebookAdsPage = () => {
         title="📢 Maximize Your Reach with Facebook Ads"
         subtitle="Target the right audience and boost your sales with our proven ad strategies."
         primaryButtonText="Get a Free Ad Strategy"
-        primaryButtonAction={() => console.log("Free Ad Strategy Clicked!")}
+        calendlyUrl={calendlyUrl}
         secondaryButtonText="Learn More"
         secondaryButtonAction={() => console.log("Learn More Clicked!")}
       />

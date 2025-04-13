@@ -1,14 +1,15 @@
-import Hero from "../components/Hero";
-import Features from "../components/Features";
-import Process from "../components/Process";
-import Pricing from "../components/Pricing";
-import CTA from "../components/CTA";
-import Newsletter from "../components/Newsletter";
-import { googleAdsPlans } from "../data/pricingData";
+import { PenTool, Search, TrendingUp } from "lucide-react";
 import Bonus from "../components/Bonus";
-import { Search, PenTool, TrendingUp } from "lucide-react";
+import CTA from "../components/CTA";
 import FAQ from "../components/FAQ";
+import Features from "../components/Features";
+import Hero from "../components/Hero";
+import Newsletter from "../components/Newsletter";
+import Pricing from "../components/Pricing";
+import Process from "../components/Process";
 import ServiceContent from "../components/ServiceContent";
+import { googleAdsPlans } from "../data/pricingData";
+import { calendlyUrl } from "../config/constants";
 
 const googleAdsFeatures = [
   {
@@ -148,7 +149,7 @@ const GoogleAdsPage = () => {
         title="Maximize Your ROI with Google Ads 🚀"
         subtitle="Drive targeted traffic, increase conversions, and grow your business with expertly managed Google Ads campaigns."
         primaryButtonText="Get a Free Google Ads Audit"
-        primaryButtonAction={() => console.log("Google Ads Audit Requested")}
+        calendlyUrl={calendlyUrl}
         secondaryButtonText="Learn More"
         secondaryButtonAction={() => console.log("Learn More About Google Ads")}
       />

@@ -20,6 +20,8 @@ import {
   Zap,
 } from "lucide-react";
 
+import { calendlyUrl } from "../config/constants";
+
 const techStack = [
   { name: "React Native", icon: <Code size={40} className="text-blue-500" /> },
   { name: "Flutter", icon: <Smartphone size={40} className="text-blue-400" /> },
@@ -85,7 +87,7 @@ const AppDevelopmentPage = () => {
         title="📱 Build a High-Performance Mobile App"
         subtitle="From idea to launch, we create powerful mobile applications."
         primaryButtonText="Request a Free Consultation"
-        primaryButtonAction={() => console.log("Consultation Clicked!")}
+        calendlyUrl={calendlyUrl}
         secondaryButtonText="Explore Case Studies"
         secondaryButtonAction={() => console.log("Case Studies Clicked!")}
       />

@@ -10,6 +10,7 @@ import Bonus from "../components/Bonus";
 import ServiceContent from "../components/ServiceContent";
 import { Search, Palette, Laptop } from "lucide-react";
 import FAQ from "../components/FAQ";
+import { calendlyUrl } from "../config/constants";
 
 const webDevFAQs = [
   {
@@ -61,10 +62,10 @@ const WebDevelopmentPage = () => {
       <Hero
         title="🌍 Build a High-Performance Website"
         subtitle="We create professional websites that drive results for businesses."
-        primaryButtonText="Get a Free Consultation"
-        primaryButtonAction={() => console.log("Consultation Clicked!")}
+        primaryButtonText="Book a Free Consultation"
         secondaryButtonText="View Portfolio"
         secondaryButtonAction={() => console.log("Portfolio Clicked!")}
+        calendlyUrl={calendlyUrl}
       />
 
       <ServiceContent

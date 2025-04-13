@@ -10,6 +10,7 @@ import colors from "../styles/colors";
 import { webDevPlans } from "../data/pricingData";
 import Guarantees from "../components/Guarantees";
 import Bonus from "../components/Bonus";
+import { calendlyUrl } from "../config/constants";
 
 const Home = () => {
   return (
@@ -19,9 +20,9 @@ const Home = () => {
         title="We Don’t Just Build Websites—We Build Sales Machines 🚀"
         subtitle="From high-performance websites to conversion-driven marketing, we help businesses generate leads, increase sales, and scale effortlessly."
         primaryButtonText="Get a Custom Growth Strategy"
-        primaryButtonAction={() => console.log("Navigating to Growth Strategy")}
         secondaryButtonText="See How We Scale Businesses"
         secondaryButtonAction={() => console.log("Viewing Success Stories")}
+        calendlyUrl={calendlyUrl}
       />
 
       <CTA

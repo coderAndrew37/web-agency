@@ -7,6 +7,7 @@ import { services } from "../data/navData"; // Adjust the import path as necessa
 import { useNavbar } from "../hooks/ui/useNavBar";
 import colors from "../styles/colors";
 import { useCalendly } from "../hooks/integrations/useCalendly";
+import { calendlyUrl } from "../config/constants";
 
 // Extend the Window interface to include Calendly
 declare global {
@@ -171,9 +172,7 @@ const Navbar = () => {
 
         {/* CTA Button (Desktop) */}
         <button
-          onClick={() =>
-            openCalendly("https://calendly.com/omolloandrew37/30min")
-          }
+          onClick={() => openCalendly(calendlyUrl)}
           className="hidden md:block px-6 py-3 font-bold rounded-full shadow-md hover:opacity-80 transition"
           style={{ backgroundColor: colors.primary, color: "#fff" }}
         >

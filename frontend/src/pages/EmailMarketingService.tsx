@@ -9,6 +9,7 @@ import { emailMarketingPlans } from "../data/pricingData";
 import ServiceContent from "../components/ServiceContent";
 import Bonus from "../components/Bonus";
 import { UploadCloud, FileText, Search } from "lucide-react";
+import { calendlyUrl } from "../config/constants";
 
 const emailMarketingFeatures = [
   {
@@ -147,9 +148,7 @@ const EmailMarketingPage = () => {
         title="Supercharge Your Sales with Email Marketing 📩"
         subtitle="Engage, nurture, and convert leads into customers with high-converting email campaigns."
         primaryButtonText="Get a Free Email Marketing Strategy"
-        primaryButtonAction={() =>
-          console.log("Email Marketing Strategy Requested")
-        }
+        calendlyUrl={calendlyUrl}
         secondaryButtonText="Learn More"
         secondaryButtonAction={() =>
           console.log("Learn More About Email Marketing")

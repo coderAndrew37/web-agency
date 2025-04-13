@@ -1,13 +1,15 @@
+import { useCalendly } from "../hooks/integrations/useCalendly";
 import colors from "../styles/colors";
 
 interface HeroProps {
   title: string;
   subtitle: string;
   primaryButtonText: string;
-  primaryButtonAction: () => void;
+  primaryButtonAction?: () => void;
   secondaryButtonText?: string;
   secondaryButtonAction?: () => void;
   backgroundColor?: string;
+  calendlyUrl?: string; // optional calendly url
 }
 
 const Hero = ({
@@ -18,7 +20,18 @@ const Hero = ({
   secondaryButtonText,
   secondaryButtonAction,
   backgroundColor = colors.background,
+  calendlyUrl,
 }: HeroProps) => {
+  const { openCalendly } = useCalendly();
+
+  const handlePrimaryClick = () => {
+    if (primaryButtonAction) return primaryButtonAction();
+    if (calendlyUrl) return openCalendly(calendlyUrl);
+    console.warn(
+      "No primaryButtonAction or calendlyUrl provided for Hero component."
+    );
+  };
+
   return (
     <section
       className="hero relative flex flex-col items-center justify-center text-center min-h-screen px-6 pt-20 md:pt-32"
@@ -42,7 +55,7 @@ const Hero = ({
               color: "#fff",
               cursor: "pointer",
             }}
-            onClick={primaryButtonAction}
+            onClick={handlePrimaryClick}
           >
             {primaryButtonText}
           </button>

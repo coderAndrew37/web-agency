@@ -9,6 +9,7 @@ import { Search, FileText } from "lucide-react";
 import Bonus from "../components/Bonus";
 import FAQ from "../components/FAQ";
 import ServiceContent from "../components/ServiceContent";
+import { calendlyUrl } from "../config/constants";
 
 const seoFeatures = [
   {
@@ -148,7 +149,7 @@ const SeoPage = () => {
         title="Boost Your Rankings with Expert SEO 🚀"
         subtitle="Get more traffic, more leads, and more sales with our proven SEO strategies."
         primaryButtonText="Get a Free SEO Audit"
-        primaryButtonAction={() => console.log("SEO Audit Requested")}
+        calendlyUrl={calendlyUrl}
         secondaryButtonText="Learn More"
         secondaryButtonAction={() => console.log("Learn More About SEO")}
       />
