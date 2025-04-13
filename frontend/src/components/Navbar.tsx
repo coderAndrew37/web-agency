@@ -6,12 +6,23 @@ import { Link } from "react-router-dom";
 import { services } from "../data/navData"; // Adjust the import path as necessary
 import { useNavbar } from "../hooks/ui/useNavBar";
 import colors from "../styles/colors";
+import { useCalendly } from "../hooks/integrations/useCalendly";
+
+// Extend the Window interface to include Calendly
+declare global {
+  interface Window {
+    Calendly?: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Navbar = () => {
   const { user, logout, isOpen, setIsOpen, isServicesOpen, setIsServicesOpen } =
     useNavbar();
+  const { openCalendly } = useCalendly();
   return (
     <nav className="navbar fixed top-0 left-0 w-full z-50 transition-all duration-300">
       <div className="container mx-auto flex items-center justify-between py-4 md:py-6 px-6">
@@ -159,13 +170,15 @@ const Navbar = () => {
         </ul>
 
         {/* CTA Button (Desktop) */}
-        <Link
-          to="/contact"
+        <button
+          onClick={() =>
+            openCalendly("https://calendly.com/omolloandrew37/30min")
+          }
           className="hidden md:block px-6 py-3 font-bold rounded-full shadow-md hover:opacity-80 transition"
           style={{ backgroundColor: colors.primary, color: "#fff" }}
         >
           Book a Call
-        </Link>
+        </button>
 
         {/* Mobile Menu Button */}
         <button
