@@ -11,7 +11,7 @@ import projectRoutes from "../routes/projectRoutes";
 
 export default function setupRoutes(app: express.Application) {
   app.use("/api/clients", clientRoutes);
-  app.use("/api/bookings", bookingRoutes);
+  app.use("/api/booking", bookingRoutes);
   app.use("/api/newsletter", newsletterRoutes);
   app.use("/api/auth", authRoutes);
   app.use("/api/password", passwordRoutes);
