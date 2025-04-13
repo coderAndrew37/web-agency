@@ -1,11 +1,16 @@
-import { useAuth } from "../hooks/useAuth";
+import { useCurrentUser, useLogout } from "../hooks/useAuth";
 import { motion } from "framer-motion";
 import { LogOut, UserCog, ShieldCheck, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { data: user } = useCurrentUser();
+  const logoutMutation = useLogout();
   const isAdmin = user?.role === "admin";
+
+  const handleLogout = async () => {
+    await logoutMutation.mutateAsync();
+  };
 
   return (
     <motion.div
@@ -14,7 +19,6 @@ const Dashboard = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Welcome Section */}
       <h2 className="text-3xl font-bold text-center text-primary">
         Welcome, {user?.name}! 🎉
       </h2>
@@ -22,7 +26,6 @@ const Dashboard = () => {
         Your dashboard gives you full control over your account.
       </p>
 
-      {/* User Info */}
       <div
         className={`mt-6 grid gap-6 ${
           isAdmin ? "md:grid-cols-2" : "md:grid-cols-1"
@@ -49,7 +52,6 @@ const Dashboard = () => {
         </motion.div>
       </div>
 
-      {/* Quick Actions */}
       <div className="mt-8 flex flex-col md:flex-row items-center gap-4">
         <motion.button
           className="w-full md:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition"
@@ -66,7 +68,6 @@ const Dashboard = () => {
         </motion.button>
       </div>
 
-      {/* Links Section */}
       <div className="mt-6 flex flex-col md:flex-row justify-center items-center gap-4">
         <Link
           to="/"
@@ -77,10 +78,9 @@ const Dashboard = () => {
         </Link>
       </div>
 
-      {/* Logout Button */}
       <div className="mt-6 text-center">
         <motion.button
-          onClick={logout}
+          onClick={handleLogout}
           className="px-6 py-3 flex items-center gap-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition"
           whileTap={{ scale: 0.95 }}
         >
