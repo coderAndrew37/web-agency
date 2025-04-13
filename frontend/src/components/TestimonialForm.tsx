@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { testimonialSchema } from "../Utils/validationSchemas";
-import { useSubmitTestimonial } from "../api/testimonialApi";
-import { useAuth } from "../hooks/useAuth";
+import { useSubmitTestimonial } from "../hooks/testimonials/useTestimonialHooks";
+import { useCurrentUser } from "../hooks/useAuth"; // ✅ fixed import
 import { motion } from "framer-motion";
 import colors from "../styles/colors";
-import { Loader2 } from "lucide-react"; // Assuming you're using Lucide icons
+import { Loader2 } from "lucide-react";
 
 type TestimonialData = {
   name: string;
@@ -14,7 +14,8 @@ type TestimonialData = {
 };
 
 const TestimonialForm = () => {
-  const { user } = useAuth();
+  const { data: user } = useCurrentUser(); // ✅ access user from hook
+
   const {
     register,
     handleSubmit,
@@ -45,9 +46,8 @@ const TestimonialForm = () => {
     try {
       await submitTestimonial(formData);
       reset();
-    } catch (error) {
-      // Error is already handled by React Query
-      console.error("Submission error:", error);
+    } catch (err) {
+      console.error("Submission error:", err);
     }
   };
 

@@ -1,4 +1,3 @@
-// hooks/auth/useAuth.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthService } from "../services/authService";
 import { LoginData, RegisterData, User } from "../types/authTypes";

@@ -1,25 +1,13 @@
 import { motion } from "framer-motion";
-import { useFetchTestimonials } from "../api/testimonialApi";
+import { useFetchTestimonials } from "../hooks/testimonials/useTestimonialHooks";
 import colors from "../styles/colors";
 import { TestimonialSkeleton } from "./TestimonialSkeleton";
-
-type Testimonial = {
-  _id: string;
-  name: string;
-  message: string;
-  image?: string;
-};
+import type { Testimonial } from "../types/testimonial";
 
 const TestimonialList = () => {
-  const {
-    data: testimonials = [],
-    isLoading,
-    isError,
-  } = useFetchTestimonials();
+  const { data = [], isLoading, isError } = useFetchTestimonials();
 
-  if (isLoading) {
-    return <TestimonialSkeleton />;
-  }
+  if (isLoading) return <TestimonialSkeleton />;
 
   if (isError) {
     return (
@@ -40,11 +28,11 @@ const TestimonialList = () => {
         🌟 What Our Clients Say
       </h2>
 
-      {testimonials.length === 0 ? (
+      {data.length === 0 ? (
         <p className="text-center text-gray-600">No testimonials yet.</p>
       ) : (
         <div className="space-y-6">
-          {testimonials.map((testimonial: Testimonial) => (
+          {data.map((testimonial: Testimonial) => (
             <motion.div
               key={testimonial._id}
               className="p-6 border rounded-lg shadow-md bg-white"
