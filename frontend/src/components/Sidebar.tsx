@@ -6,6 +6,7 @@ import {
   Mail,
   MessageSquare,
   Settings,
+  Folder,
 } from "lucide-react";
 import { useState, JSX } from "react";
 
@@ -60,6 +61,12 @@ const Sidebar = () => {
           to="/admin/settings"
           icon={<Settings size={20} />}
           label="Settings"
+          collapsed={collapsed}
+        />
+        <NavItem
+          to="/admin/projects"
+          icon={<Folder size={20} />}
+          label="Projects"
           collapsed={collapsed}
         />
       </nav>

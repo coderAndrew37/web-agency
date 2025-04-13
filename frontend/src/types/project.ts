@@ -12,9 +12,21 @@ export interface Project {
   name: string;
   description?: string; // Added since backend uses this
   status: ProjectStatus;
-  user: string | ProjectUser; // Can be ID or populated user
+  //user: string | ProjectUser; // Can be ID or populated user
   createdAt: string;
   updatedAt?: string; // Added for completeness
+  serviceType?: string;
+  serviceName?: string;
+  progress?: number;
+  startDate?: string;
+  deadline?: string;
+  user:
+    | string
+    | {
+        _id: string;
+        name: string;
+        email: string;
+      };
 }
 
 export interface CreateProjectDto {
