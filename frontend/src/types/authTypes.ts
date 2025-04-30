@@ -20,5 +20,15 @@ export type User = {
 
 export type AuthResponse = {
   user: User;
-  token?: string;
+  accessToken?: string;
+  csrfToken?: string;
+};
+export type RefreshTokenResponse = {
+  accessToken: string;
+  csrfToken?: string;
+};
+
+export type VerifyData = {
+  email: string;
+  code: string;
 };

@@ -1,31 +1,72 @@
 import { apiClient } from "../api/httpClient";
 import {
-  AuthResponse,
   LoginData,
   RegisterData,
+  VerifyData,
   User,
+  AuthResponse,
+  RefreshTokenResponse,
 } from "../types/authTypes";
 
 export const AuthService = {
-  login: async (data: LoginData): Promise<User> => {
-    const res = await apiClient.post<AuthResponse, LoginData>(
-      "/auth/login",
-      data
-    );
-    return res.user;
-  },
-  register: async (data: RegisterData): Promise<void> => {
-    return apiClient.post<void, RegisterData>("/auth/register", data);
+  async login(data: LoginData): Promise<AuthResponse> {
+    const response = await apiClient.post<AuthResponse>("/auth/login", data);
+    if (response.csrfToken) {
+      apiClient.setCsrfToken(response.csrfToken);
+    }
+    return response;
   },
 
-  logout: async (): Promise<void> => {
-    return apiClient.post<void, void>("/auth/logout", undefined); // must provide `data`
+  async register(data: RegisterData): Promise<void> {
+    await apiClient.post<void>("/auth/register", data);
   },
-  getCurrentUser: async (): Promise<User> => {
+
+  async verify(data: VerifyData): Promise<AuthResponse> {
+    const response = await apiClient.post<AuthResponse>("/auth/verify", data);
+    if (response.csrfToken) {
+      apiClient.setCsrfToken(response.csrfToken);
+    }
+    return response;
+  },
+
+  async logout(): Promise<void> {
+    try {
+      await apiClient.post("/auth/logout");
+    } finally {
+      apiClient.clearCsrfToken();
+    }
+  },
+
+  async getCurrentUser(): Promise<User> {
     return apiClient.get<User>("/auth/me");
   },
 
-  refresh: async (): Promise<void> => {
-    return apiClient.post<void, void>("/auth/refresh", undefined); // fix: supply 2 args
+  async refresh(): Promise<RefreshTokenResponse> {
+    const response = await apiClient.post<RefreshTokenResponse>(
+      "/auth/refresh"
+    );
+    if (response.csrfToken) {
+      apiClient.setCsrfToken(response.csrfToken);
+    }
+    return response;
+  },
+
+  // Utility method to check auth state
+  async checkAuth(): Promise<{ isAuthenticated: boolean; user?: User }> {
+    try {
+      const user = await this.getCurrentUser();
+      return { isAuthenticated: true, user };
+    } catch {
+      try {
+        const { accessToken } = await this.refresh();
+        if (accessToken) {
+          const user = await this.getCurrentUser();
+          return { isAuthenticated: true, user };
+        }
+      } catch {
+        return { isAuthenticated: false };
+      }
+    }
+    return { isAuthenticated: false };
   },
 };
