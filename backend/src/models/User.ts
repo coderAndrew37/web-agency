@@ -9,6 +9,7 @@ export interface IUser extends Document {
   password: string;
   role: "user" | "admin";
   isVerified: boolean;
+  csrfToken?: string;
   comparePassword(password: string): Promise<boolean>;
 }
 
@@ -19,6 +20,7 @@ const userSchema = new mongoose.Schema<IUser>(
     password: { type: String, required: true, minlength: 6 },
     role: { type: String, enum: ["user", "admin"], default: "user" },
     isVerified: { type: Boolean, default: false },
+    csrfToken: { type: String, default: null },
   },
   { timestamps: true }
 );

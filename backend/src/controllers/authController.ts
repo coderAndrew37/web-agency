@@ -1,30 +1,42 @@
-import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { Request, Response } from "express";
 import ms from "ms";
-import User, { validateUser } from "../models/User";
 import OTP from "../models/otp";
+import crypto from "crypto";
 import RefreshTokenBlacklist from "../models/RefreshTokenBlacklist";
+import User, { IUser, validateUser } from "../models/User";
 import { sendEmail } from "../utils/emailService";
 import { generateOTP } from "../utils/generateOtp";
 import {
+  clearAuthCookies,
   createTokens,
-  isTokenRefreshRateLimited,
-  setTokensAsCookies,
+  setRefreshTokenCookie,
+  validateRefreshToken,
 } from "../utils/tokenManager";
 
-// Utility function for consistent error responses
+interface AuthenticatedRequest extends Request {
+  user?: IUser;
+  headers: {
+    "x-csrf-token"?: string;
+  } & Request["headers"];
+}
+
+// Response handlers
 const sendError = (
   res: Response,
   status: number,
   message: string,
-  details?: any
+  details?: object
 ) => {
-  res.status(status).json({ error: message, ...details });
+  res.status(status).json({ success: false, error: message, ...details });
 };
 
-// ✅ Enhanced Register Controller
-export const register = async (req: Request, res: Response): Promise<void> => {
+const sendSuccess = (res: Response, data: object, statusCode = 200) => {
+  res.status(statusCode).json({ success: true, ...data });
+};
+
+// Register new user
+export const register = async (req: Request, res: Response) => {
   try {
     const { error } = validateUser(req.body);
     if (error) {
@@ -34,14 +46,12 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     }
 
     const { name, email, password } = req.body;
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      return sendError(res, 409, "Email is already registered");
+
+    if (await User.exists({ email })) {
+      return sendError(res, 409, "Email already registered");
     }
 
-    const user = new User({ name, email, password });
-    await user.save();
-
+    const user = await new User({ name, email, password }).save();
     const otp = generateOTP();
     const hashedOtp = await bcrypt.hash(otp, 10);
 
@@ -51,56 +61,55 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         code: hashedOtp,
         createdAt: new Date(),
         attempts: 0,
-        expiresAt: new Date(Date.now() + ms("15m")), // ✅ 15 minutes later
+        expiresAt: new Date(Date.now() + ms("15m")),
       },
-      { upsert: true, new: true }
+      { upsert: true }
     );
 
     await sendEmail(
       email,
-      "Verify your account",
-      `<p>Your verification code is: <strong>${otp}</strong></p><p>This code will expire in 15 minutes.</p>`
+      "Kindly verify your account",
+      `Your verification code is: <strong>${otp}</strong> (expires in 15 minutes)`
     );
 
-    res.status(201).json({
-      message: "Account created. Check your email for verification OTP.",
-      email,
-    });
+    sendSuccess(
+      res,
+      {
+        message: "Account created. Check your email for the OTP.",
+        email,
+      },
+      201
+    );
   } catch (error) {
     console.error("Registration error:", error);
-    sendError(res, 500, "Internal server error during registration");
+    sendError(res, 500, "Registration failed");
   }
 };
 
-export const verify = async (req: Request, res: Response): Promise<void> => {
+// Verify user email with OTP
+export const verify = async (req: Request, res: Response) => {
   try {
     const { email, code } = req.body;
     if (!email || !code) {
-      return sendError(res, 400, "Email or OTP code are required");
+      return sendError(res, 400, "Email and OTP required");
     }
 
     const otpDoc = await OTP.findOne({
       email,
-      createdAt: { $gt: new Date(Date.now() - 15 * 60 * 1000) },
+      createdAt: { $gt: new Date(Date.now() - ms("15m")) },
     });
 
-    if (!otpDoc || !otpDoc.code) {
-      return sendError(res, 400, "OTP expired or invalid", {
-        codeExpired: true,
-        solution: "Request a new OTP",
-      });
+    if (!otpDoc?.code) {
+      return sendError(res, 400, "OTP expired/invalid", { codeExpired: true });
     }
 
     if ((otpDoc.attempts ?? 0) >= 5) {
-      return sendError(res, 429, "Too many attempts", {
-        solution: "Request a new OTP",
-      });
+      return sendError(res, 429, "Too many attempts. Request new OTP");
     }
 
-    const isCodeValid = await bcrypt.compare(code, otpDoc.code);
-    if (!isCodeValid) {
+    if (!(await bcrypt.compare(code, otpDoc.code))) {
       await OTP.updateOne({ email }, { $inc: { attempts: 1 } });
-      return sendError(res, 400, "Invalid OTP code", {
+      return sendError(res, 400, "Invalid OTP", {
         attemptsRemaining: 5 - ((otpDoc.attempts ?? 0) + 1),
       });
     }
@@ -108,10 +117,7 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
     await OTP.deleteOne({ email });
     const user = await User.findOneAndUpdate(
       { email },
-      {
-        isVerified: true,
-        verifiedAt: new Date(),
-      },
+      { isVerified: true, verifiedAt: new Date() },
       { new: true }
     );
 
@@ -120,172 +126,254 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
     }
 
     const { accessToken, refreshToken } = createTokens(user._id.toString());
-    setTokensAsCookies(res, accessToken, refreshToken);
+    const csrfToken = crypto.randomBytes(32).toString("hex");
+
+    // Store CSRF token in user document
+    user.csrfToken = csrfToken;
+    await user.save();
+
+    setRefreshTokenCookie(res, refreshToken);
 
     await sendEmail(
       email,
-      "Welcome to Sleek Sites!",
-      `<p>Your account has been successfully verified. <br> We're glad to have you onboard</p>`
+      "Account Verified",
+      "Welcome! Your account has been verified. "
     );
 
-    res.status(200).json({
-      message: "Account verified successfully",
+    sendSuccess(res, {
+      message: "Account verified",
+      accessToken,
+      csrfToken,
       user: {
+        id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (error) {
     console.error("Verification error:", error);
-    sendError(res, 500, "Internal server error during verification");
+    sendError(res, 500, "Verification failed");
   }
 };
-// ✅ Enhanced Login Controller
-export const login = async (req: Request, res: Response): Promise<void> => {
+
+// User login
+export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
 
-    if (!user) {
-      return sendError(res, 401, "Invalid email or password");
-    }
-
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return sendError(res, 401, "Invalid email or password");
+    if (!user || !(await user.comparePassword(password))) {
+      return sendError(res, 401, "Invalid credentials");
     }
 
     if (!user.isVerified) {
-      return sendError(res, 403, "Account not verified", {
-        solution: "Check your email for verification OTP",
-      });
+      return sendError(res, 403, "Account not verified. Check email for OTP");
     }
 
     const { accessToken, refreshToken } = createTokens(user._id.toString());
-    setTokensAsCookies(res, accessToken, refreshToken);
+    const csrfToken = crypto.randomBytes(32).toString("hex");
 
-    res.status(200).json({
-      message: "Logged in successfully",
+    // Store new CSRF token
+    user.csrfToken = csrfToken;
+    await user.save();
+    setRefreshTokenCookie(res, refreshToken);
+
+    sendSuccess(res, {
+      message: "Login successful",
+      accessToken,
+      csrfToken,
       user: {
+        id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (error) {
     console.error("Login error:", error);
-    sendError(res, 500, "Internal server error during login");
+    sendError(res, 500, "Login failed");
   }
 };
 
-// ✅ Resend OTP Controller
-export const resendOtp = async (req: Request, res: Response): Promise<void> => {
+// Refresh access token
+export const refresh = async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
+    const refreshToken = req.cookies?.refreshToken;
+    const csrfToken = req.headers["x-csrf-token"]; // Get CSRF token from header
+
+    if (!refreshToken) {
+      return sendError(res, 401, "Authentication required");
+    }
+
+    const userId = validateRefreshToken(refreshToken);
+    if (!userId) {
+      return sendError(res, 401, "Invalid/expired token");
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return sendError(res, 404, "User not found");
+    }
+
+    // Verify CSRF token
+    if (!csrfToken || csrfToken !== user.csrfToken) {
+      return sendError(res, 403, "Invalid CSRF token");
+    }
+
+    if (await RefreshTokenBlacklist.exists({ token: refreshToken })) {
+      clearAuthCookies(res);
+      return sendError(res, 403, "Session expired. Please login");
+    }
+
+    await RefreshTokenBlacklist.create({
+      token: refreshToken,
+      expiresAt: new Date(Date.now() + ms("7d")),
+    });
+
+    const { accessToken, refreshToken: newRefreshToken } = createTokens(userId);
+    const newCsrfToken = crypto.randomBytes(32).toString("hex");
+
+    // Rotate CSRF token
+    user.csrfToken = newCsrfToken;
+    await user.save();
+
+    setRefreshTokenCookie(res, newRefreshToken);
+
+    sendSuccess(res, {
+      message: "Token refreshed",
+      accessToken,
+      csrfToken: newCsrfToken, // Send new CSRF token to client
+    });
+  } catch (error) {
+    console.error("Refresh error:", error);
+    sendError(res, 401, "Session expired. Please login");
+  }
+};
+
+// User logout
+
+export const logout = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+    const csrfToken = req.headers["x-csrf-token"];
+
+    // CSRF protection
+    if (req.user && csrfToken && csrfToken !== req.user.csrfToken) {
+      return sendError(res, 403, "Invalid CSRF token");
+    }
+
+    if (refreshToken) {
+      // Check if token is already blacklisted
+      const exists = await RefreshTokenBlacklist.exists({
+        token: refreshToken,
+      });
+      if (!exists) {
+        await RefreshTokenBlacklist.create({
+          token: refreshToken,
+          expiresAt: new Date(Date.now() + ms("7d")),
+          userId: req.user?._id,
+        });
+      }
+    }
+
+    clearAuthCookies(res);
+    sendSuccess(res, { message: "Logged out" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    sendError(res, 500, "Logout failed");
+  }
+};
+
+// Get current user data
+export const getCurrentUser = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    if (!req.user) {
+      return sendError(res, 401, "Not authenticated");
+    }
+
+    // More efficient query
+    const user = await User.findById(req.user._id)
+      .select("name email role isVerified verifiedAt createdAt")
+      .lean();
 
     if (!user) {
-      sendError(res, 404, "User not found");
+      return sendError(res, 404, "User not found");
     }
 
-    if (user?.isVerified) {
-      sendError(res, 400, "Account already verified");
+    sendSuccess(res, {
+      user: {
+        ...user,
+        id: user._id.toString(),
+      },
+    });
+  } catch (error) {
+    console.error("Current user error:", error);
+    sendError(res, 500, "Failed to fetch user");
+  }
+};
+
+export const resendOtp = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    // Validate email format
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return sendError(res, 400, "Invalid email format");
     }
 
-    // Generate and store new OTP
+    const user = await User.findOne({ email });
+    if (!user) {
+      // Security: Don't reveal if user doesn't exist
+      return sendSuccess(res, {
+        message: "If an account exists, OTP has been resent",
+      });
+    }
+
+    if (user.isVerified) {
+      return sendError(res, 400, "Account already verified");
+    }
+
+    // Rate limiting
+    const lastOtp = await OTP.findOne({ email });
+    if (
+      lastOtp &&
+      new Date() <
+        new Date(new Date(lastOtp.get("createdAt")).getTime() + ms("1m"))
+    ) {
+      return sendError(res, 429, "Please wait before requesting new OTP");
+    }
+
     const otp = generateOTP();
-    const hashedOtp = await bcrypt.hash(otp, 10);
+    const hashedOtp = await bcrypt.hash(otp, 12); // Stronger hashing
 
-    // Check if the user has exceeded the maximum attempts
     await OTP.findOneAndUpdate(
       { email },
       {
         code: hashedOtp,
         createdAt: new Date(),
-        expiresAt: new Date(Date.now() + 15 * 60 * 1000), // ✅ 15 minutes later
+        expiresAt: new Date(Date.now() + ms("15m")),
         attempts: 0,
       },
       { upsert: true, new: true }
     );
 
-    // Send new OTP email
     await sendEmail(
       email,
-      "Your new verification code",
-      `<p>Your new verification code is: <strong>${otp}</strong></p>
-       <p>This code will expire in 15 minutes.</p>`
+      "New Verification Code",
+      `Your new code: <strong>${otp}</strong> (expires in 15 minutes)`
     );
 
-    res.status(200).json({
-      message: "New OTP sent successfully",
-      email,
+    sendSuccess(res, {
+      message: "OTP resent",
+      email: user.email, // Return normalized email
+      nextResendAllowed: Date.now() + ms("1m"),
     });
   } catch (error) {
     console.error("Resend OTP error:", error);
-    sendError(res, 500, "Internal server error while resending OTP");
-  }
-};
-
-// ✅ Refresh Token Controller
-export const refresh = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const token = req.cookies?.refreshToken;
-    if (!token) {
-      return sendError(res, 401, "No refresh token provided");
-    }
-
-    if (isTokenRefreshRateLimited(req)) {
-      return sendError(res, 429, "Too many refresh attempts. Please wait.");
-    }
-
-    const blacklisted = await RefreshTokenBlacklist.findOne({ token });
-    if (blacklisted) {
-      return sendError(res, 403, "Refresh token invalidated");
-    }
-
-    const decoded = jwt.verify(token, process.env.REFRESH_SECRET!) as {
-      userId: string;
-    };
-
-    const user = await User.findById(decoded.userId);
-    if (!user) {
-      return sendError(res, 404, "User not found");
-    }
-
-    await RefreshTokenBlacklist.create({
-      token,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    });
-
-    const { accessToken, refreshToken } = createTokens(user._id.toString());
-    setTokensAsCookies(res, accessToken, refreshToken);
-
-    res.status(200).json({ message: "Token refreshed successfully" });
-  } catch (error) {
-    console.error("Refresh token error:", error);
-    sendError(res, 401, "Invalid or expired refresh token");
-  }
-};
-
-//get current user
-
-// ✅ Logout Controller
-export const logout = (req: Request, res: Response) => {
-  try {
-    const refreshToken = req.cookies?.refreshToken;
-
-    // Optionally add the refresh token to blacklist here
-    if (refreshToken) {
-      RefreshTokenBlacklist.create({
-        token: refreshToken,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      }).catch(console.error);
-    }
-
-    res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
-    res.status(200).json({ message: "Logged out successfully" });
-  } catch (error) {
-    console.error("Logout error:", error);
-    sendError(res, 500, "Internal server error during logout");
+    sendError(res, 500, "Failed to resend OTP");
   }
 };

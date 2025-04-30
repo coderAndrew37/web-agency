@@ -332,3 +332,24 @@
 [2025-04-13T08:07:43.445Z] INFO: ✅ MongoDB Connected Successfully
 [2025-04-13T08:07:52.274Z] INFO: 📅 Received Calendly event: invitee.created
 [2025-04-13T08:07:52.282Z] WARN: Invalid webhook payload: "calendlyEventUri" is required
+[2025-04-23T17:21:14.824Z] INFO: 🚀 Server running on port 5000
+[2025-04-23T17:21:14.868Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-27T18:23:35.336Z] INFO: 🚀 Server running on port 5000
+[2025-04-27T18:23:35.437Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-28T04:43:05.531Z] INFO: 🚀 Server running on port 5000
+[2025-04-28T04:43:05.589Z] INFO: ✅ MongoDB Connected Successfully
+[2025-04-30T12:27:05.448Z] INFO: 🚀 Server running on port 5000
+[2025-04-30T12:27:35.458Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-30T12:28:13.256Z] INFO: 🚀 Server running on port 5000
+[2025-04-30T12:28:43.262Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-30T12:30:35.294Z] INFO: 🚀 Server running on port 5000
+[2025-04-30T12:31:05.306Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-30T12:46:18.059Z] INFO: 🚀 Server running on port 5000
+[2025-04-30T12:46:35.385Z] INFO: 🚀 Server running on port 5000
+[2025-04-30T12:46:53.863Z] INFO: 🚀 Server running on port 5000
+[2025-04-30T12:47:09.094Z] INFO: 🚀 Server running on port 5000
+[2025-04-30T12:47:39.095Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-30T12:47:55.037Z] INFO: 🚀 Server running on port 5000
+[2025-04-30T12:48:25.025Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-04-30T12:48:46.172Z] INFO: 🚀 Server running on port 5000
+[2025-04-30T12:49:24.094Z] INFO: 🚀 Server running on port 5000

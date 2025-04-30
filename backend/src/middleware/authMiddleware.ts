@@ -1,29 +1,26 @@
-// middleware/authMiddleware.ts
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import User, { IUser } from "../models/User";
+import User from "../models/User";
 
+// Create a custom interface that extends Express's Request
 export interface AuthenticatedRequest extends Request {
-  user?: IUser;
+  user?: typeof User.prototype;
 }
 
 const getToken = (req: Request): string | null => {
-  if (req.cookies?.accessToken) return req.cookies.accessToken;
-  if (req.headers.authorization?.startsWith("Bearer ")) {
-    return req.headers.authorization.split(" ")[1];
-  }
-  return null;
+  const authHeader = req.headers.authorization;
+  return authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
 };
 
 export const protect = async (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
-): Promise<void> => {
+) => {
   try {
     const token = getToken(req);
     if (!token) {
-      res.status(401).json({ error: "Unauthorized, no token provided" });
+      res.status(401).json({ error: "Authorization token required" });
       return;
     }
 
@@ -40,15 +37,44 @@ export const protect = async (
     req.user = user;
     next();
   } catch (error) {
-    res.status(401).json({ error: "Invalid token or expired session" });
+    res.status(401).json({ error: "Invalid or expired token" });
+  }
+};
+
+// Add new CSRF protection middleware
+export const csrfProtect = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ error: "Authentication required" });
+      return;
+    }
+
+    const csrfToken = req.headers["x-csrf-token"];
+    if (!csrfToken || typeof csrfToken !== "string") {
+      res.status(403).json({ error: "CSRF token required" });
+      return;
+    }
+
+    if (req.user.csrfToken !== csrfToken) {
+      res.status(403).json({ error: "Invalid CSRF token" });
+      return;
+    }
+
+    next();
+  } catch (error) {
+    res.status(500).json({ error: "CSRF validation failed" });
   }
 };
 
 export const optionalAuth = async (
   req: AuthenticatedRequest,
-  _res: Response,
+  res: Response,
   next: NextFunction
-): Promise<void> => {
+) => {
   try {
     const token = getToken(req);
     if (token) {
@@ -58,17 +84,19 @@ export const optionalAuth = async (
       const user = await User.findById(decoded.userId).select("-password");
       if (user) req.user = user;
     }
-  } catch (_) {}
-  next();
+    next();
+  } catch {
+    next();
+  }
 };
 
 export const admin = (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
-): void => {
+) => {
   if (!req.user || req.user.role !== "admin") {
-    res.status(403).json({ error: "Not authorized as admin" });
+    res.status(403).json({ error: "Admin access required" });
     return;
   }
   next();
