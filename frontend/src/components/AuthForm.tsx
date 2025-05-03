@@ -1,7 +1,6 @@
-// components/AuthForm.tsx
-import { motion } from "framer-motion";
 import { ReactNode } from "react";
 import colors from "../styles/colors";
+import { motion } from "framer-motion";
 
 type AuthFormProps = {
   title: string;
