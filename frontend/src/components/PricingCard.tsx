@@ -26,7 +26,7 @@ const PricingCard = ({
       {/* 🔥 Super Premium Popular Tag */}
       {highlight && (
         <motion.span
-          className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-red-500 text-white text-lg px-4 py-1 text-sm rounded-full font-bold shadow-lg"
+          className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-red-500 text-white text-lg px-4 py-1 rounded-full font-bold shadow-lg"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{

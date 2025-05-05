@@ -8,88 +8,48 @@ import Newsletter from "../components/Newsletter";
 import { webDevPlans, webDevFeatures } from "../data/pricingData";
 import Bonus from "../components/Bonus";
 import ServiceContent from "../components/ServiceContent";
-import { Search, Palette, Laptop } from "lucide-react";
+import { webDevBonuses } from "../data/bonuses";
 import FAQ from "../components/FAQ";
 import { calendlyUrl } from "../config/constants";
-
-const webDevFAQs = [
-  {
-    question: "How long does it take to build a website?",
-    answer: "Depending on complexity, we typically deliver within 2-6 weeks.",
-  },
-  {
-    question: "Do you offer SEO services?",
-    answer:
-      "Yes! All our websites are built with SEO best practices to help rank higher on Google.",
-  },
-  {
-    question: "Can I update my website myself?",
-    answer:
-      "Absolutely! We provide an easy-to-use CMS, so you can manage content without coding knowledge.",
-  },
-  {
-    question: "What if I need additional features later?",
-    answer:
-      "We offer scalable solutions and ongoing support to add features as your business grows.",
-  },
-];
-
-const webDevBonuses = [
-  {
-    title: "SEO Starter Guide",
-    description:
-      "Get a step-by-step guide to optimize your website for search engines.",
-    icon: Search,
-  },
-  {
-    title: "Content Strategy Session",
-    description:
-      "A 1-hour consultation to help you craft a winning content strategy.",
-    icon: Palette,
-  },
-
-  {
-    title: "Website Maintenance Guide",
-    description: "Learn how to keep your website secure, fast, and up-to-date.",
-    icon: Laptop,
-  },
-];
+import { webDevFAQs } from "../data/faqs";
+import { webDevProcess } from "../data/processes";
 
 const WebDevelopmentPage = () => {
   return (
     <div>
       {/* 1️⃣ Hero Section */}
       <Hero
-        title="🌍 Build a High-Performance Website"
-        subtitle="We create professional websites that drive results for businesses."
-        primaryButtonText="Book a Free Consultation"
-        secondaryButtonText="View Portfolio"
+        title="🌐 Let’s Build a Website That Works While You Sleep"
+        subtitle="We craft powerful websites that attract traffic, convert visitors, and grow your business 24/7."
+        primaryButtonText="Book Free Strategy Call"
+        secondaryButtonText="Explore Portfolio"
         secondaryButtonAction={() => console.log("Portfolio Clicked!")}
         calendlyUrl={calendlyUrl}
       />
 
       <ServiceContent
-        title="High-Performance Web Development"
-        tagline="A website is your 24/7 online storefront—let's build yours!"
-        whyNeed="In today's digital world, businesses without a website miss out on countless opportunities. A website builds trust, boosts credibility, and allows you to reach a global audience."
-        comparison="Unlike social media, a website gives you full control over branding, SEO, and lead generation. Social platforms change algorithms, but your website is always yours."
+        title="Websites Built for Growth, Optimized for Results"
+        tagline="We don’t just build websites. We create growth engines."
+        whyNeed="In today’s competitive digital world, a great website isn’t optional — it’s essential. Whether you’re looking to generate leads, sell online, or boost brand credibility, your website is your most valuable digital asset."
+        comparison="Unlike social media platforms that come and go, your website gives you complete ownership, control, and long-term value. Don’t leave your business at the mercy of algorithm changes."
         benefits={[
-          "Professional online presence",
-          "Higher ranking on Google (SEO benefits)",
-          "Full customization & branding control",
-          "Scalable as your business grows",
+          "Capture more leads and convert more customers",
+          "Rank higher on Google and get found fast",
+          "Full control over your brand and user experience",
+          "Built to grow as your business grows",
         ]}
-        ctaText="Get Your Website Today"
+        ctaText="Claim Your Free Web Strategy Call"
         ctaLink="/contact"
       />
 
       {/* 2️⃣ Why Choose Us */}
       <Features
-        title="Why Choose Our Web Development Services?"
+        title="Why Entrepreneurs Trust Us With Their Websites"
         features={[
           {
-            title: "SEO-Optimized Websites",
-            description: "Rank higher and drive organic traffic to your site.",
+            title: "Built-In SEO",
+            description:
+              "We don’t charge extra for SEO—it’s part of every site we launch.",
             icon: (
               <span role="img" aria-label="search">
                 🔍
@@ -97,8 +57,9 @@ const WebDevelopmentPage = () => {
             ),
           },
           {
-            title: "E-Commerce Ready",
-            description: "Boost sales with a user-friendly online store.",
+            title: "Online Store Ready",
+            description:
+              "From product pages to payments—we set up everything you need to sell online.",
             icon: (
               <span role="img" aria-label="shopping cart">
                 🛒
@@ -106,8 +67,9 @@ const WebDevelopmentPage = () => {
             ),
           },
           {
-            title: "Mobile-Responsive Design",
-            description: "Your website will look stunning on any device.",
+            title: "Mobile First",
+            description:
+              "Designed for smartphones first—because that’s where most traffic comes from.",
             icon: (
               <span role="img" aria-label="mobile phone">
                 📱
@@ -115,8 +77,9 @@ const WebDevelopmentPage = () => {
             ),
           },
           {
-            title: "Fast & Secure",
-            description: "Optimized for speed, security, and performance.",
+            title: "Speed + Security",
+            description:
+              "We optimize for lightning-fast load times and secure data handling.",
             icon: (
               <span role="img" aria-label="lightning bolt">
                 ⚡
@@ -129,46 +92,14 @@ const WebDevelopmentPage = () => {
       {/* 3️⃣ Web Development Process */}
       <Process
         title="Our Web Development Process"
-        steps={[
-          {
-            title: "Consultation & Planning",
-            description: "We define your goals and create a strategy.",
-            icon: (
-              <span role="img" aria-label="pushpin">
-                📌
-              </span>
-            ),
-          },
-          {
-            title: "Design & Prototyping",
-            description:
-              "Wireframing and UI/UX design to bring your vision to life.",
-            icon: (
-              <span role="img" aria-label="palette">
-                🎨
-              </span>
-            ),
-          },
-          {
-            title: "Development & Testing",
-            description: "Building a fast, secure, and scalable website.",
-            icon: (
-              <span role="img" aria-label="laptop">
-                💻
-              </span>
-            ),
-          },
-          {
-            title: "Launch & Ongoing Support",
-            description:
-              "Ensuring smooth deployment and continuous maintenance.",
-            icon: (
-              <span role="img" aria-label="rocket">
-                🚀
-              </span>
-            ),
-          },
-        ]}
+        steps={webDevProcess.map((step) => ({
+          ...step,
+          icon: (
+            <span role="img" aria-label={step.title}>
+              {step.icon}
+            </span>
+          ),
+        }))}
       />
 
       {/* 4️⃣ Pricing Plans */}
@@ -187,15 +118,15 @@ const WebDevelopmentPage = () => {
       {/* 7️⃣ Frequently Asked Questions */}
       <FAQ title="Web Development FAQs" faqs={webDevFAQs} />
 
-      {/* 6️⃣ Call-to-Action */}
+      {/* 8️⃣ Call-to-Action */}
       <CTA
-        title="🚀 Ready to Build Your Website?"
-        subtitle="Let's bring your vision to life with a high-performing website."
+        title="🚀 Ready to Build a Website That Works for You?"
+        subtitle="Schedule a free strategy session and let’s create something powerful."
         primaryCTA="Get a Free Quote"
         onPrimaryClick={() => console.log("Quote Requested!")}
       />
 
-      {/* 7️⃣ Newsletter Signup */}
+      {/* 9️⃣ Newsletter Signup */}
       <Newsletter />
     </div>
   );
