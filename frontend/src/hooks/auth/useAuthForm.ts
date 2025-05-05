@@ -1,13 +1,14 @@
-// hooks/useAuthForm.ts
 import { useAuthStore } from "../../store/authStore";
 
 export const useAuthForm = () => {
-  return useAuthStore((state) => ({
-    user: state.user,
-    isLoading: state.isLoading,
-    error: state.error,
-    login: state.login,
-    register: state.register,
-    clearError: state.clearError,
-  }));
+  const user = useAuthStore((state) => state.user);
+  const isLoading = useAuthStore((state) => state.isLoading);
+  const error = useAuthStore((state) => state.error);
+  const login = useAuthStore((state) => state.login);
+  const register = useAuthStore((state) => state.register);
+  const clearError = useAuthStore((state) => state.clearError);
+
+  return { user, isLoading, error, login, register, clearError };
 };
+
+export default useAuthForm;
