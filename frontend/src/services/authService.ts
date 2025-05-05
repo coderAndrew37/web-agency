@@ -8,12 +8,26 @@ import {
   RefreshTokenResponse,
 } from "../types/authTypes";
 
+type ApiError = {
+  response?: {
+    status?: number;
+    data?: {
+      message?: string;
+    };
+  };
+  message?: string;
+};
+
+function handleCsrfToken(csrfToken?: string | null) {
+  if (csrfToken) {
+    apiClient.setCsrfToken(csrfToken);
+  }
+}
+
 export const AuthService = {
   async login(data: LoginData): Promise<AuthResponse> {
     const response = await apiClient.post<AuthResponse>("/auth/login", data);
-    if (response.csrfToken) {
-      apiClient.setCsrfToken(response.csrfToken);
-    }
+    handleCsrfToken(response.csrfToken);
     return response;
   },
 
@@ -23,18 +37,13 @@ export const AuthService = {
 
   async verify(data: VerifyData): Promise<AuthResponse> {
     const response = await apiClient.post<AuthResponse>("/auth/verify", data);
-    if (response.csrfToken) {
-      apiClient.setCsrfToken(response.csrfToken);
-    }
+    handleCsrfToken(response.csrfToken);
     return response;
   },
 
   async logout(): Promise<void> {
-    try {
-      await apiClient.post("/auth/logout");
-    } finally {
-      apiClient.clearCsrfToken();
-    }
+    await apiClient.post("/auth/logout");
+    apiClient.clearCsrfToken();
   },
 
   async getCurrentUser(): Promise<User> {
@@ -42,30 +51,24 @@ export const AuthService = {
   },
 
   async refresh(): Promise<RefreshTokenResponse> {
-    const response = await apiClient.post<RefreshTokenResponse>(
-      "/auth/refresh"
-    );
-    if (response.csrfToken) {
-      apiClient.setCsrfToken(response.csrfToken);
-    }
+    const response = await apiClient
+      .post<RefreshTokenResponse>("/auth/refresh")
+      .catch((error) => {
+        const apiError = error as ApiError;
+        if (apiError.response?.status === 404) {
+          return { accessToken: null, csrfToken: null };
+        }
+        throw error;
+      });
+    handleCsrfToken(response.csrfToken);
     return response;
   },
 
-  // Utility method to check auth state
   async checkAuth(): Promise<{ isAuthenticated: boolean; user?: User }> {
-    try {
+    const response = await this.refresh();
+    if (response.csrfToken) {
       const user = await this.getCurrentUser();
       return { isAuthenticated: true, user };
-    } catch {
-      try {
-        const { accessToken } = await this.refresh();
-        if (accessToken) {
-          const user = await this.getCurrentUser();
-          return { isAuthenticated: true, user };
-        }
-      } catch {
-        return { isAuthenticated: false };
-      }
     }
     return { isAuthenticated: false };
   },

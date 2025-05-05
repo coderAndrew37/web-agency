@@ -14,6 +14,15 @@ import {
   validateRefreshToken,
 } from "../utils/tokenManager";
 
+const buildAuthState = (user?: IUser | null, csrfToken?: string) => ({
+  isAuthenticated: !!user,
+  isVerified: user?.isVerified ?? false,
+  userId: user?._id ?? null,
+  email: user?.email ?? null,
+  role: user?.role ?? "guest",
+  csrfToken,
+});
+
 interface AuthenticatedRequest extends Request {
   user?: IUser;
   headers: {
@@ -143,13 +152,7 @@ export const verify = async (req: Request, res: Response) => {
     sendSuccess(res, {
       message: "Account verified",
       accessToken,
-      csrfToken,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      auth: buildAuthState(user, csrfToken),
     });
   } catch (error) {
     console.error("Verification error:", error);
@@ -182,13 +185,7 @@ export const login = async (req: Request, res: Response) => {
     sendSuccess(res, {
       message: "Login successful",
       accessToken,
-      csrfToken,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      auth: buildAuthState(user, csrfToken),
     });
   } catch (error) {
     console.error("Login error:", error);
@@ -243,7 +240,7 @@ export const refresh = async (req: Request, res: Response) => {
     sendSuccess(res, {
       message: "Token refreshed",
       accessToken,
-      csrfToken: newCsrfToken, // Send new CSRF token to client
+      auth: buildAuthState(user, newCsrfToken),
     });
   } catch (error) {
     console.error("Refresh error:", error);
@@ -295,21 +292,16 @@ export const getCurrentUser = async (
       return sendError(res, 401, "Not authenticated");
     }
 
-    // More efficient query
     const user = await User.findById(req.user._id)
-      .select("name email role isVerified verifiedAt createdAt")
+      .select("email role isVerified _id")
       .lean();
 
     if (!user) {
       return sendError(res, 404, "User not found");
     }
 
-    sendSuccess(res, {
-      user: {
-        ...user,
-        id: user._id.toString(),
-      },
-    });
+    const authState = buildAuthState(user);
+    sendSuccess(res, authState);
   } catch (error) {
     console.error("Current user error:", error);
     sendError(res, 500, "Failed to fetch user");

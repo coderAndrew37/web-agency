@@ -1,11 +1,11 @@
 import { useToastStore } from "../store/toastStore";
 
 export const useToast = () => {
-  return useToastStore((state) => ({
-    toasts: state.toasts,
-    showToast: state.showToast,
-    removeToast: state.removeToast,
-  }));
+  const toasts = useToastStore((s) => s.toasts);
+  const showToast = useToastStore((s) => s.showToast);
+  const removeToast = useToastStore((s) => s.removeToast);
+
+  return { toasts, showToast, removeToast };
 };
 
 // Convenience methods

@@ -9,8 +9,7 @@ import PasswordInput from "../components/PasswordInput";
 import SubmitButton from "../components/SubmitButton";
 import FormError from "../components/FormError";
 import TextInput from "../components/TextInput";
-import { useLogin } from "../hooks/useAuth";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useAuthForm } from "../hooks/auth/useAuthForm";
 
 type LoginData = {
   email: string;
@@ -18,10 +17,9 @@ type LoginData = {
 };
 
 const Login = () => {
-  const { login, loading, error } = useLogin();
-  const { user } = useAuthContext();
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const { user, isLoading, error, login, clearError } = useAuthForm();
 
   const {
     register,
@@ -36,12 +34,18 @@ const Login = () => {
     if (user) navigate("/dashboard");
   }, [user, navigate]);
 
+  useEffect(() => {
+    return () => {
+      clearError();
+    };
+  }, [clearError]);
+
   const onSubmit = async (data: LoginData) => {
     try {
-      await login(data);
+      await login({ type: "credentials", data });
     } catch {
       setFormError("root", {
-        message: error?.message || "Login failed. Please try again.",
+        message: error || "Login failed. Please try again.",
       });
     }
   };
@@ -79,21 +83,21 @@ const Login = () => {
           register={register}
           name="email"
           placeholder="Email"
-          disabled={isSubmitting}
+          disabled={isSubmitting || isLoading}
           error={errors.email?.message}
         />
 
         <PasswordInput
           register={register}
           name="password"
-          disabled={isSubmitting}
+          disabled={isSubmitting || isLoading}
           error={errors.password?.message}
           showPassword={showPassword}
           togglePasswordVisibility={() => setShowPassword((prev) => !prev)}
         />
 
         <SubmitButton
-          isLoading={isSubmitting || loading}
+          isLoading={isSubmitting || isLoading}
           label="Login"
           loadingLabel="Logging in..."
         />

@@ -1,22 +1,33 @@
+// src/stores/authStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { AuthService } from "../services/authService";
 import { User, LoginData, RegisterData, VerifyData } from "../types/authTypes";
+
+const getErrorMessage = (error: unknown, fallback: string) =>
+  error instanceof Error ? error.message : fallback;
 
 type AuthState = {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  hasCheckedAuth: boolean;
 };
 
+type LoginParams =
+  | { type: "credentials"; data: LoginData }
+  | { type: "refresh"; user: User };
+
 type AuthActions = {
-  login: (data: LoginData) => Promise<void>;
+  login: (params: LoginParams) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   verify: (data: VerifyData) => Promise<void>;
   logout: () => Promise<void>;
-  checkAuth: () => Promise<void>;
+  checkAuth: (force?: boolean) => Promise<void>;
   clearError: () => void;
+  getUser: () => User | null;
+  resetAuthState: () => void;
 };
 
 const initialState: AuthState = {
@@ -24,6 +35,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   isLoading: false,
   error: null,
+  hasCheckedAuth: false,
 };
 
 export const useAuthStore = create<AuthState & AuthActions>()(
@@ -31,22 +43,39 @@ export const useAuthStore = create<AuthState & AuthActions>()(
     (set, get) => ({
       ...initialState,
 
-      // Login action
-      login: async (data) => {
+      login: async (params) => {
         set({ isLoading: true, error: null });
         try {
-          const { user } = await AuthService.login(data);
-          set({ user, isAuthenticated: true, isLoading: false });
+          if (params.type === "credentials") {
+            const { user } = await AuthService.login(params.data);
+            set({
+              user,
+              isAuthenticated: true,
+              isLoading: false,
+              hasCheckedAuth: true,
+            });
+          } else {
+            set({
+              user: params.user,
+              isAuthenticated: true,
+              isLoading: false,
+              hasCheckedAuth: true,
+            });
+          }
         } catch (error) {
           set({
-            error: error instanceof Error ? error.message : "Login failed",
+            error: getErrorMessage(
+              error,
+              params.type === "credentials"
+                ? "Login failed"
+                : "Session refresh failed"
+            ),
             isLoading: false,
           });
           throw error;
         }
       },
 
-      // Registration action
       register: async (data) => {
         set({ isLoading: true, error: null });
         try {
@@ -54,31 +83,32 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           set({ isLoading: false });
         } catch (error) {
           set({
-            error:
-              error instanceof Error ? error.message : "Registration failed",
+            error: getErrorMessage(error, "Registration failed"),
             isLoading: false,
           });
           throw error;
         }
       },
 
-      // OTP Verification action
       verify: async (data) => {
         set({ isLoading: true, error: null });
         try {
           const { user } = await AuthService.verify(data);
-          set({ user, isAuthenticated: true, isLoading: false });
+          set({
+            user,
+            isAuthenticated: true,
+            isLoading: false,
+            hasCheckedAuth: true,
+          });
         } catch (error) {
           set({
-            error:
-              error instanceof Error ? error.message : "Verification failed",
+            error: getErrorMessage(error, "Verification failed"),
             isLoading: false,
           });
           throw error;
         }
       },
 
-      // Logout action
       logout: async () => {
         set({ isLoading: true });
         try {
@@ -86,31 +116,59 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           set({ ...initialState });
         } catch (error) {
           set({
-            error: error instanceof Error ? error.message : "Logout failed",
+            error: getErrorMessage(error, "Logout failed"),
             isLoading: false,
           });
         }
       },
 
-      // Check authentication state
-      checkAuth: async () => {
+      checkAuth: async (force = false) => {
+        if (get().hasCheckedAuth && !force) return;
+
         set({ isLoading: true });
         try {
           const { isAuthenticated, user } = await AuthService.checkAuth();
+
+          if (!isAuthenticated) {
+            await AuthService.logout(); // ensure CSRF/token cleared
+            set({ ...initialState, hasCheckedAuth: true });
+            return;
+          }
+
+          if (!user || !user.isVerified) {
+            await AuthService.logout();
+            set({
+              ...initialState,
+              error: "Email not verified",
+              hasCheckedAuth: true,
+            });
+            return;
+          }
+
           set({
-            user: user || null,
-            isAuthenticated,
+            user,
+            isAuthenticated: true,
             isLoading: false,
+            hasCheckedAuth: true,
           });
-        } catch {
-          set({ ...initialState, isLoading: false });
+        } catch (error) {
+          set({
+            isLoading: false,
+            hasCheckedAuth: true,
+            error: getErrorMessage(error, "Auth check failed"),
+          });
         }
       },
 
-      // Clear errors
       clearError: () => set({ error: null }),
 
-      // Example usage of `get`
+      resetAuthState: () =>
+        set({
+          isAuthenticated: false,
+          isLoading: false,
+          error: null,
+        }),
+
       getUser: () => get().user,
     }),
     {
@@ -119,6 +177,18 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         user: state.user,
         isAuthenticated: state.isAuthenticated,
       }),
+      migrate: (persistedState, version) => {
+        if (version === 0) {
+          return {
+            ...(typeof persistedState === "object" && persistedState !== null
+              ? persistedState
+              : {}),
+            hasCheckedAuth: false,
+          };
+        }
+        return persistedState;
+      },
+      version: 1,
     }
   )
 );

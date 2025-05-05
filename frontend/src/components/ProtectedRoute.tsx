@@ -1,13 +1,10 @@
+// components/ProtectedRoute.tsx
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useAuthStore } from "../store/authStore";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-const ProtectedRoute = ({
-  adminOnly = false,
-  redirectPath = "/",
-  adminRedirectPath = "/dashboard",
-}) => {
-  const { user, isAuthenticated, isLoading } = useAuthContext();
+const ProtectedRoute = () => {
+  const { isAuthenticated, isLoading } = useAuthStore();
 
   if (isLoading) {
     return (
@@ -18,14 +15,12 @@ const ProtectedRoute = ({
   }
 
   if (!isAuthenticated) {
-    return <Navigate to={redirectPath} replace />;
-  }
-
-  if (adminOnly && user?.role !== "admin") {
-    return <Navigate to={adminRedirectPath} replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;
 };
 
 export default ProtectedRoute;
+// This component checks if the user is authenticated before allowing access to the protected routes.
+// If the user is not authenticated, they are redirected to the login page. If the authentication status is still loading, a loading spinner is displayed.

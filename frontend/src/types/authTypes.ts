@@ -11,21 +11,20 @@ export type RegisterData = {
 
 export type User = {
   id: string;
-  name: string;
   email: string;
-  createdAt: string;
-  updatedAt: string;
   role: string;
+  isVerified: boolean;
 };
 
 export type AuthResponse = {
   user: User;
-  accessToken?: string;
+  isAuthenticated: boolean;
   csrfToken?: string;
 };
+
 export type RefreshTokenResponse = {
-  accessToken: string;
-  csrfToken?: string;
+  accessToken: string | null;
+  csrfToken: string | null;
 };
 
 export type VerifyData = {

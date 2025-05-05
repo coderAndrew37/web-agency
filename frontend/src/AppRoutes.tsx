@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ConditionalRoute from "./components/ConditionalRoute";
 import AuthLayout from "./layouts/AuthLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import LoadingSpinner from "./components/LoadingSpinner";
@@ -153,7 +153,7 @@ const AppRoutes = () => {
       </Route>
 
       {/* Protected Routes (For Regular Users) */}
-      <Route element={<ProtectedRoute />}>
+      <Route element={<ConditionalRoute required />}>
         <Route
           path="/dashboard"
           element={
@@ -165,7 +165,7 @@ const AppRoutes = () => {
       </Route>
 
       {/* Admin Routes (Protected) */}
-      <Route element={<ProtectedRoute adminOnly />}>
+      <Route element={<ConditionalRoute required adminOnly />}>
         <Route path="/admin/*" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<Users />} />
@@ -179,3 +179,4 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+// This code defines the routing structure for a React application using React Router. It includes public pages, services pages, authentication pages, and protected routes for both regular users and admin users. The routes are lazy-loaded for better performance, and a loading spinner is displayed while the components are being loaded. The Navbar and Footer components are included in the public and protected routes but not in the authentication pages.

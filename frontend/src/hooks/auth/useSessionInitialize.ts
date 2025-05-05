@@ -1,10 +1,11 @@
+// hooks/auth/useSessionInitialize.ts
 import { useEffect } from "react";
-import { useAuthActions } from "./useAuthActions";
+import { useAuthStore } from "../../store/authStore";
 
 export const useSessionInitialize = () => {
-  const { checkAuth } = useAuthActions();
+  const checkAuth = useAuthStore((state) => state.checkAuth);
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+  }, []); // Empty dependency array to run only once on mount
 };
