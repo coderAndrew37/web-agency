@@ -30,6 +30,7 @@ const EmailMarketingPage = lazy(() => import("./pages/EmailMarketingService"));
 const GoogleAdsPage = lazy(() => import("./pages/GoogleAdsService"));
 const MpesaIntegrationPage = lazy(() => import("./pages/MpesaService"));
 const SeoPage = lazy(() => import("./pages/SeoPage"));
+const WebsiteTypeDetail = lazy(() => import("./pages/WebsiteDetail"));
 
 const RouteWrapper = ({ children }: { children: React.ReactNode }) => (
   <>
@@ -130,6 +131,15 @@ const AppRoutes = () => {
         element={
           <RouteWrapper>
             <EmailMarketingPage />
+          </RouteWrapper>
+        }
+      />
+
+      <Route
+        path="/websites/:slug"
+        element={
+          <RouteWrapper>
+            <WebsiteTypeDetail />
           </RouteWrapper>
         }
       />

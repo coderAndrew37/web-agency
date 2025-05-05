@@ -13,6 +13,7 @@ import FAQ from "../components/FAQ";
 import { calendlyUrl } from "../config/constants";
 import { webDevFAQs } from "../data/faqs";
 import { webDevProcess } from "../data/processes";
+import WebsiteTypeCarousel from "../components/services/WebTypeCarousel";
 
 const WebDevelopmentPage = () => {
   return (
@@ -89,6 +90,8 @@ const WebDevelopmentPage = () => {
         ]}
       />
 
+      {/* 🔄 Carousel Section */}
+      <WebsiteTypeCarousel />
       {/* 3️⃣ Web Development Process */}
       <Process
         title="Our Web Development Process"
