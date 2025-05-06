@@ -6,13 +6,13 @@ import Guarantees from "../components/Guarantees";
 import Hero from "../components/Hero";
 import Newsletter from "../components/Newsletter";
 import Process from "../components/Process";
-import Services from "../components/Services";
+import ServicesCarousel from "../components/serviceCarousel";
 import { calendlyUrl } from "../config/constants";
 import colors from "../styles/colors";
 
 import {
-  defaultFeatures,
   defaultFAQs,
+  defaultFeatures,
   defaultProcessSteps,
 } from "../data/homepageData";
 
@@ -28,29 +28,26 @@ const Home = () => {
         calendlyUrl={calendlyUrl}
       />
 
-      <CTA
-        title="🔥 Ready to 3x Your Pipeline?"
-        subtitle="Let’s build a custom game plan to attract, convert, and scale. No fluff. Just ROI."
-        primaryCTA="Book My Strategy Call"
-        calendlyUrl={calendlyUrl}
-        imagePath="/images/cta.jpeg"
-      />
-
       <Features
         title="Why Clients Choose Us"
         subtitle="We’re not a web agency. We’re your growth partner—from first click to final close."
         features={defaultFeatures}
       />
 
-      <Services
-        title="Done-for-You Revenue Systems"
-        subtitle="From paid ads to funnels, we design systems that generate predictable results."
-      />
+      <ServicesCarousel />
 
       <Process
         title="Our 4-Step Growth Framework"
         subtitle="Every win starts with a plan. Here’s how we deliver consistent results."
         steps={defaultProcessSteps}
+      />
+
+      <CTA
+        title="🔥 Ready to 3x Your Pipeline?"
+        subtitle="Let’s build a custom game plan to attract, convert, and scale. No fluff. Just ROI."
+        primaryCTA="Book My Strategy Call"
+        calendlyUrl={calendlyUrl}
+        imagePath="/images/cta.jpeg"
       />
 
       <Guarantees
