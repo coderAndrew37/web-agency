@@ -1,45 +1,57 @@
-// src/components/PortfolioShowcase.tsx
-import { motion } from "framer-motion";
+const projects = [
+  {
+    title: "E-commerce Platform",
+    description: "A scalable online store with integrated payment solutions.",
+    imageUrl: "/images/ecommerce.jpg",
+    liveUrl: "https://example.com/ecommerce",
+  },
+  {
+    title: "Corporate Website",
+    description: "A professional website for a leading consultancy firm.",
+    imageUrl: "/images/corporate.jpg",
+  },
+  {
+    title: "Startup Landing Page",
+    description: "High-converting landing page for a startup launch.",
+    imageUrl: "/images/startup.jpg",
+    liveUrl: "https://example.com/startup",
+  },
+];
 
-interface Project {
-  name: string;
-  description: string;
-  features: string[];
-  image: string;
-}
+const Portfolio = () => (
+  <section id="portfolio" className="py-12 px-4 md:px-8 lg:px-16 bg-white">
+    <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
+      Our Work
+    </h2>
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {projects.map((project, index) => (
+        <div
+          key={index}
+          className="rounded-2xl shadow-md overflow-hidden bg-gray-50 hover:shadow-lg transition-shadow"
+        >
+          <img
+            src={project.imageUrl}
+            alt={project.title}
+            className="w-full h-48 object-cover"
+          />
+          <div className="p-4">
+            <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+            <p className="text-gray-600 mb-4">{project.description}</p>
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-sm font-medium text-blue-600 hover:underline"
+              >
+                View Live
+              </a>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+);
 
-interface PortfolioShowcaseProps {
-  projects: Project[];
-}
-
-const PortfolioShowcase = ({ projects }: PortfolioShowcaseProps) => {
-  return (
-    <section className="py-20 text-center">
-      <h2 className="text-4xl font-bold mb-8">Our Work</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project, index) => (
-          <motion.div
-            key={index}
-            className="p-6 border border-gray-300 rounded-lg shadow-md hover:shadow-xl transition"
-            whileHover={{ scale: 1.05 }}
-          >
-            <img
-              src={project.image}
-              alt={project.name}
-              className="rounded-lg mb-4"
-            />
-            <h3 className="text-xl font-semibold">{project.name}</h3>
-            <p className="text-gray-600 mt-2">{project.description}</p>
-            <ul className="mt-3 text-left text-gray-700">
-              {project.features.map((feature, i) => (
-                <li key={i}>✔ {feature}</li>
-              ))}
-            </ul>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-export default PortfolioShowcase;
+export default Portfolio;

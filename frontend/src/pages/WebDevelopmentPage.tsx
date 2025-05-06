@@ -14,6 +14,7 @@ import { calendlyUrl } from "../config/constants";
 import { webDevFAQs } from "../data/faqs";
 import { webDevProcess } from "../data/processes";
 import WebsiteTypeCarousel from "../components/services/WebTypeCarousel";
+import PortfolioShowcase from "../components/PortfolioShowcase";
 
 const WebDevelopmentPage = () => {
   return (
@@ -40,7 +41,7 @@ const WebDevelopmentPage = () => {
           "Built to grow as your business grows",
         ]}
         ctaText="Claim Your Free Web Strategy Call"
-        ctaLink="/contact"
+        ctaLink={calendlyUrl}
       />
 
       {/* 2️⃣ Why Choose Us */}
@@ -118,6 +119,9 @@ const WebDevelopmentPage = () => {
       {/* 6️⃣ Bonuses Section */}
       <Bonus bonuses={webDevBonuses} />
 
+      {/* 7️⃣ Portfolio Showcase */}
+      <PortfolioShowcase />
+
       {/* 7️⃣ Frequently Asked Questions */}
       <FAQ title="Web Development FAQs" faqs={webDevFAQs} />
 
@@ -126,7 +130,7 @@ const WebDevelopmentPage = () => {
         title="🚀 Ready to Build a Website That Works for You?"
         subtitle="Schedule a free strategy session and let’s create something powerful."
         primaryCTA="Get a Free Quote"
-        onPrimaryClick={() => console.log("Quote Requested!")}
+        calendlyUrl={calendlyUrl}
       />
 
       {/* 9️⃣ Newsletter Signup */}
