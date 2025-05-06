@@ -71,9 +71,7 @@ export default function WebsiteTypeCarousel() {
                   </p>
                 </div>
                 <Link
-                  to={`/websites/${type.title
-                    .toLowerCase()
-                    .replace(/ /g, "-")}`}
+                  to={`/services/web-development/${type.slug}`}
                   className="text-blue-600 hover:underline text-sm mt-3"
                 >
                   Learn More →

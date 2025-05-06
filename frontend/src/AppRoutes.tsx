@@ -136,7 +136,7 @@ const AppRoutes = () => {
       />
 
       <Route
-        path="/websites/:slug"
+        path="/services/web-development/:slug"
         element={
           <RouteWrapper>
             <WebsiteTypeDetail />

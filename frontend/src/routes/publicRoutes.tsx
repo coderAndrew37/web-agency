@@ -14,5 +14,5 @@ export const PUBLIC_ROUTES = [
   "/register",
   "/forgot-password",
   "/reset-password/:token",
-  "/websites/:slug", // added dynamic route for website details
+  "/services/web-development/:slug", // added dynamic route for website details
 ];

@@ -1,4 +1,3 @@
-// src/pages/WebsiteTypeDetail.tsx
 import { useParams } from "react-router-dom";
 import CardGrid from "../components/CardGrid";
 import CTA from "../components/CTA";

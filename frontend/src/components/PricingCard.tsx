@@ -6,6 +6,7 @@ interface PricingCardProps {
   price: string;
   features: string[];
   highlight?: boolean;
+  onBookNow?: (planName: string) => void;
 }
 
 const PricingCard = ({
@@ -13,6 +14,7 @@ const PricingCard = ({
   price,
   features,
   highlight,
+  onBookNow,
 }: PricingCardProps) => {
   return (
     <motion.div
@@ -23,7 +25,6 @@ const PricingCard = ({
       }`}
       whileHover={{ scale: 1.05 }}
     >
-      {/* 🔥 Super Premium Popular Tag */}
       {highlight && (
         <motion.span
           className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-red-500 text-white text-lg px-4 py-1 rounded-full font-bold shadow-lg"
@@ -38,10 +39,8 @@ const PricingCard = ({
           🚀 Popular
         </motion.span>
       )}
-
       <h3 className="text-2xl font-semibold">{name}</h3>
       <p className="text-primary text-3xl font-bold mt-2">{price}</p>
-
       <ul className="mt-4 space-y-2 text-gray-600">
         {features.map((feature, i) => (
           <li key={i} className="flex items-center gap-2">
@@ -49,8 +48,10 @@ const PricingCard = ({
           </li>
         ))}
       </ul>
-
-      <button className="mt-6 px-6 py-3 bg-primary text-blue-700 text-lg font-semibold rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition">
+      <button
+        onClick={() => onBookNow?.(name)}
+        className="mt-6 px-6 py-3 bg-primary text-blue-700 text-lg font-semibold rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition"
+      >
         Book Now <ArrowRight size={18} />
       </button>
     </motion.div>
