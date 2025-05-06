@@ -1,16 +1,40 @@
 import { motion } from "framer-motion";
-import { JSX } from "react";
+import { ReactNode } from "react";
+
+interface CardItem {
+  title: string;
+  description: string;
+  icon: ReactNode;
+}
 
 interface CardGridProps {
   title: string;
-  items: { title: string; description: string; icon: JSX.Element }[];
+  subtitle?: string;
+  items: CardItem[];
+  variant?: "default" | "dark" | "soft";
 }
 
-const CardGrid = ({ title, items }: CardGridProps) => {
+const bgVariants = {
+  default: "bg-white-100",
+  dark: "bg-gray-900 text-white",
+  soft: "bg-gray-100",
+};
+
+const CardGrid = ({
+  title,
+  subtitle,
+  items,
+  variant = "default",
+}: CardGridProps) => {
   return (
-    <section className="py-20 text-center bg-white-100">
+    <section
+      className={`py-20 text-center ${bgVariants[variant]}`}
+      role="region"
+      aria-label={title}
+    >
       <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold mb-8">{title}</h2>
+        <h2 className="text-4xl font-bold mb-4">{title}</h2>
+        {subtitle && <p className="text-lg text-gray-600 mb-10">{subtitle}</p>}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {items.map((item, index) => (
@@ -23,7 +47,9 @@ const CardGrid = ({ title, items }: CardGridProps) => {
             >
               <div className="flex justify-center mb-4">{item.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-              <p className="text-gray-600">{item.description}</p>
+              <p className="text-gray-600 dark:text-gray-300">
+                {item.description}
+              </p>
             </motion.div>
           ))}
         </div>

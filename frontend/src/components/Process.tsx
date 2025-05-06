@@ -6,6 +6,7 @@ import { JSX } from "react";
 interface ProcessProps {
   title?: string;
   steps?: { title: string; description: string; icon: JSX.Element }[];
+  subtitle?: string;
 }
 
 const defaultProcessSteps = [

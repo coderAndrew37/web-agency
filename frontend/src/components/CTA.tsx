@@ -1,4 +1,3 @@
-// components/CTA.tsx
 import { useCalendly } from "../hooks/integrations/useCalendly";
 import colors from "../styles/colors";
 
@@ -8,6 +7,7 @@ interface CTAProps {
   primaryCTA: string;
   calendlyUrl?: string;
   onPrimaryClick?: () => void;
+  imagePath?: string; // path relative to public/
 }
 
 const CTA = ({
@@ -16,6 +16,7 @@ const CTA = ({
   primaryCTA,
   calendlyUrl,
   onPrimaryClick,
+  imagePath = "/images/cta.jpeg", // default image path
 }: CTAProps) => {
   const { openCalendly } = useCalendly();
 
@@ -26,22 +27,29 @@ const CTA = ({
   };
 
   return (
-    <section
-      className="py-20 px-6 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#f9f9f9] via-[#f0f0f0] to-[#e9e9e9]"
-      style={{ color: colors.darkText }}
-    >
-      <div className="max-w-3xl mx-auto bg-white p-10 rounded-3xl shadow-2xl text-center">
-        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-          {title}
-        </h2>
-        <p className="mt-4 text-lg text-gray-600">{subtitle}</p>
+    <section className="py-20 px-6" style={{ color: colors.darkText }}>
+      <div className="max-w-6xl mx-auto  flex flex-col lg:flex-row items-center">
+        {/* Text Column */}
+        <div className="w-full lg:w-1/2 text-center lg:text-left">
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+            {title}
+          </h2>
+          <p className="mt-4 text-lg text-gray-600">{subtitle}</p>
 
-        <button
-          className="mt-8 px-6 py-3 text-white text-lg font-semibold rounded-full bg-black hover:bg-gray-900 transition-colors duration-300"
-          onClick={handleClick}
-        >
-          {primaryCTA}
-        </button>
+          <button
+            className="mt-8 px-6 py-3 text-white text-lg font-semibold rounded-full bg-black hover:bg-gray-900 transition-colors duration-300"
+            onClick={handleClick}
+          >
+            {primaryCTA}
+          </button>
+        </div>
+
+        {/* Image Column */}
+        {imagePath && (
+          <div className="w-full lg:w-1/2 mt-10 lg:mt-0 lg:pl-10 flex justify-center">
+            <img src={imagePath} alt="CTA" className="max-w-full h-auto " />
+          </div>
+        )}
       </div>
     </section>
   );

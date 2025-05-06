@@ -9,6 +9,7 @@ interface FAQItem {
 
 interface FAQProps {
   title?: string;
+  subtitle?: string;
   faqs?: FAQItem[];
 }
 
@@ -35,6 +36,8 @@ const defaultFAQs: FAQItem[] = [
 
 const FAQ = ({
   title = "Frequently Asked Questions",
+
+  subtitle = "We’ve got straight answers. Here’s what people ask us the most.",
   faqs = defaultFAQs,
 }: FAQProps) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -47,6 +50,9 @@ const FAQ = ({
     >
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold">{title}</h2>
+        {subtitle && (
+          <p className="mt-4 mb-10 text-lg text-gray-600">{subtitle}</p>
+        )}
         <div className="mt-8 space-y-6">
           {faqs.map((faq, index) => (
             <div

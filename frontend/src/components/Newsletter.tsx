@@ -2,7 +2,12 @@ import { useState } from "react";
 import axios, { AxiosError } from "axios";
 import colors from "../styles/colors";
 
-const Newsletter = () => {
+interface NewsletterProps {
+  title: string;
+  subtitle: string;
+}
+
+const Newsletter = ({ title, subtitle }: NewsletterProps) => {
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -33,15 +38,8 @@ const Newsletter = () => {
       style={{ backgroundColor: colors.darkText, color: colors.lightText }}
     >
       <div className="container mx-auto max-w-lg px-6">
-        <h2
-          className="text-3xl font-bold mb-4"
-          style={{ color: colors.primary }}
-        >
-          Stay Updated 🚀
-        </h2>
-        <p className="mb-6 text-gray-300">
-          Join our newsletter to get the latest insights.
-        </p>
+        <h2 className="text-3xl font-bold mb-4">{title}</h2>
+        <p className="mb-6 text-gray-300">{subtitle}</p>
 
         <form
           onSubmit={handleSubmit}

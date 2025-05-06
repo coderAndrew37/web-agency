@@ -10,7 +10,6 @@ import Services from "../components/Services";
 import { calendlyUrl } from "../config/constants";
 import colors from "../styles/colors";
 
-// ⬇️ Import homepage data
 import {
   defaultFeatures,
   defaultFAQs,
@@ -22,32 +21,58 @@ const Home = () => {
     <div style={{ backgroundColor: colors.background, color: colors.darkText }}>
       <Hero
         title="We Build Growth Engines, Not Just Websites 🚀"
-        subtitle="We help businesses scale through results-driven web development, digital marketing, and automation."
-        primaryButtonText="Get a Custom Growth Plan"
-        secondaryButtonText="Explore Our Work"
+        subtitle="Full-funnel execution from strategy to scale. Websites, automation, traffic—done for you."
+        primaryButtonText="Get Your Growth Blueprint"
+        secondaryButtonText="See Case Studies"
         secondaryButtonAction={() => console.log("Viewing Case Studies")}
         calendlyUrl={calendlyUrl}
       />
 
       <CTA
-        title="🔥 Ready to Unlock Growth?"
-        subtitle="Book a free strategy call and see how we can help."
-        primaryCTA="Book My Call"
+        title="🔥 Ready to 3x Your Pipeline?"
+        subtitle="Let’s build a custom game plan to attract, convert, and scale. No fluff. Just ROI."
+        primaryCTA="Book My Strategy Call"
+        calendlyUrl={calendlyUrl}
+        imagePath="/images/cta.jpeg"
       />
 
-      <Features features={defaultFeatures} />
+      <Features
+        title="Why Clients Choose Us"
+        subtitle="We’re not a web agency. We’re your growth partner—from first click to final close."
+        features={defaultFeatures}
+      />
 
-      <Services />
+      <Services
+        title="Done-for-You Revenue Systems"
+        subtitle="From paid ads to funnels, we design systems that generate predictable results."
+      />
 
-      <Process steps={defaultProcessSteps} />
+      <Process
+        title="Our 4-Step Growth Framework"
+        subtitle="Every win starts with a plan. Here’s how we deliver consistent results."
+        steps={defaultProcessSteps}
+      />
 
-      <Guarantees />
+      <Guarantees
+        title="Your Growth, Guaranteed"
+        subtitle="If you don’t see traction, you don’t pay. We put our money where our mouth is."
+      />
 
-      <Bonus />
+      <Bonus
+        title="Hiring a Team? Don’t."
+        subtitle="For less than the cost of 1 hire, get a full-stack growth squad on your side."
+      />
 
-      <FAQ faqs={defaultFAQs} />
+      <FAQ
+        title="Got Questions?"
+        subtitle="We’ve got straight answers. Here’s what people ask us the most."
+        faqs={defaultFAQs}
+      />
 
-      <Newsletter />
+      <Newsletter
+        title="📩 Steal Our Strategies"
+        subtitle="Join 2,500+ growth-minded founders getting proven tactics weekly."
+      />
     </div>
   );
 };

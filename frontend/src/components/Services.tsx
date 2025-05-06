@@ -25,6 +25,14 @@ const services = [
   },
 ];
 
-const Services = () => <CardGrid title="Our Services" items={services} />;
+interface ServicesProps {
+  title: string;
+  subtitle?: string;
+  items?: typeof services;
+}
+
+const Services = ({ title, subtitle, items = services }: ServicesProps) => (
+  <CardGrid title={title} subtitle={subtitle} items={items} />
+);
 
 export default Services;

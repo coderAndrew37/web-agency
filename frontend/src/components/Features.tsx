@@ -1,11 +1,17 @@
-import { motion } from "framer-motion";
+// file: src/components/Features.tsx
 import { JSX } from "react";
 import { ShieldCheck, TrendingUp, Code, Clock } from "lucide-react";
 import colors from "../styles/colors";
+import CardGrid from "./CardGrid";
 
 interface FeaturesProps {
   title?: string;
-  features?: { title: string; description: string; icon: JSX.Element }[];
+  subtitle?: string;
+  features?: {
+    title: string;
+    description: string;
+    icon: JSX.Element;
+  }[];
 }
 
 // 🔥 Default Features (Web Development)
@@ -34,31 +40,10 @@ const defaultFeatures = [
 
 const Features = ({
   title = "Why Choose Us?",
+  subtitle,
   features = defaultFeatures,
-}: FeaturesProps) => {
-  return (
-    <section className="py-20 text-center bg-white">
-      <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold mb-8">{title}</h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              className="p-6 border border-gray-300 rounded-lg shadow-md hover:shadow-xl transition"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-            >
-              <div className="flex justify-center mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
+}: FeaturesProps) => (
+  <CardGrid title={title} subtitle={subtitle} items={features} />
+);
 
 export default Features;
