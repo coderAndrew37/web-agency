@@ -1,51 +1,52 @@
-import CTA from "../components/CTA";
-import Hero from "../components/Hero";
-import Services from "../components/Services";
-import Features from "../components/Features";
-import Process from "../components/Process";
-import Pricing from "../components/Pricing";
-import FAQ from "../components/FAQ";
-import Newsletter from "../components/Newsletter";
-import colors from "../styles/colors";
-import { webDevPlans } from "../data/pricingData";
-import Guarantees from "../components/Guarantees";
 import Bonus from "../components/Bonus";
+import CTA from "../components/CTA";
+import FAQ from "../components/FAQ";
+import Features from "../components/Features";
+import Guarantees from "../components/Guarantees";
+import Hero from "../components/Hero";
+import Newsletter from "../components/Newsletter";
+import Process from "../components/Process";
+import Services from "../components/Services";
 import { calendlyUrl } from "../config/constants";
+import colors from "../styles/colors";
+
+// ⬇️ Import homepage data
+import {
+  defaultFeatures,
+  defaultFAQs,
+  defaultProcessSteps,
+} from "../data/homepageData";
 
 const Home = () => {
   return (
     <div style={{ backgroundColor: colors.background, color: colors.darkText }}>
-      {/* 1️⃣ Hook Visitors Immediately */}
       <Hero
-        title="We Don’t Just Build Websites—We Build Sales Machines 🚀"
-        subtitle="From high-performance websites to conversion-driven marketing, we help businesses generate leads, increase sales, and scale effortlessly."
-        primaryButtonText="Get a Custom Growth Strategy"
-        secondaryButtonText="See How We Scale Businesses"
-        secondaryButtonAction={() => console.log("Viewing Success Stories")}
+        title="We Build Growth Engines, Not Just Websites 🚀"
+        subtitle="We help businesses scale through results-driven web development, digital marketing, and automation."
+        primaryButtonText="Get a Custom Growth Plan"
+        secondaryButtonText="Explore Our Work"
+        secondaryButtonAction={() => console.log("Viewing Case Studies")}
         calendlyUrl={calendlyUrl}
       />
 
       <CTA
-        title="🚀 Ready to Scale Your Business?"
-        subtitle="Get a high-performance website that drives real results."
-        primaryCTA="Get Started"
-        showFormOption={true}
+        title="🔥 Ready to Unlock Growth?"
+        subtitle="Book a free strategy call and see how we can help."
+        primaryCTA="Book My Call"
       />
 
-      {/* 2️⃣ Show Proof & Build Trust */}
-      <Features />
+      <Features features={defaultFeatures} />
+
       <Services />
-      <Process />
+
+      <Process steps={defaultProcessSteps} />
+
       <Guarantees />
 
-      {/* 3️⃣ Highlight Special Bonuses */}
       <Bonus />
 
-      {/* 4️⃣ Offer Pricing After Showing Value */}
-      <Pricing title="Web Development Pricing" plans={webDevPlans} />
+      <FAQ faqs={defaultFAQs} />
 
-      {/* 5️⃣ Address Concerns & Close the Sale */}
-      <FAQ />
       <Newsletter />
     </div>
   );

@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 import { services } from "../../data/navData";
 import { useNavbar } from "../../hooks/ui/useNavBar";
-import { ChevronDown, Link } from "lucide-react";
 import colors from "../../styles/colors";
 
 export const ServicesDropdown = () => {
@@ -16,6 +17,8 @@ export const ServicesDropdown = () => {
       <button
         className="flex items-center gap-1 hover:opacity-80 transition"
         style={{ color: colors.darkText }}
+        aria-haspopup="true"
+        aria-expanded={isServicesOpen}
       >
         Services <ChevronDown size={18} />
       </button>
@@ -26,7 +29,7 @@ export const ServicesDropdown = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute left-0 mt-2 w-[500px] bg-white shadow-lg rounded-lg p-4 grid grid-cols-2 gap-4"
+            className="absolute left-0 mt-2 w-[500px] bg-white shadow-lg rounded-lg p-4 grid grid-cols-2 gap-4 z-50"
           >
             {services.map((group) => (
               <div key={group.category} className="text-left">
@@ -66,8 +69,10 @@ export const ServicesDropdownMobile = () => {
       <button
         className="flex items-center justify-between w-full py-3 px-4 text-left font-semibold bg-gray-100 rounded-lg"
         onClick={() => setIsServicesOpen(!isServicesOpen)}
+        aria-haspopup="true"
+        aria-expanded={isServicesOpen}
       >
-        Services{" "}
+        Services
         <ChevronDown
           size={18}
           className={`${
@@ -85,29 +90,31 @@ export const ServicesDropdownMobile = () => {
             className="mt-2 overflow-hidden bg-white shadow-lg rounded-lg"
           >
             {services.map((group) => (
-              <div key={group.category} className="text-left">
+              <li key={group.category} className="text-left">
                 <h4
                   className="px-4 py-2 font-bold"
                   style={{ color: colors.primary }}
                 >
                   {group.category}
                 </h4>
-                {group.services.map((service) => (
-                  <li key={service.name}>
-                    <Link
-                      to={service.link}
-                      className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100 transition"
-                      style={{ color: colors.darkText }}
-                      onClick={() => {
-                        setIsOpen();
-                        setIsServicesOpen(false);
-                      }}
-                    >
-                      {service.icon} {service.name}
-                    </Link>
-                  </li>
-                ))}
-              </div>
+                <ul>
+                  {group.services.map((service) => (
+                    <li key={service.name}>
+                      <Link
+                        to={service.link}
+                        className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100 transition"
+                        style={{ color: colors.darkText }}
+                        onClick={() => {
+                          setIsOpen();
+                          setIsServicesOpen(false);
+                        }}
+                      >
+                        {service.icon} {service.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
             ))}
           </motion.ul>
         )}
