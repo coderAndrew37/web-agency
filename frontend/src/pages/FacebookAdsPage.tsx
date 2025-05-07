@@ -43,6 +43,8 @@ const FacebookAdsPage = () => {
         calendlyUrl={calendlyUrl}
         secondaryButtonText="Learn More"
         secondaryButtonAction={() => console.log("Learn More Clicked!")}
+        imageUrl="/images/facebook-hero.jpeg"
+        imageAlt="Facebook Ads Hero Image"
       />
 
       {/* Why Choose Us */}

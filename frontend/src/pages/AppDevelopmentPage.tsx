@@ -90,6 +90,8 @@ const AppDevelopmentPage = () => {
         calendlyUrl={calendlyUrl}
         secondaryButtonText="Explore Case Studies"
         secondaryButtonAction={() => console.log("Case Studies Clicked!")}
+        imageUrl="/images/services/app-dev.jpeg"
+        imageAlt="Mobile App Development"
       />
 
       {/* 2️⃣ Service Content - SEO Optimized */}

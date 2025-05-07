@@ -153,6 +153,8 @@ const EmailMarketingPage = () => {
         secondaryButtonAction={() =>
           console.log("Learn More About Email Marketing")
         }
+        imageUrl="/images/email-marketing-hero.jpeg" // ✅ Email Marketing page image
+        imageAlt="Email Marketing Hero Image"
       />
 
       {/* 2️⃣ Service Content - SEO Optimized */}

@@ -152,6 +152,8 @@ const SeoPage = () => {
         calendlyUrl={calendlyUrl}
         secondaryButtonText="Learn More"
         secondaryButtonAction={() => console.log("Learn More About SEO")}
+        imageUrl="/images/seo-hero.jpeg" // ✅ SEO page image
+        imageAlt="SEO Hero Image"
       />
 
       {/* 2️⃣ Service Content - SEO Optimized */}

@@ -152,6 +152,8 @@ const GoogleAdsPage = () => {
         calendlyUrl={calendlyUrl}
         secondaryButtonText="Learn More"
         secondaryButtonAction={() => console.log("Learn More About Google Ads")}
+        imageUrl="/images/google-ads-hero.jpeg"
+        imageAlt="Google Ads Management"
       />
 
       {/* 2️⃣ Service Content - SEO Optimized */}

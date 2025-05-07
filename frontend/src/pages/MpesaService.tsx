@@ -154,6 +154,7 @@ const MpesaIntegrationPage = () => {
         calendlyUrl={calendlyUrl}
         secondaryButtonText="Learn More"
         secondaryButtonAction={() => console.log("Learn More About Mpesa")}
+        imageUrl="/images/mpesa-hero.jpeg"
       />
 
       {/* 2️⃣ Service Content - SEO Optimized */}

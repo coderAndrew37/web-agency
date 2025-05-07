@@ -26,6 +26,8 @@ const Home = () => {
         secondaryButtonText="See Case Studies"
         secondaryButtonAction={() => console.log("Viewing Case Studies")}
         calendlyUrl={calendlyUrl}
+        imageUrl="/images/hero.jpeg" // ✅ homepage image
+        imageAlt="Growth Engine Visual"
       />
 
       <Features

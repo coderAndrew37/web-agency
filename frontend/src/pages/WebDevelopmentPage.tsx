@@ -27,6 +27,8 @@ const WebDevelopmentPage = () => {
         secondaryButtonText="Explore Portfolio"
         secondaryButtonAction={() => console.log("Portfolio Clicked!")}
         calendlyUrl={calendlyUrl}
+        imageUrl="/images/web-dev-hero.jpeg"
+        imageAlt="Web Development Hero Image"
       />
 
       <ServiceContent
@@ -134,7 +136,10 @@ const WebDevelopmentPage = () => {
       />
 
       {/* 9️⃣ Newsletter Signup */}
-      <Newsletter />
+      <Newsletter
+        title="Stay Updated with Our Newsletter"
+        subtitle="Subscribe to receive the latest updates and insights directly in your inbox."
+      />
     </div>
   );
 };
