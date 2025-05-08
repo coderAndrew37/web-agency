@@ -8,6 +8,36 @@ interface BlogLayoutProps {
   forWho: string;
 }
 
+const Section = ({
+  heading,
+  content,
+  image,
+  reverse = false,
+}: {
+  heading: string;
+  content: string;
+  image: string;
+  reverse?: boolean;
+}) => {
+  return (
+    <section
+      className={`flex flex-col md:flex-row ${
+        reverse ? "md:flex-row-reverse" : ""
+      } items-center gap-8 mb-16`}
+    >
+      <img
+        src={image}
+        alt={heading}
+        className="w-full md:w-1/2 h-64 object-cover rounded-xl shadow"
+      />
+      <div className="md:w-1/2">
+        <h2 className="text-2xl font-bold mb-4">{heading}</h2>
+        <p className="text-gray-700 leading-relaxed text-lg">{content}</p>
+      </div>
+    </section>
+  );
+};
+
 const BlogLayout = ({
   title,
   excerpt,
@@ -18,37 +48,16 @@ const BlogLayout = ({
   forWho,
 }: BlogLayoutProps) => {
   return (
-    <article className="max-w-3xl mx-auto px-4 py-12">
-      <header className="mb-10 text-center">
-        <h1 className="text-4xl font-bold mb-4">{title}</h1>
-        <p className="text-lg text-gray-600">{excerpt}</p>
+    <article className="max-w-6xl mx-auto px-4 py-12">
+      <header className="mb-16 text-center ">
+        <h1 className="text-5xl font-bold mb-4 mt-4 leading-tight">{title}</h1>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">{excerpt}</p>
       </header>
 
-      <img
-        src={image}
-        alt={title}
-        className="w-full h-64 object-cover rounded-xl mb-10"
-      />
-
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">What</h2>
-        <p className="text-gray-700 leading-relaxed">{what}</p>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">Why</h2>
-        <p className="text-gray-700 leading-relaxed">{why}</p>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">How</h2>
-        <p className="text-gray-700 leading-relaxed">{how}</p>
-      </section>
-
-      <section>
-        <h2 className="text-2xl font-semibold mb-2">For Who</h2>
-        <p className="text-gray-700 leading-relaxed">{forWho}</p>
-      </section>
+      <Section heading="What" content={what} image={image} />
+      <Section heading="Why" content={why} image={image} reverse />
+      <Section heading="How" content={how} image={image} />
+      <Section heading="For Who" content={forWho} image={image} reverse />
     </article>
   );
 };
