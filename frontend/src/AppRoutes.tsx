@@ -31,6 +31,7 @@ const GoogleAdsPage = lazy(() => import("./pages/GoogleAdsService"));
 const MpesaIntegrationPage = lazy(() => import("./pages/MpesaService"));
 const SeoPage = lazy(() => import("./pages/SeoPage"));
 const WebsiteTypeDetail = lazy(() => import("./pages/WebsiteDetail"));
+const BlogPage = lazy(() => import("./pages/BlogDetailPage")); // Added Blog Page
 
 const RouteWrapper = ({ children }: { children: React.ReactNode }) => (
   <>
@@ -73,6 +74,14 @@ const AppRoutes = () => {
         element={
           <RouteWrapper>
             <TestimonialPage />
+          </RouteWrapper>
+        }
+      />
+      <Route
+        path="/blog/:slug" // Added Blog Page Route
+        element={
+          <RouteWrapper>
+            <BlogPage />
           </RouteWrapper>
         }
       />
@@ -189,4 +198,3 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
-// This code defines the routing structure for a React application using React Router. It includes public pages, services pages, authentication pages, and protected routes for both regular users and admin users. The routes are lazy-loaded for better performance, and a loading spinner is displayed while the components are being loaded. The Navbar and Footer components are included in the public and protected routes but not in the authentication pages.

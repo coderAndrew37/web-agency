@@ -10,6 +10,7 @@ import ServicesCarousel from "../components/serviceCarousel";
 import { calendlyUrl } from "../config/constants";
 import colors from "../styles/colors";
 
+import BlogCarousel from "../components/BlogCarousel";
 import {
   defaultFAQs,
   defaultFeatures,
@@ -67,6 +68,16 @@ const Home = () => {
         subtitle="We’ve got straight answers. Here’s what people ask us the most."
         faqs={defaultFAQs}
       />
+
+      <CTA
+        title="🚀 Let’s Build Your Growth Engine"
+        subtitle="Book a free strategy call to see how we can help you scale."
+        primaryCTA="Book My Strategy Call"
+        calendlyUrl={calendlyUrl}
+        imagePath="/images/cta-2.jpeg"
+      />
+
+      <BlogCarousel />
 
       <Newsletter
         title="📩 Steal Our Strategies"

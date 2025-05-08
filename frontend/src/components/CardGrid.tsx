@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 interface CardItem {
   title: string;
-  description: string;
+  description: string | ReactNode;
   icon: ReactNode;
 }
 
@@ -47,9 +47,9 @@ const CardGrid = ({
             >
               <div className="flex justify-center mb-4">{item.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <div className="text-gray-600 dark:text-gray-300">
                 {item.description}
-              </p>
+              </div>
             </motion.div>
           ))}
         </div>

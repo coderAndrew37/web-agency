@@ -402,3 +402,5 @@
 [2025-05-07T07:32:13.855Z] INFO: ✅ MongoDB Connected Successfully
 [2025-05-07T08:59:07.501Z] INFO: 🚀 Server running on port 5000
 [2025-05-07T08:59:07.541Z] INFO: ✅ MongoDB Connected Successfully
+[2025-05-07T09:49:58.392Z] INFO: 🚀 Server running on port 5000
+[2025-05-07T09:50:28.392Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
