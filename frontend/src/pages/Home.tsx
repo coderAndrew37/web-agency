@@ -74,7 +74,7 @@ const Home = () => {
         subtitle="Book a free strategy call to see how we can help you scale."
         primaryCTA="Book My Strategy Call"
         calendlyUrl={calendlyUrl}
-        imagePath="/images/cta-2.jpeg"
+        imagePath="/images/contact_info.png"
       />
 
       <BlogCarousel />

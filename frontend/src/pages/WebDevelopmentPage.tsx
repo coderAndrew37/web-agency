@@ -1,25 +1,26 @@
-import Hero from "../components/Hero";
+import Bonus from "../components/Bonus";
+import CTA from "../components/CTA";
+import FAQ from "../components/FAQ";
 import Features from "../components/Features";
-import Process from "../components/Process";
+import Hero from "../components/Hero";
+import Newsletter from "../components/Newsletter";
+import PortfolioShowcase from "../components/PortfolioShowcase";
 import Pricing from "../components/Pricing";
 import PricingCalculator from "../components/PricingCalculator";
-import CTA from "../components/CTA";
-import Newsletter from "../components/Newsletter";
-import { webDevPlans, webDevFeatures } from "../data/pricingData";
-import Bonus from "../components/Bonus";
+import Process from "../components/Process";
 import ServiceContent from "../components/ServiceContent";
-import { webDevBonuses } from "../data/bonuses";
-import FAQ from "../components/FAQ";
-import { calendlyUrl } from "../config/constants";
-import { webDevFAQs } from "../data/faqs";
-import { webDevProcess } from "../data/processes";
 import WebsiteTypeCarousel from "../components/services/WebTypeCarousel";
-import PortfolioShowcase from "../components/PortfolioShowcase";
+import { calendlyUrl } from "../config/constants";
+import { webDevBonuses } from "../data/bonuses";
+import { webDevFAQs } from "../data/faqs";
+import { webDevFeatures, webDevPlans } from "../data/pricingData";
+import { webDevProcess } from "../data/processes";
 
 const WebDevelopmentPage = () => {
   return (
     <div>
       {/* 1️⃣ Hero Section */}
+
       <Hero
         title="🌐 Let’s Build a Website That Works While You Sleep"
         subtitle="We craft powerful websites that attract traffic, convert visitors, and grow your business 24/7."

@@ -15,4 +15,5 @@ export const PUBLIC_ROUTES = [
   "/forgot-password",
   "/reset-password/:token",
   "/services/web-development/:slug", // added dynamic route for website details
+  "/blog/:slug", // added dynamic route for blog details
 ];
