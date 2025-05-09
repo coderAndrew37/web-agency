@@ -13,6 +13,7 @@ import WebsiteTypeCarousel from "../components/services/WebTypeCarousel";
 import { calendlyUrl } from "../config/constants";
 import { webDevBonuses } from "../data/bonuses";
 import { webDevFAQs } from "../data/faqs";
+import { websitesFeatures } from "../data/features";
 import { webDevFeatures, webDevPlans } from "../data/pricingData";
 import { webDevProcess } from "../data/processes";
 
@@ -20,7 +21,6 @@ const WebDevelopmentPage = () => {
   return (
     <div>
       {/* 1️⃣ Hero Section */}
-
       <Hero
         title="🌐 Let’s Build a Website That Works While You Sleep"
         subtitle="We craft powerful websites that attract traffic, convert visitors, and grow your business 24/7."
@@ -31,7 +31,6 @@ const WebDevelopmentPage = () => {
         imageUrl="/images/web-dev-hero.jpeg"
         imageAlt="Web Development Hero Image"
       />
-
       <ServiceContent
         title="Websites Built for Growth, Optimized for Results"
         tagline="We don’t just build websites. We create growth engines."
@@ -46,54 +45,11 @@ const WebDevelopmentPage = () => {
         ctaText="Claim Your Free Web Strategy Call"
         ctaLink={calendlyUrl}
       />
-
       {/* 2️⃣ Why Choose Us */}
       <Features
         title="Why Entrepreneurs Trust Us With Their Websites"
-        features={[
-          {
-            title: "Built-In SEO",
-            description:
-              "We don’t charge extra for SEO—it’s part of every site we launch.",
-            icon: (
-              <span role="img" aria-label="search">
-                🔍
-              </span>
-            ),
-          },
-          {
-            title: "Online Store Ready",
-            description:
-              "From product pages to payments—we set up everything you need to sell online.",
-            icon: (
-              <span role="img" aria-label="shopping cart">
-                🛒
-              </span>
-            ),
-          },
-          {
-            title: "Mobile First",
-            description:
-              "Designed for smartphones first—because that’s where most traffic comes from.",
-            icon: (
-              <span role="img" aria-label="mobile phone">
-                📱
-              </span>
-            ),
-          },
-          {
-            title: "Speed + Security",
-            description:
-              "We optimize for lightning-fast load times and secure data handling.",
-            icon: (
-              <span role="img" aria-label="lightning bolt">
-                ⚡
-              </span>
-            ),
-          },
-        ]}
+        features={websitesFeatures}
       />
-
       {/* 🔄 Carousel Section */}
       <WebsiteTypeCarousel />
       {/* 3️⃣ Web Development Process */}
@@ -108,26 +64,26 @@ const WebDevelopmentPage = () => {
           ),
         }))}
       />
-
       {/* 4️⃣ Pricing Plans */}
       <Pricing title="Web Development Pricing" plans={webDevPlans} />
-
       {/* 5️⃣ Custom Pricing Calculator */}
       <PricingCalculator
         title="Customize Your Website Package"
         features={webDevFeatures}
         basePrice={20000} // Minimum price for web development
       />
-
-      {/* 6️⃣ Bonuses Section */}
-      <Bonus bonuses={webDevBonuses} />
-
-      {/* 7️⃣ Portfolio Showcase */}
+      /* 6️⃣ Bonuses Section */
+      <Bonus
+        title="Web Development Bonuses"
+        subtitle="We offer exclusive resources, one-on-one strategy sessions, and lifetime updates."
+        items={webDevBonuses.map((bonus) => ({
+          ...bonus,
+          icon: <bonus.icon />,
+        }))}
+      />
       <PortfolioShowcase />
-
       {/* 7️⃣ Frequently Asked Questions */}
       <FAQ title="Web Development FAQs" faqs={webDevFAQs} />
-
       {/* 8️⃣ Call-to-Action */}
       <CTA
         title="🚀 Ready to Build a Website That Works for You?"
@@ -135,11 +91,10 @@ const WebDevelopmentPage = () => {
         primaryCTA="Get a Free Quote"
         calendlyUrl={calendlyUrl}
       />
-
       {/* 9️⃣ Newsletter Signup */}
       <Newsletter
-        title="Stay Updated with Our Newsletter"
-        subtitle="Subscribe to receive the latest updates and insights directly in your inbox."
+        title="📢 Get the Latest Web Strategies for Your Business"
+        subtitle="Join smart business owners getting expert tips to grow traffic, leads, and revenue online."
       />
     </div>
   );

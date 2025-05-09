@@ -1,4 +1,3 @@
-import { PenTool, Search, TrendingUp } from "lucide-react";
 import Bonus from "../components/Bonus";
 import CTA from "../components/CTA";
 import FAQ from "../components/FAQ";
@@ -8,138 +7,12 @@ import Newsletter from "../components/Newsletter";
 import Pricing from "../components/Pricing";
 import Process from "../components/Process";
 import ServiceContent from "../components/ServiceContent";
-import { googleAdsPlans } from "../data/pricingData";
 import { calendlyUrl } from "../config/constants";
-
-const googleAdsFeatures = [
-  {
-    title: "Expert Campaign Management",
-    description: "We create and manage high-performance Google Ads campaigns.",
-    icon: (
-      <span role="img" aria-label="target">
-        🎯
-      </span>
-    ),
-  },
-  {
-    title: "Keyword Research & Optimization",
-    description: "Target the right audience with precise keyword strategies.",
-    icon: (
-      <span role="img" aria-label="magnifying glass">
-        🔎
-      </span>
-    ),
-  },
-  {
-    title: "High-Converting Ad Copy",
-    description: "Engaging, persuasive copy to maximize conversions.",
-    icon: (
-      <span role="img" aria-label="writing hand">
-        ✍️
-      </span>
-    ),
-  },
-  {
-    title: "Budget Optimization & Scaling",
-    description: "Ensure maximum ROI with strategic budget allocation.",
-    icon: (
-      <span role="img" aria-label="money bag">
-        💰
-      </span>
-    ),
-  },
-];
-
-const googleAdsProcess = [
-  {
-    title: "Understanding Your Business Goals",
-    description: "We analyze your objectives to craft a custom strategy.",
-    icon: (
-      <span role="img" aria-label="trophy">
-        🏆
-      </span>
-    ),
-  },
-  {
-    title: "Keyword Research & Competitor Analysis",
-    description: "Find the best keywords and analyze competitors.",
-    icon: (
-      <span role="img" aria-label="bar chart">
-        📊
-      </span>
-    ),
-  },
-  {
-    title: "Ad Creation & Landing Page Optimization",
-    description:
-      "Design ads and optimize landing pages for better performance.",
-    icon: (
-      <span role="img" aria-label="artist palette">
-        🎨
-      </span>
-    ),
-  },
-  {
-    title: "Campaign Monitoring & Optimization",
-    description: "We continuously track and tweak campaigns for success.",
-    icon: (
-      <span role="img" aria-label="gear">
-        ⚙️
-      </span>
-    ),
-  },
-  {
-    title: "Performance Reporting & Scaling",
-    description: "Receive detailed reports and scale up winning campaigns.",
-    icon: (
-      <span role="img" aria-label="chart increasing">
-        📈
-      </span>
-    ),
-  },
-];
-
-const googleAdsBonuses = [
-  {
-    title: "Free Google Ads Audit",
-    description:
-      "Get a comprehensive audit of your current Google Ads performance.",
-    icon: Search,
-  },
-  {
-    title: "Custom Ad Copywriting",
-    description: "Receive high-converting ad copy written by experts.",
-    icon: PenTool,
-  },
-  {
-    title: "Landing Page Optimization Guide",
-    description: "Optimize your landing pages to increase conversions.",
-    icon: TrendingUp,
-  },
-];
-
-const googleAdsFAQs = [
-  {
-    question: "How much should I budget for Google Ads?",
-    answer:
-      "Your budget depends on your industry, competition, and goals. We recommend starting with at least KES 20,000 per month.",
-  },
-  {
-    question: "How long does it take to see results?",
-    answer:
-      "Some campaigns generate leads immediately, while others may take 2-4 weeks for optimal performance.",
-  },
-  {
-    question: "Do you provide ad copy and creatives?",
-    answer:
-      "Yes! We handle everything from ad copy to image and video creatives.",
-  },
-  {
-    question: "Can I track my ad performance?",
-    answer:
-      "Absolutely! We provide detailed reports with key performance metrics.",
-  },
-];
+import { googleAdsBonuses } from "../data/bonuses";
+import { googleAdsFAQs } from "../data/faqs";
+import { googleAdsFeatures } from "../data/features";
+import { googleAdsPlans } from "../data/pricingData";
+import { googleAdsProcess } from "../data/processes";
 
 const GoogleAdsPage = () => {
   return (
@@ -185,7 +58,14 @@ const GoogleAdsPage = () => {
       />
 
       {/* 4️⃣ Bonus */}
-      <Bonus bonuses={googleAdsBonuses} />
+      <Bonus
+        title="🎁 Free Extras with Your Google Ads Campaign"
+        subtitle="Every campaign includes valuable bonuses to help you generate more leads and maximize ROI."
+        items={googleAdsBonuses.map((bonus) => ({
+          ...bonus,
+          icon: <bonus.icon />,
+        }))}
+      />
 
       {/* 4️⃣ Pricing Plans */}
       <Pricing title="Google Ads Management Pricing" plans={googleAdsPlans} />
@@ -195,14 +75,18 @@ const GoogleAdsPage = () => {
         title="Take Your Business to the Next Level with Google Ads!"
         subtitle="Let us manage your campaigns while you focus on running your business."
         primaryCTA="Start Your Google Ads Campaign"
-        onPrimaryClick={() => console.log("Google Ads Started!")}
+        calendlyUrl={calendlyUrl}
+        imagePath="/images/cta.jpeg"
       />
 
       {/* 5️⃣ FAQs */}
       <FAQ faqs={googleAdsFAQs} />
 
       {/* 6️⃣ Newsletter Signup */}
-      <Newsletter />
+      <Newsletter
+        title="📬 Win More Clients with Smarter Google Ads"
+        subtitle="Join business owners getting expert ad tips, industry trends, and lead generation strategies monthly."
+      />
     </div>
   );
 };

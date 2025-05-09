@@ -1,147 +1,19 @@
-import Hero from "../components/Hero";
-import Features from "../components/Features";
-import Process from "../components/Process";
-import Pricing from "../components/Pricing";
-import CTA from "../components/CTA";
-import Newsletter from "../components/Newsletter";
-import { mpesaPlans } from "../data/pricingData";
-import { FileText, BarChart, Wrench } from "lucide-react";
 import Bonus from "../components/Bonus";
+import CTA from "../components/CTA";
 import FAQ from "../components/FAQ";
+import Features from "../components/Features";
+import Hero from "../components/Hero";
+import Newsletter from "../components/Newsletter";
+import Pricing from "../components/Pricing";
+import Process from "../components/Process";
 import ServiceContent from "../components/ServiceContent";
+import { mpesaBonuses } from "../data/bonuses";
+import { mpesaFAQs } from "../data/faqs";
+import { mpesaFeatures } from "../data/features";
+import { mpesaPlans } from "../data/pricingData";
+import { mpesaProcess } from "../data/processes";
 
 import { calendlyUrl } from "../config/constants";
-
-const mpesaFeatures = [
-  {
-    title: "Secure Transactions",
-    description: "Ensure encrypted & protected Mpesa payments.",
-    icon: (
-      <span role="img" aria-label="lock">
-        🔒
-      </span>
-    ),
-  },
-  {
-    title: "Fast & Reliable Processing",
-    description: "Get real-time transaction updates.",
-    icon: (
-      <span role="img" aria-label="lightning">
-        ⚡
-      </span>
-    ),
-  },
-  {
-    title: "Automated Payment Confirmations",
-    description: "No need to manually confirm payments.",
-    icon: (
-      <span role="img" aria-label="envelope">
-        📩
-      </span>
-    ),
-  },
-  {
-    title: "Custom API Solutions",
-    description: "We tailor Mpesa API to fit your needs.",
-    icon: (
-      <span role="img" aria-label="wrench">
-        🔧
-      </span>
-    ),
-  },
-];
-
-const mpesaProcess = [
-  {
-    title: "Understanding Your Business Needs",
-    description: "Identify how Mpesa fits into your business.",
-    icon: (
-      <span role="img" aria-label="magnifying glass">
-        🧐
-      </span>
-    ),
-  },
-  {
-    title: "Mpesa API Setup & Configuration",
-    description: "Configure APIs for seamless payment processing.",
-    icon: (
-      <span role="img" aria-label="gear">
-        ⚙️
-      </span>
-    ),
-  },
-  {
-    title: "Testing & Quality Assurance",
-    description: "Ensure smooth transactions with test environments.",
-    icon: (
-      <span role="img" aria-label="check mark">
-        ✅
-      </span>
-    ),
-  },
-  {
-    title: "Deployment & Go Live",
-    description: "Launch the integration and start accepting payments.",
-    icon: (
-      <span role="img" aria-label="rocket">
-        🚀
-      </span>
-    ),
-  },
-  {
-    title: "Ongoing Support & Maintenance",
-    description: "We provide ongoing technical support.",
-    icon: (
-      <span role="img" aria-label="tools">
-        🛠️
-      </span>
-    ),
-  },
-];
-
-const mpesaFAQs = [
-  {
-    question: "How long does Mpesa integration take?",
-    answer:
-      "Integration typically takes between 3-7 days, depending on business requirements.",
-  },
-  {
-    question: "Do I need a Paybill or Till Number?",
-    answer:
-      "Yes, you need a registered Mpesa Paybill or Till Number for seamless integration.",
-  },
-  {
-    question: "What are the transaction fees?",
-    answer:
-      "Mpesa charges standard transaction fees. We help you optimize costs by recommending the best payment structure.",
-  },
-  {
-    question: "Can I automate payment confirmations?",
-    answer:
-      "Yes! Our integration ensures automatic confirmation and reconciliation of transactions.",
-  },
-];
-
-const mpesaBonuses = [
-  {
-    title: "Free API Setup Guide",
-    description:
-      "A step-by-step guide to help you understand Mpesa API integration.",
-    icon: FileText,
-  },
-  {
-    title: "One-Month Free Support",
-    description:
-      "Get technical support for your integration at no extra cost for the first month.",
-    icon: Wrench,
-  },
-  {
-    title: "Transaction Cost Optimization Report",
-    description:
-      "We analyze your business needs and suggest ways to reduce transaction costs.",
-    icon: BarChart,
-  },
-];
 
 const MpesaIntegrationPage = () => {
   return (
@@ -186,7 +58,14 @@ const MpesaIntegrationPage = () => {
       <Pricing title="Mpesa Integration Pricing" plans={mpesaPlans} />
 
       {/* 6️⃣ Bonuses Section */}
-      <Bonus bonuses={mpesaBonuses} />
+      <Bonus
+        title="🎁 Added Value for Your Mpesa Integration"
+        subtitle="Every integration includes tools and features to help your business accept payments faster and smarter."
+        items={mpesaBonuses.map((bonus) => ({
+          ...bonus,
+          icon: <bonus.icon />,
+        }))}
+      />
 
       {/* 7️⃣ Frequently Asked Questions */}
       <FAQ title="Mpesa Integration FAQs" faqs={mpesaFAQs} />
@@ -200,7 +79,10 @@ const MpesaIntegrationPage = () => {
       />
 
       {/* 6️⃣ Newsletter Signup */}
-      <Newsletter />
+      <Newsletter
+        title="📬 Stay Ahead in Mobile Payments"
+        subtitle="Join other business owners getting updates on payment tech, automation, and revenue growth tips."
+      />
     </div>
   );
 };

@@ -1,26 +1,31 @@
-import Hero from "../components/Hero";
-import Features from "../components/Features";
-import Process from "../components/Process";
-import TechnologiesWeUse from "../components/TechnologiesWeUse";
-import PortfolioShowcase from "../components/PortfolioShowcase";
-import Pricing from "../components/Pricing";
-import PricingCalculator from "../components/PricingCalculator";
-import CTA from "../components/CTA";
-import Newsletter from "../components/Newsletter";
-import Bonus from "../components/Bonus";
-import FAQ from "../components/FAQ";
-import { appDevPlans, appDevFeatures } from "../data/pricingData";
-import ServiceContent from "../components/ServiceContent";
 import {
   Code,
-  Smartphone,
+  Database,
   Rocket,
   ShieldCheck,
-  Database,
+  Smartphone,
   Zap,
 } from "lucide-react";
+import Bonus from "../components/Bonus";
+import CTA from "../components/CTA";
+import FAQ from "../components/FAQ";
+import Features from "../components/Features";
+import Hero from "../components/Hero";
+import Newsletter from "../components/Newsletter";
+import Portfolio from "../components/PortfolioShowcase";
+import Pricing from "../components/Pricing";
+import PricingCalculator from "../components/PricingCalculator";
+import Process from "../components/Process";
+import ServiceContent from "../components/ServiceContent";
+import TechnologiesWeUse from "../components/TechnologiesWeUse";
+import { appDevFeatures, appDevPlans } from "../data/pricingData";
 
 import { calendlyUrl } from "../config/constants";
+import { appDevBonuses } from "../data/bonuses";
+import { appFAQs } from "../data/faqs";
+import { appFeatures } from "../data/features";
+import { appDevProcess } from "../data/processes";
+import { appProjects } from "../data/projects";
 
 const techStack = [
   { name: "React Native", icon: <Code size={40} className="text-blue-500" /> },
@@ -35,48 +40,6 @@ const techStack = [
     icon: <Database size={40} className="text-yellow-500" />,
   },
   { name: "Node.js", icon: <Zap size={40} className="text-green-500" /> },
-];
-
-const appProjects = [
-  {
-    name: "E-Commerce Mobile App",
-    description: "A seamless shopping experience with real-time updates.",
-    features: ["Secure Payments", "Push Notifications", "Live Chat Support"],
-    image: "/images/ecommerce-app.jpg",
-  },
-  {
-    name: "Fitness Tracking App",
-    description: "Track workouts and health stats in real-time.",
-    features: ["AI Workout Suggestions", "Daily Health Reports"],
-    image: "/images/fitness-app.jpg",
-  },
-  {
-    name: "Food Delivery App",
-    description: "Order food from top restaurants with real-time tracking.",
-    features: ["Live Order Tracking", "Secure Payments", "User Ratings"],
-    image: "/images/food-app.jpg",
-  },
-];
-
-const appFAQs = [
-  {
-    question: "How long does it take to develop an app?",
-    answer:
-      "App development typically takes 8-12 weeks, depending on complexity.",
-  },
-  {
-    question: "Do you provide post-launch support?",
-    answer: "Yes! We offer ongoing maintenance and updates for all our apps.",
-  },
-  {
-    question: "Can my app be published on both iOS and Android?",
-    answer: "Absolutely! We specialize in cross-platform development.",
-  },
-  {
-    question: "How do you ensure app security?",
-    answer:
-      "We use encryption, authentication, and secure coding practices to keep your app safe.",
-  },
 ];
 
 const AppDevelopmentPage = () => {
@@ -113,78 +76,24 @@ const AppDevelopmentPage = () => {
       {/* 2️⃣ Why Choose Us */}
       <Features
         title="Why Choose Our App Development Services?"
-        features={[
-          {
-            title: "Tailored Mobile Solutions",
-            description: "We build custom apps for startups and enterprises.",
-            icon: <Code size={24} />,
-          },
-          {
-            title: "Cross-Platform Development",
-            description: "Develop once, deploy on Android & iOS.",
-            icon: <Smartphone size={24} />,
-          },
-          {
-            title: "Secure & Scalable",
-            description: "Built with robust security and scalability in mind.",
-            icon: <ShieldCheck size={24} />,
-          },
-          {
-            title: "Full Maintenance & Support",
-            description: "Ongoing updates and optimization post-launch.",
-            icon: <Zap size={24} />,
-          },
-        ]}
+        features={appFeatures}
       />
 
       {/* 3️⃣ App Development Process */}
-      <Process
-        title="Our App Development Process"
-        steps={[
-          {
-            title: "Idea & Planning",
-            description: "Define goals, audience, and roadmap.",
-            icon: (
-              <span role="img" aria-label="pin">
-                📌
-              </span>
-            ),
-          },
-          {
-            title: "Design & Prototyping",
-            description: "Create intuitive UI/UX wireframes.",
-            icon: (
-              <span role="img" aria-label="palette">
-                🎨
-              </span>
-            ),
-          },
-          {
-            title: "Development & Testing",
-            description: "Build and rigorously test the application.",
-            icon: (
-              <span role="img" aria-label="laptop">
-                💻
-              </span>
-            ),
-          },
-          {
-            title: "Launch & Ongoing Support",
-            description: "Deploy app and provide continuous updates.",
-            icon: (
-              <span role="img" aria-label="rocket">
-                🚀
-              </span>
-            ),
-          },
-        ]}
-      />
+      <Process title="Our App Development Process" steps={appDevProcess} />
 
       {/* 4️⃣ Technologies We Use */}
       <TechnologiesWeUse technologies={techStack} />
 
       {/* 5️⃣ Portfolio Showcase */}
-      <PortfolioShowcase projects={appProjects} />
+      <Portfolio
+        projects={appProjects.map((project) => ({
+          title: project.name,
+          imageUrl: project.image,
+          description: project.description,
+          features: project.features,
+        }))}
+      />
 
       {/* 6️⃣ Pricing Plans */}
       <Pricing title="App Development Pricing" plans={appDevPlans} />
@@ -197,7 +106,14 @@ const AppDevelopmentPage = () => {
       />
 
       {/* 8️⃣ Bonuses Section */}
-      <Bonus />
+      <Bonus
+        title="🎁 What You'll Get"
+        subtitle="These extras come at no additional cost."
+        items={appDevBonuses.map((bonus) => ({
+          ...bonus,
+          icon: <bonus.icon />,
+        }))}
+      />
 
       {/* 9️⃣ Frequently Asked Questions */}
       <FAQ title="App Development FAQs" faqs={appFAQs} />
@@ -211,7 +127,10 @@ const AppDevelopmentPage = () => {
       />
 
       {/* 11️⃣ Newsletter */}
-      <Newsletter />
+      <Newsletter
+        title="📬 Stay Updated on App Development Trends"
+        subtitle="Join thousands of business owners getting monthly insights on mobile apps, growth strategies, and success stories."
+      />
     </div>
   );
 };

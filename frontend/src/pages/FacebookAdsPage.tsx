@@ -9,29 +9,12 @@ import Newsletter from "../components/Newsletter";
 import { facebookAdsPlans, facebookAdsFeatures } from "../data/pricingData";
 import FAQ from "../components/FAQ";
 import { calendlyUrl } from "../config/constants";
+import { facebookAdsFAQs } from "../data/faqs";
+import { facebookAdsProcess } from "../data/processes";
+import { facebookAdsBonuses } from "../data/bonuses";
+import { facebookAdsFeatures as features } from "../data/features";
+import Bonus from "../components/Bonus";
 
-const facebookAdsFAQs = [
-  {
-    question: "How long does it take to see results with Facebook Ads?",
-    answer:
-      "You can start seeing results within a few days, but optimization may take 2-4 weeks for best performance.",
-  },
-  {
-    question: "What budget do I need for Facebook Ads?",
-    answer:
-      "We recommend a minimum budget of Ksh 20000/month to see meaningful results, but we tailor campaigns to your needs.",
-  },
-  {
-    question: "Do you handle ad creatives and copy?",
-    answer:
-      "Yes! We provide professionally designed ads and persuasive copy to maximize engagement and conversions.",
-  },
-  {
-    question: "Can I track the performance of my ads?",
-    answer:
-      "Absolutely! We provide detailed reports on performance, conversions, and return on investment (ROI).",
-  },
-];
 const FacebookAdsPage = () => {
   return (
     <div>
@@ -50,88 +33,11 @@ const FacebookAdsPage = () => {
       {/* Why Choose Us */}
       <Features
         title="Why Choose Our Facebook Ads Services?"
-        features={[
-          {
-            title: "Highly Targeted Campaigns",
-            description: "Reach the right audience with precision.",
-            icon: (
-              <span role="img" aria-label="target">
-                🎯
-              </span>
-            ),
-          },
-          {
-            title: "Data-Driven Optimization",
-            description: "We analyze data to maximize ROI.",
-            icon: (
-              <span role="img" aria-label="chart">
-                📊
-              </span>
-            ),
-          },
-          {
-            title: "Creative Ad Copy & Design",
-            description: "Engaging visuals and persuasive copy.",
-            icon: (
-              <span role="img" aria-label="art">
-                🎨
-              </span>
-            ),
-          },
-          {
-            title: "Conversion Tracking & Analytics",
-            description: "Track results and improve performance.",
-            icon: (
-              <span role="img" aria-label="chart">
-                📈
-              </span>
-            ),
-          },
-        ]}
+        features={features}
       />
 
       {/* Our Process */}
-      <Process
-        title="Our Facebook Ads Process"
-        steps={[
-          {
-            title: "Ad Strategy Planning",
-            description: "We analyze your goals and audience.",
-            icon: (
-              <span role="img" aria-label="pin">
-                📌
-              </span>
-            ),
-          },
-          {
-            title: "Creative Ad Design",
-            description: "We craft compelling ads that convert.",
-            icon: (
-              <span role="img" aria-label="art">
-                🎨
-              </span>
-            ),
-          },
-          {
-            title: "Campaign Launch & Management",
-            description: "We set up and optimize ad performance.",
-            icon: (
-              <span role="img" aria-label="rocket">
-                🚀
-              </span>
-            ),
-          },
-          {
-            title: "Analytics & Scaling",
-            description: "We track, analyze, and scale successful ads.",
-            icon: (
-              <span role="img" aria-label="chart">
-                📊
-              </span>
-            ),
-          },
-        ]}
-      />
+      <Process title="Our Facebook Ads Process" steps={facebookAdsProcess} />
 
       {/* Pricing Plans */}
       <Pricing title="Facebook Ads Pricing" plans={facebookAdsPlans} />
@@ -148,7 +54,8 @@ const FacebookAdsPage = () => {
         title="📢 Get More Leads with Facebook Ads!"
         subtitle="Let’s create a powerful ad campaign for your business."
         primaryCTA="Start Advertising"
-        onPrimaryClick={() => console.log("Start Advertising Clicked!")}
+        calendlyUrl={calendlyUrl}
+        imagePath="/images/cta.jpeg"
       />
 
       {/* Lead Magnet */}
@@ -158,11 +65,23 @@ const FacebookAdsPage = () => {
         resourceType="Facebook Ads Mastery"
       />
 
+      <Bonus
+        title="🎁 Exclusive Bonuses for Facebook Ads Clients"
+        subtitle="Get extra tools and resources to help you convert more leads and scale your campaigns."
+        items={facebookAdsBonuses.map((bonus) => ({
+          ...bonus,
+          icon: <bonus.icon />,
+        }))}
+      />
+
       {/* Frequently Asked Questions */}
       <FAQ title="Facebook Ads FAQs" faqs={facebookAdsFAQs} />
 
       {/* Newsletter Signup */}
-      <Newsletter />
+      <Newsletter
+        title="📬 Get Facebook Ads Tips That Drive Results"
+        subtitle="Join business owners getting proven ad strategies and marketing insights every month."
+      />
     </div>
   );
 };
