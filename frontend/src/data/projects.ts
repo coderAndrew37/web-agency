@@ -1,4 +1,11 @@
-export const webProjects = [
+interface Project {
+  title: string;
+  description: string;
+  imageUrl: string;
+  liveUrl?: string;
+}
+
+export const webProjects: Project[] = [
   {
     title: "E-commerce Platform",
     description: "A scalable online store with integrated payment solutions.",
@@ -18,23 +25,20 @@ export const webProjects = [
   },
 ];
 
-export const appProjects = [
+export const appProjects: Project[] = [
   {
-    name: "E-Commerce Mobile App",
+    title: "E-Commerce Mobile App",
     description: "A seamless shopping experience with real-time updates.",
-    features: ["Secure Payments", "Push Notifications", "Live Chat Support"],
-    image: "/images/ecommerce-app.jpg",
+    imageUrl: "/images/ecommerce-app.jpg",
   },
   {
-    name: "Fitness Tracking App",
+    title: "Fitness Tracking App",
     description: "Track workouts and health stats in real-time.",
-    features: ["AI Workout Suggestions", "Daily Health Reports"],
-    image: "/images/fitness-app.jpg",
+    imageUrl: "/images/fitness-app.jpg",
   },
   {
-    name: "Food Delivery App",
+    title: "Food Delivery App",
     description: "Order food from top restaurants with real-time tracking.",
-    features: ["Live Order Tracking", "Secure Payments", "User Ratings"],
-    image: "/images/food-app.jpg",
+    imageUrl: "/images/food-app.jpg",
   },
 ];

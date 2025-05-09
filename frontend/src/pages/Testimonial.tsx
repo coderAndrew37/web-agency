@@ -4,28 +4,28 @@ import { motion } from "framer-motion";
 
 const TestimonialPage = () => {
   return (
-    <motion.div
-      className="container mx-auto px-4 py-12"
+    <motion.section
+      className="bg-gray-50 min-h-screen py-20 px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6 }}
     >
-      <h1 className="text-4xl mt-12 font-bold text-center text-primary mb-8">
-        💬 Testimonials
-      </h1>
+      <div className="max-w-4xl mx-auto text-center mb-16">
+        <h1 className="text-5xl font-extrabold text-primary mb-4">
+          💬 Hear It From Real Clients
+        </h1>
+        <p className="text-gray-600 text-lg">
+          Genuine stories from our customers—why they chose us and what happened
+          next.
+        </p>
+      </div>
 
-      <p className="text-center text-gray-600 max-w-lg mx-auto mb-12">
-        See what our clients have to say about our services or share your own
-        experience!
-      </p>
-
-      {/* ✅ Display Approved Testimonials */}
       <TestimonialList />
-      {/* ✅ Testimonial Form (Only for Logged-in Users) */}
-      <div className="mb-12">
+
+      <div className="max-w-3xl mx-auto mt-20">
         <TestimonialForm />
       </div>
-    </motion.div>
+    </motion.section>
   );
 };
 

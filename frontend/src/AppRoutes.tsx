@@ -32,6 +32,7 @@ const MpesaIntegrationPage = lazy(() => import("./pages/MpesaService"));
 const SeoPage = lazy(() => import("./pages/SeoPage"));
 const WebsiteTypeDetail = lazy(() => import("./pages/WebsiteDetail"));
 const BlogPage = lazy(() => import("./pages/BlogDetailPage")); // Added Blog Page
+const PortfolioPage = lazy(() => import("./pages/Portfolio"));
 
 const RouteWrapper = ({ children }: { children: React.ReactNode }) => (
   <>
@@ -74,6 +75,14 @@ const AppRoutes = () => {
         element={
           <RouteWrapper>
             <TestimonialPage />
+          </RouteWrapper>
+        }
+      />
+      <Route
+        path="/portfolio"
+        element={
+          <RouteWrapper>
+            <PortfolioPage />
           </RouteWrapper>
         }
       />

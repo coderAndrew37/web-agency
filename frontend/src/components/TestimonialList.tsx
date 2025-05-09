@@ -1,8 +1,6 @@
-// ✅ components/TestimonialList.tsx (Zustand version)
-import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { useTestimonials } from "../hooks/testimonials/useTestimonial.ts";
-import colors from "../styles/colors";
 import { TestimonialSkeleton } from "./TestimonialSkeleton";
 
 const TestimonialList = () => {
@@ -16,51 +14,43 @@ const TestimonialList = () => {
 
   if (isError) {
     return (
-      <div className="max-w-2xl mx-auto my-10">
-        <p className="text-center text-red-500">
-          Failed to load testimonials. Please try again later.
-        </p>
+      <div className="text-center text-red-500 mt-12">
+        Something went wrong. Please try again later.
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto my-10">
-      <h2
-        className="text-3xl font-bold text-center mb-6"
-        style={{ color: colors.darkText }}
-      >
-        🌟 What Our Clients Say
-      </h2>
-
-      {testimonials.length === 0 ? (
-        <p className="text-center text-gray-600">No testimonials yet.</p>
-      ) : (
-        <div className="space-y-6">
-          {testimonials.map((testimonial) => (
-            <motion.div
-              key={testimonial._id}
-              className="p-6 border rounded-lg shadow-md bg-white"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {testimonial.image && (
-                <img
-                  src={testimonial.image}
-                  alt="User"
-                  className="w-16 h-16 rounded-full mx-auto mb-4"
-                  loading="lazy"
-                />
-              )}
-              <p className="text-lg text-gray-800">"{testimonial.message}"</p>
-              <h4 className="mt-2 font-semibold text-primary">
-                - {testimonial.name}
-              </h4>
-            </motion.div>
-          ))}
-        </div>
-      )}
+    <div className="grid gap-8 md:grid-cols-2">
+      {testimonials.map((testimonial) => (
+        <motion.div
+          key={testimonial._id}
+          className="bg-white shadow-xl border border-gray-200 rounded-xl p-6 text-left flex flex-col gap-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <div className="flex items-center gap-4">
+            {testimonial.image ? (
+              <img
+                src={testimonial.image}
+                alt={testimonial.name}
+                className="w-14 h-14 rounded-full object-cover border"
+              />
+            ) : (
+              <div className="w-14 h-14 rounded-full bg-gray-300 flex items-center justify-center text-white text-lg font-bold">
+                {testimonial.name[0]}
+              </div>
+            )}
+            <h4 className="text-lg font-semibold text-primary">
+              {testimonial.name}
+            </h4>
+          </div>
+          <p className="text-gray-700 text-base italic leading-relaxed">
+            "{testimonial.message}"
+          </p>
+        </motion.div>
+      ))}
     </div>
   );
 };
