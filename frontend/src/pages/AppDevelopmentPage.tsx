@@ -88,8 +88,8 @@ const AppDevelopmentPage = () => {
       {/* 5️⃣ Portfolio Showcase */}
       <Portfolio
         projects={appProjects.map((project) => ({
-          title: project.name,
-          imageUrl: project.image,
+          title: project.title,
+          imageUrl: project.imageUrl, // Assuming the correct property is 'imageUrl'
           description: project.description,
           features: project.features,
         }))}

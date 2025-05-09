@@ -3,6 +3,7 @@ interface Project {
   description: string;
   imageUrl: string;
   liveUrl?: string;
+  features?: string[];
 }
 
 export const webProjects: Project[] = [
