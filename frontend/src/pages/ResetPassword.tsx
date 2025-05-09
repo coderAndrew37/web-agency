@@ -1,12 +1,12 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
-import { useResetPassword as resetPassword } from "../api/auth";
+import { useAuthStore } from "../store/authStore";
 import { resetPasswordSchema } from "../Utils/validationSchemas";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import colors from "../styles/colors";
+import { useState } from "react";
 
 type ResetPasswordData = {
   password: string;
@@ -15,10 +15,10 @@ type ResetPasswordData = {
 const ResetPassword = () => {
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
-  const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const { resetPassword, isLoading, error, clearError } = useAuthStore();
 
   const {
     register,
@@ -29,21 +29,14 @@ const ResetPassword = () => {
   });
 
   const onSubmit = async (data: ResetPasswordData) => {
-    setError("");
+    clearError();
     setMessage("");
-    setLoading(true);
     try {
       await resetPassword(token!, data);
       setMessage("Password reset successful! Redirecting to login...");
       setTimeout(() => navigate("/login"), 3000);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message || "Something went wrong.");
-      } else {
-        setError("An unknown error occurred.");
-      }
-    } finally {
-      setLoading(false);
+    } catch {
+      // Error already handled in store
     }
   };
 
@@ -86,9 +79,9 @@ const ResetPassword = () => {
           type="submit"
           className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-white text-lg hover:opacity-80"
           whileTap={{ scale: 0.95 }}
-          disabled={loading}
+          disabled={isLoading}
         >
-          {loading ? "Resetting..." : "Reset Password"}
+          {isLoading ? "Resetting..." : "Reset Password"}
         </motion.button>
       </form>
     </motion.div>

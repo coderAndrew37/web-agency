@@ -1,19 +1,19 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForgotPassword as forgotPassword } from "../api/auth";
+import { useAuthStore } from "../store/authStore";
 import { forgotPasswordSchema } from "../Utils/validationSchemas";
 import { motion } from "framer-motion";
 import colors from "../styles/colors";
+import { useState } from "react";
 
 type ForgotPasswordData = {
   email: string;
 };
 
 const ForgotPassword = () => {
+  const { forgotPassword, isLoading, error, clearError } = useAuthStore();
+
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -24,20 +24,13 @@ const ForgotPassword = () => {
   });
 
   const onSubmit = async (data: ForgotPasswordData) => {
-    setError("");
+    clearError();
     setMessage("");
-    setLoading(true);
     try {
-      const response = await forgotPassword(data);
-      setMessage(response.data.message);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message || "Something went wrong.");
-      } else {
-        setError("An unknown error occurred.");
-      }
-    } finally {
-      setLoading(false);
+      const msg = await forgotPassword(data.email);
+      setMessage(msg);
+    } catch {
+      // Error already handled in store
     }
   };
 
@@ -72,9 +65,9 @@ const ForgotPassword = () => {
           type="submit"
           className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700 text-lg hover:opacity-80"
           whileTap={{ scale: 0.95 }}
-          disabled={loading}
+          disabled={isLoading}
         >
-          {loading ? "Sending..." : "Send Reset Link"}
+          {isLoading ? "Sending..." : "Send Reset Link"}
         </motion.button>
       </form>
     </motion.div>

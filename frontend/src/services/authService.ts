@@ -50,6 +50,16 @@ export const AuthService = {
     return apiClient.get<User>("/auth/me");
   },
 
+  async forgotPassword(data: { email: string }): Promise<{ message: string }> {
+    return apiClient.post<{ message: string }>("/auth/forgot-password", data);
+  },
+
+  async resetPassword(
+    token: string,
+    data: { password: string }
+  ): Promise<void> {
+    await apiClient.post(`/auth/reset-password/${token}`, data);
+  },
   async refresh(): Promise<RefreshTokenResponse> {
     const response = await apiClient
       .post<RefreshTokenResponse>("/auth/refresh")

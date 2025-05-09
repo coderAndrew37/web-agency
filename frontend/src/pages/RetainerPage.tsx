@@ -96,7 +96,10 @@ const RetainerPage = () => {
       />
 
       {/* ✉️ Newsletter */}
-      <Newsletter />
+      <Newsletter
+        title="Subscribe to Our Newsletter"
+        subtitle="Stay up-to-date with our latest growth tips and strategies."
+      />
     </div>
   );
 };

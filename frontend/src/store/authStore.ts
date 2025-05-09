@@ -27,6 +27,8 @@ type AuthActions = {
   clearError: () => void;
   getUser: () => User | null;
   resetAuthState: () => void;
+  forgotPassword: (email: string) => Promise<string>;
+  resetPassword: (token: string, data: { password: string }) => Promise<void>;
 };
 
 const initialState: AuthState = {
@@ -156,6 +158,31 @@ export const useAuthStore = create<AuthState & AuthActions>()(
             hasCheckedAuth: true,
             error: getErrorMessage(error, "Auth check failed"),
           });
+        }
+      },
+
+      forgotPassword: async (email) => {
+        set({ isLoading: true, error: null });
+        try {
+          const res = await AuthService.forgotPassword({ email });
+          set({ isLoading: false });
+          return res.message;
+        } catch (error) {
+          const msg = getErrorMessage(error, "Failed to send reset email");
+          set({ isLoading: false, error: msg });
+          throw new Error(msg);
+        }
+      },
+
+      resetPassword: async (token, data) => {
+        set({ isLoading: true, error: null });
+        try {
+          await AuthService.resetPassword(token, data);
+          set({ isLoading: false });
+        } catch (error) {
+          const msg = getErrorMessage(error, "Password reset failed");
+          set({ isLoading: false, error: msg });
+          throw new Error(msg);
         }
       },
 

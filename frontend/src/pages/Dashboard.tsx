@@ -1,4 +1,5 @@
-import { useCurrentUser, useLogout } from "../hooks/useAuth";
+import { useCurrentUser } from "../hooks/auth/useAuth";
+import { useLogout } from "../hooks/auth/useLogout";
 import { useMyProjects } from "../hooks/projects/useProjectsHooks";
 import { motion } from "framer-motion";
 import { LogOut, UserCog, ShieldCheck, Home, Folder } from "lucide-react";
@@ -6,7 +7,7 @@ import { Link } from "react-router-dom";
 import { default as Spinner } from "../components/LoadingSpinner"; // Assuming you have a Spinner component
 
 const Dashboard = () => {
-  const { data: user } = useCurrentUser();
+  const user = useCurrentUser();
   const logoutMutation = useLogout();
   const isAdmin = user?.role === "admin";
 
@@ -20,7 +21,7 @@ const Dashboard = () => {
   const hasProjects = projectsData?.data && projectsData.data.length > 0;
 
   const handleLogout = async () => {
-    await logoutMutation.mutateAsync();
+    await logoutMutation.logout();
   };
 
   return (
@@ -31,7 +32,7 @@ const Dashboard = () => {
       transition={{ duration: 0.5 }}
     >
       <h2 className="text-3xl font-bold text-center text-primary">
-        Welcome, {user?.name}! 🎉
+        Welcome, {user?.email}! 🎉
       </h2>
       <p className="text-center text-gray-600 mt-2">
         Your dashboard gives you full control over your account.

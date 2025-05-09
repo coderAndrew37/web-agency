@@ -8,6 +8,7 @@ interface CTAProps {
   calendlyUrl?: string;
   onPrimaryClick?: () => void;
   imagePath?: string; // path relative to public/
+  showFormOption?: boolean;
 }
 
 const CTA = ({
