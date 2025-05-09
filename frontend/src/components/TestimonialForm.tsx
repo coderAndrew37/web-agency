@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { testimonialSchema } from "../Utils/validationSchemas";
-import { useSubmitTestimonial } from "../hooks/testimonials/useTestimonialHooks";
+import { useSubmitTestimonial } from "../hooks/testimonials/useTestimonial.ts";
 import { useCurrentUser } from "../hooks/auth/useAuth";
 import { motion } from "framer-motion";
 import colors from "../styles/colors";

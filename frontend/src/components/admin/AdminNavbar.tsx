@@ -1,4 +1,3 @@
-// AdminNavbar.tsx
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
@@ -36,7 +35,7 @@ const AdminNavbar = () => {
       </motion.div>
 
       <div className="flex items-center space-x-4">
-        <span className="hidden sm:inline">Welcome, {user?.name}</span>
+        <span className="hidden sm:inline">Welcome, {user?.email}</span>
 
         <motion.button
           onClick={handleLogout}

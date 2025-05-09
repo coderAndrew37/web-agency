@@ -4,6 +4,7 @@ import { Testimonial } from "../types/testimonial";
 
 interface TestimonialState {
   testimonials: Testimonial[];
+  adminTestimonials: Testimonial[];
   isLoading: boolean;
   isError: boolean;
   error: string | null;
@@ -11,12 +12,14 @@ interface TestimonialState {
   isSuccess: boolean;
   submit: (formData: FormData) => Promise<void>;
   fetchAll: () => Promise<void>;
+  fetchAdmin: () => Promise<void>;
   approve: (_id: string) => Promise<void>;
   delete: (_id: string) => Promise<void>;
 }
 
 export const useTestimonialStore = create<TestimonialState>((set, get) => ({
   testimonials: [],
+  adminTestimonials: [],
   isLoading: false,
   isError: false,
   error: null,
@@ -33,6 +36,23 @@ export const useTestimonialStore = create<TestimonialState>((set, get) => ({
         isError: true,
         error:
           err instanceof Error ? err.message : "Failed to load testimonials",
+        isLoading: false,
+      });
+    }
+  },
+
+  fetchAdmin: async () => {
+    set({ isLoading: true, isError: false, error: null });
+    try {
+      const res = await TestimonialService.getAllAdmin();
+      set({ adminTestimonials: res.data, isLoading: false });
+    } catch (err) {
+      set({
+        isError: true,
+        error:
+          err instanceof Error
+            ? err.message
+            : "Failed to load admin testimonials",
         isLoading: false,
       });
     }
@@ -57,7 +77,7 @@ export const useTestimonialStore = create<TestimonialState>((set, get) => ({
   approve: async (_id) => {
     try {
       await TestimonialService.approve(_id);
-      get().fetchAll();
+      get().fetchAdmin();
     } catch (err) {
       console.error("Failed to approve testimonial:", err);
     }
@@ -66,7 +86,7 @@ export const useTestimonialStore = create<TestimonialState>((set, get) => ({
   delete: async (_id) => {
     try {
       await TestimonialService.delete(_id);
-      get().fetchAll();
+      get().fetchAdmin();
     } catch (err) {
       console.error("Failed to delete testimonial:", err);
     }

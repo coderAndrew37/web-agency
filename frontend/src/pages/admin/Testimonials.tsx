@@ -1,8 +1,4 @@
-import {
-  useFetchTestimonials,
-  useApproveTestimonial,
-  useDeleteTestimonial,
-} from "../../hooks/admin/useAdmin";
+import { useAdminTestimonials } from "../../hooks/testimonials/useTestimonial";
 import Table from "../../components/Table";
 import Modal from "../../components/Modal";
 import { motion } from "framer-motion";
@@ -13,33 +9,33 @@ import { Testimonial } from "../../types/admin";
 
 const AdminTestimonials = () => {
   const {
-    data: testimonialsData,
+    adminTestimonials,
     isLoading,
     isError,
-    refetch,
-  } = useFetchTestimonials();
-
-  const testimonials = testimonialsData?.items || [];
-
-  const { mutateAsync: approveTestimonial, isPending: isApproving } =
-    useApproveTestimonial();
-  const { mutateAsync: deleteTestimonial, isPending: isDeleting } =
-    useDeleteTestimonial();
+    fetchAdmin,
+    approve,
+    delete: deleteTestimonialAction,
+  } = useAdminTestimonials();
 
   const [selectedTestimonial, setSelectedTestimonial] =
     useState<Testimonial | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [modalAction, setModalAction] = useState<"approve" | "delete" | "">("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleApproveTestimonial = async () => {
     if (!selectedTestimonial) return;
-    await approveTestimonial(selectedTestimonial._id);
+    setIsProcessing(true);
+    await approve(selectedTestimonial._id);
+    setIsProcessing(false);
     setShowModal(false);
   };
 
   const handleDeleteTestimonial = async () => {
     if (!selectedTestimonial) return;
-    await deleteTestimonial(selectedTestimonial._id);
+    setIsProcessing(true);
+    await deleteTestimonialAction(selectedTestimonial._id);
+    setIsProcessing(false);
     setShowModal(false);
   };
 
@@ -51,7 +47,7 @@ const AdminTestimonials = () => {
         <h2 className="text-3xl font-bold mb-6">🌟 Manage Testimonials</h2>
         <div className="text-red-500">
           Failed to load testimonials.{" "}
-          <button onClick={() => refetch()} className="text-blue-500 underline">
+          <button onClick={fetchAdmin} className="text-blue-500 underline">
             Try again
           </button>
         </div>
@@ -69,7 +65,7 @@ const AdminTestimonials = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">🌟 Manage Testimonials</h2>
         <button
-          onClick={() => refetch()}
+          onClick={fetchAdmin}
           className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"
           disabled={isLoading}
         >
@@ -79,7 +75,7 @@ const AdminTestimonials = () => {
 
       <Table
         headers={["Name", "Message", "Image", "Status", "Actions"]}
-        data={testimonials.map((testimonial: Testimonial) => [
+        data={adminTestimonials.map((testimonial: Testimonial) => [
           testimonial.name,
           <p key={`msg-${testimonial._id}`} className="truncate max-w-sm">
             {testimonial.message}
@@ -116,7 +112,7 @@ const AdminTestimonials = () => {
                   setShowModal(true);
                 }}
                 className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300"
-                disabled={isApproving}
+                disabled={isProcessing}
               >
                 Approve
               </button>
@@ -128,7 +124,7 @@ const AdminTestimonials = () => {
                 setShowModal(true);
               }}
               className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 disabled:bg-red-300"
-              disabled={isDeleting}
+              disabled={isProcessing}
             >
               Delete
             </button>
@@ -156,7 +152,7 @@ const AdminTestimonials = () => {
         }
         confirmText={modalAction === "delete" ? "Delete" : "Approve"}
         cancelText="Cancel"
-        isConfirming={modalAction === "delete" ? isDeleting : isApproving}
+        isConfirming={isProcessing}
       />
     </motion.div>
   );

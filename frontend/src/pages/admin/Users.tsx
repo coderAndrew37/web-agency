@@ -5,7 +5,7 @@ import {
   useFetchUsers,
   useDeleteUser,
   useUpdateUserRole,
-} from "../../hooks/admin/useAdmin";
+} from "../../hooks/admin/useUser";
 import { User } from "../../types/admin";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";

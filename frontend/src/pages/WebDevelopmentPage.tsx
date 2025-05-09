@@ -16,6 +16,7 @@ import { webDevFAQs } from "../data/faqs";
 import { websitesFeatures } from "../data/features";
 import { webDevFeatures, webDevPlans } from "../data/pricingData";
 import { webDevProcess } from "../data/processes";
+import { webProjects } from "../data/projects";
 
 const WebDevelopmentPage = () => {
   return (
@@ -81,7 +82,7 @@ const WebDevelopmentPage = () => {
           icon: <bonus.icon />,
         }))}
       />
-      <PortfolioShowcase />
+      <PortfolioShowcase projects={webProjects} />
       {/* 7️⃣ Frequently Asked Questions */}
       <FAQ title="Web Development FAQs" faqs={webDevFAQs} />
       {/* 8️⃣ Call-to-Action */}

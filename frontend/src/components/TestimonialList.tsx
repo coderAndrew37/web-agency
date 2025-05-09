@@ -1,7 +1,7 @@
 // ✅ components/TestimonialList.tsx (Zustand version)
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { useTestimonials } from "../hooks/testimonials/useTestimonialHooks";
+import { useTestimonials } from "../hooks/testimonials/useTestimonial.ts";
 import colors from "../styles/colors";
 import { TestimonialSkeleton } from "./TestimonialSkeleton";
 

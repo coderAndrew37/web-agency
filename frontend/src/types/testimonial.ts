@@ -4,7 +4,7 @@ export interface Testimonial {
   message: string;
   image?: string;
   approved: boolean;
-  createdAt?: string;
+  createdAt: string;
 }
 
 export type SubmitTestimonialPayload = {

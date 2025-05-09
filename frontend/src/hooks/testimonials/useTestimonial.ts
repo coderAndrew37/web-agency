@@ -1,4 +1,3 @@
-// ✅ hooks/useTestimonial.ts
 import { useTestimonialStore } from "../../store/testimonialStore";
 
 export const useTestimonials = () => {
@@ -23,8 +22,11 @@ export const useSubmitTestimonial = () => {
 
 export const useAdminTestimonials = () => {
   return useTestimonialStore((state) => ({
-    testimonials: state.testimonials,
-    fetchAll: state.fetchAll,
+    adminTestimonials: state.adminTestimonials,
+    isLoading: state.isLoading,
+    isError: state.isError,
+    error: state.error,
+    fetchAdmin: state.fetchAdmin,
     approve: state.approve,
     delete: state.delete,
   }));
