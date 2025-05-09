@@ -7,16 +7,32 @@ import Newsletter from "../components/Newsletter";
 import Pricing from "../components/Pricing";
 import Process from "../components/Process";
 import ServiceContent from "../components/ServiceContent";
-import { calendlyUrl } from "../config/constants";
+import { calendlyUrl, frontendUrl } from "../config/constants";
 import { googleAdsBonuses } from "../data/bonuses";
 import { googleAdsFAQs } from "../data/faqs";
 import { googleAdsFeatures } from "../data/features";
 import { googleAdsPlans } from "../data/pricingData";
 import { googleAdsProcess } from "../data/processes";
+import SEO from "../components/seo/Seo";
 
 const GoogleAdsPage = () => {
   return (
     <div>
+      <SEO
+        title="Google Ads Services | SleekSites"
+        description="Maximize your ROI with expertly managed Google Ads campaigns. Get a free Google Ads audit today!"
+        image="/images/google-ads-hero.jpeg"
+        url={`${frontendUrl}/services/google-ads`}
+        keywords={[
+          "Google Ads",
+          "PPC Advertising",
+          "Search Engine Marketing",
+          "Online Advertising",
+          "Lead Generation",
+          "Conversion Optimization",
+          "Digital Marketing",
+        ]}
+      />
       {/* 1️⃣ Hero Section */}
       <Hero
         title="Maximize Your ROI with Google Ads 🚀"

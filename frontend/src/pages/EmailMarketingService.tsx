@@ -7,16 +7,31 @@ import Newsletter from "../components/Newsletter";
 import Pricing from "../components/Pricing";
 import Process from "../components/Process";
 import ServiceContent from "../components/ServiceContent";
-import { calendlyUrl } from "../config/constants";
+import { calendlyUrl, frontendUrl } from "../config/constants";
 import { emailMarketingBonuses } from "../data/bonuses";
 import { emailMarketingFAQs } from "../data/faqs";
 import { emailMarketingFeatures } from "../data/features";
 import { emailMarketingPlans } from "../data/pricingData";
 import { emailMarketingProcess } from "../data/processes";
+import SEO from "../components/seo/Seo";
 
 const EmailMarketingPage = () => {
   return (
     <div>
+      <SEO
+        title="Email Marketing Services | SleekSites"
+        description="Boost your sales with our expert email marketing services. Engage, nurture, and convert leads into loyal customers."
+        image="/images/services/email-marketing.jpeg"
+        url={`${frontendUrl}/services/email-marketing`}
+        keywords={[
+          "email marketing",
+          "email campaigns",
+          "lead nurturing",
+          "customer engagement",
+          "email automation",
+          "email marketing services",
+        ]}
+      />
       {/* 1️⃣ Hero Section */}
       <Hero
         title="Supercharge Your Sales with Email Marketing 📩"

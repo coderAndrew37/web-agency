@@ -20,12 +20,13 @@ import ServiceContent from "../components/ServiceContent";
 import TechnologiesWeUse from "../components/TechnologiesWeUse";
 import { appDevFeatures, appDevPlans } from "../data/pricingData";
 
-import { calendlyUrl } from "../config/constants";
+import { calendlyUrl, frontendUrl } from "../config/constants";
 import { appDevBonuses } from "../data/bonuses";
 import { appFAQs } from "../data/faqs";
 import { appFeatures } from "../data/features";
 import { appDevProcess } from "../data/processes";
 import { appProjects } from "../data/projects";
+import SEO from "../components/seo/Seo";
 
 const techStack = [
   { name: "React Native", icon: <Code size={40} className="text-blue-500" /> },
@@ -45,6 +46,22 @@ const techStack = [
 const AppDevelopmentPage = () => {
   return (
     <div>
+      <SEO
+        title="Mobile App Development Services | SleekSites"
+        description="Transform your business with our expert mobile app development services. Get a custom app that drives results."
+        image="/images/services/app-dev.jpeg"
+        url={`${frontendUrl}/services/app-development`}
+        keywords={[
+          "mobile app development",
+          "custom app development",
+          "iOS app development",
+          "Android app development",
+          "cross-platform apps",
+          "app development services",
+          "business mobile apps",
+        ]}
+      />
+
       {/* 1️⃣ Hero Section */}
       <Hero
         title="📱 Build a High-Performance Mobile App"
@@ -52,7 +69,7 @@ const AppDevelopmentPage = () => {
         primaryButtonText="Request a Free Consultation"
         calendlyUrl={calendlyUrl}
         secondaryButtonText="Explore Case Studies"
-        secondaryButtonAction={() => console.log("Case Studies Clicked!")}
+        secondaryButtonAction={() => (window.location.href = "/portfolio")}
         imageUrl="/images/services/app-dev.jpeg"
         imageAlt="Mobile App Development"
       />

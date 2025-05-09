@@ -61,7 +61,7 @@ const Hero = ({
           </p>
           <div className="mt-6 flex flex-col sm:flex-row sm:justify-start items-center gap-4">
             <button
-              className="w-full sm:w-auto px-6 py-3 font-bold text-base sm:text-lg rounded-full shadow-md hover:opacity-90 transition"
+              className="w-full sm:w-auto px-6 py-3 font-bold text-base sm:text-lg rounded-full shadow-md hover:opacity-90 transition cursor-pointer"
               style={{ backgroundColor: colors.primary, color: "#fff" }}
               onClick={handlePrimaryClick}
             >
@@ -69,7 +69,7 @@ const Hero = ({
             </button>
             {secondaryButtonText && secondaryButtonAction && (
               <button
-                className="w-full sm:w-auto px-6 py-3 border-2 font-bold text-base sm:text-lg rounded-full hover:opacity-80 transition"
+                className="w-full sm:w-auto px-6 py-3 border-2 font-bold text-base sm:text-lg rounded-full hover:opacity-80 transition cursor-pointer"
                 style={{
                   borderColor: colors.primary,
                   color: colors.darkText,

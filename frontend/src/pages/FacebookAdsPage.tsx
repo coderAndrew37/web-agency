@@ -1,23 +1,40 @@
-import Hero from "../components/Hero";
-import Features from "../components/Features";
-import Process from "../components/Process";
-import Pricing from "../components/Pricing";
-import PricingCalculator from "../components/PricingCalculator";
+import Bonus from "../components/Bonus";
 import CTA from "../components/CTA";
+import FAQ from "../components/FAQ";
+import Features from "../components/Features";
+import Hero from "../components/Hero";
 import LeadMagnet from "../components/LeadMagnet";
 import Newsletter from "../components/Newsletter";
-import { facebookAdsPlans, facebookAdsFeatures } from "../data/pricingData";
-import FAQ from "../components/FAQ";
-import { calendlyUrl } from "../config/constants";
-import { facebookAdsFAQs } from "../data/faqs";
-import { facebookAdsProcess } from "../data/processes";
+import Pricing from "../components/Pricing";
+import PricingCalculator from "../components/PricingCalculator";
+import Process from "../components/Process";
+import SEO from "../components/seo/Seo";
+import { calendlyUrl, frontendUrl } from "../config/constants";
 import { facebookAdsBonuses } from "../data/bonuses";
+import { facebookAdsFAQs } from "../data/faqs";
 import { facebookAdsFeatures as features } from "../data/features";
-import Bonus from "../components/Bonus";
+import { facebookAdsFeatures, facebookAdsPlans } from "../data/pricingData";
+import { facebookAdsProcess } from "../data/processes";
 
 const FacebookAdsPage = () => {
   return (
     <div>
+      <SEO
+        title="Facebook Ads Services | SleekSites"
+        description="Maximize your reach and sales with our expert Facebook Ads services. Get a free ad strategy today!"
+        image="/images/facebook-hero.jpeg"
+        url={`${frontendUrl}/services/facebook-ads`}
+        keywords={[
+          "Facebook Ads",
+          "Social Media Marketing",
+          "Digital Marketing",
+          "Lead Generation",
+          "Online Advertising",
+          "Facebook Advertising",
+          "Ad Campaigns",
+          "Targeted Advertising",
+        ]}
+      />
       {/* Hero Section */}
       <Hero
         title="📢 Maximize Your Reach with Facebook Ads"

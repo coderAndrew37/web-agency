@@ -8,9 +8,10 @@ import PortfolioShowcase from "../components/PortfolioShowcase";
 import Pricing from "../components/Pricing";
 import PricingCalculator from "../components/PricingCalculator";
 import Process from "../components/Process";
+import SEO from "../components/seo/Seo";
 import ServiceContent from "../components/ServiceContent";
 import WebsiteTypeCarousel from "../components/services/WebTypeCarousel";
-import { calendlyUrl } from "../config/constants";
+import { calendlyUrl, frontendUrl } from "../config/constants";
 import { webDevBonuses } from "../data/bonuses";
 import { webDevFAQs } from "../data/faqs";
 import { websitesFeatures } from "../data/features";
@@ -21,13 +22,19 @@ import { webProjects } from "../data/projects";
 const WebDevelopmentPage = () => {
   return (
     <div>
+      <SEO
+        title="Web Development Services | SleekSites"
+        description="Transform your online presence with our expert web development services. Get a custom website that drives results."
+        image="/images/web-dev-hero.jpeg"
+        url={`${frontendUrl}/services/web-development`}
+      />
       {/* 1️⃣ Hero Section */}
       <Hero
         title="🌐 Let’s Build a Website That Works While You Sleep"
         subtitle="We craft powerful websites that attract traffic, convert visitors, and grow your business 24/7."
         primaryButtonText="Book Free Strategy Call"
         secondaryButtonText="Explore Portfolio"
-        secondaryButtonAction={() => console.log("Portfolio Clicked!")}
+        secondaryButtonAction={() => (window.location.href = "/portfolio")}
         calendlyUrl={calendlyUrl}
         imageUrl="/images/web-dev-hero.jpeg"
         imageAlt="Web Development Hero Image"

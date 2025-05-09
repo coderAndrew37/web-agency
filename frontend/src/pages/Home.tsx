@@ -25,7 +25,7 @@ const Home = () => {
         subtitle="Full-funnel execution from strategy to scale. Websites, automation, traffic—done for you."
         primaryButtonText="Get Your Growth Blueprint"
         secondaryButtonText="See Case Studies"
-        secondaryButtonAction={() => console.log("Viewing Case Studies")}
+        secondaryButtonAction={() => (window.location.href = "/portfolio")}
         calendlyUrl={calendlyUrl}
         imageUrl="/images/hero.jpeg" // ✅ homepage image
         imageAlt="Growth Engine Visual"

@@ -12,12 +12,31 @@ import { mpesaFAQs } from "../data/faqs";
 import { mpesaFeatures } from "../data/features";
 import { mpesaPlans } from "../data/pricingData";
 import { mpesaProcess } from "../data/processes";
-
-import { calendlyUrl } from "../config/constants";
+import SEO from "../components/seo/Seo";
+import { calendlyUrl, frontendUrl } from "../config/constants";
 
 const MpesaIntegrationPage = () => {
   return (
     <div>
+      <SEO
+        title="Mpesa Integration Services | SleekSites"
+        description="Seamless Mpesa integration for your business. Accept payments directly into your bank or mobile wallet."
+        image="/images/mpesa-hero.jpeg"
+        url={`${frontendUrl}/services/mpesa-integration`}
+        keywords={[
+          "Mpesa integration",
+          "Mpesa API",
+          "mobile payments",
+          "payment gateway",
+          "business payments",
+          "Kenya payments",
+          "Mpesa services",
+          "Daraja",
+          "Mpesa API integration",
+          "Mpesa payment solutions",
+        ]}
+      />
+
       {/* 1️⃣ Hero Section */}
       <Hero
         title="Seamless Mpesa Integration for Your Business 💰"

@@ -9,6 +9,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { useAutoRefresh } from "./hooks/auth/useAutoRefresh";
 import { useAuthStore } from "./store/authStore";
 import { PUBLIC_ROUTES } from "./routes/publicRoutes";
+import { HelmetProvider } from "react-helmet-async";
 
 const AppInitializer = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -38,14 +39,16 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ErrorBoundary>
-          <AppInitializer>
-            <Suspense fallback={<FullPageSkeleton />}>
-              <AppRoutes />
-              <Toast />
-            </Suspense>
-          </AppInitializer>
-        </ErrorBoundary>
+        <HelmetProvider>
+          <ErrorBoundary>
+            <AppInitializer>
+              <Suspense fallback={<FullPageSkeleton />}>
+                <AppRoutes />
+                <Toast />
+              </Suspense>
+            </AppInitializer>
+          </ErrorBoundary>
+        </HelmetProvider>
       </BrowserRouter>
     </QueryClientProvider>
   );

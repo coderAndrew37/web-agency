@@ -8,15 +8,33 @@ import { seoPlans } from "../data/pricingData";
 import Bonus from "../components/Bonus";
 import FAQ from "../components/FAQ";
 import ServiceContent from "../components/ServiceContent";
-import { calendlyUrl } from "../config/constants";
+import { calendlyUrl, frontendUrl } from "../config/constants";
 import { seoFeatures } from "../data/features";
 import { seoFAQs } from "../data/faqs";
 import { seoBonuses } from "../data/bonuses";
 import { seoProcess } from "../data/processes";
+import SEO from "../components/seo/Seo";
 
 const SeoPage = () => {
   return (
     <div>
+      <SEO
+        title="SEO Services | SleekSites"
+        description="Boost your online visibility and drive organic traffic with our expert SEO services. Get a free SEO audit today!"
+        image="/images/seo-hero.jpeg"
+        url={`${frontendUrl}/services/seo`}
+        keywords={[
+          "SEO services",
+          "search engine optimization",
+          "digital marketing",
+          "SEO audit",
+          "keyword research",
+          "on-page SEO",
+          "off-page SEO",
+          "local SEO",
+          "SEO strategy",
+        ]}
+      />
       {/* 1️⃣ Hero Section */}
       <Hero
         title="Boost Your Rankings with Expert SEO 🚀"
