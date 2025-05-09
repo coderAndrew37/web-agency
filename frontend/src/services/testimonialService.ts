@@ -1,4 +1,3 @@
-// src/services/testimonialService.ts
 import { apiClient } from "../api/httpClient";
 import { ApiResponse } from "../types/client";
 import { Testimonial } from "../types/testimonial";

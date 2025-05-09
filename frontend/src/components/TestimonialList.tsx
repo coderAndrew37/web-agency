@@ -1,11 +1,16 @@
+// ✅ components/TestimonialList.tsx (Zustand version)
+import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { useFetchTestimonials } from "../hooks/testimonials/useTestimonialHooks";
+import { useTestimonials } from "../hooks/testimonials/useTestimonialHooks";
 import colors from "../styles/colors";
 import { TestimonialSkeleton } from "./TestimonialSkeleton";
-import type { Testimonial } from "../types/testimonial";
 
 const TestimonialList = () => {
-  const { data = [], isLoading, isError } = useFetchTestimonials();
+  const { testimonials, isLoading, isError, fetchAll } = useTestimonials();
+
+  useEffect(() => {
+    fetchAll();
+  }, [fetchAll]);
 
   if (isLoading) return <TestimonialSkeleton />;
 
@@ -28,11 +33,11 @@ const TestimonialList = () => {
         🌟 What Our Clients Say
       </h2>
 
-      {data.length === 0 ? (
+      {testimonials.length === 0 ? (
         <p className="text-center text-gray-600">No testimonials yet.</p>
       ) : (
         <div className="space-y-6">
-          {data.map((testimonial: Testimonial) => (
+          {testimonials.map((testimonial) => (
             <motion.div
               key={testimonial._id}
               className="p-6 border rounded-lg shadow-md bg-white"

@@ -1,42 +1,31 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { TestimonialService } from "../../services/testimonialService";
-import { Testimonial } from "../../types/testimonial";
-import { ApiErrorResponse } from "../../types/api";
+// ✅ hooks/useTestimonial.ts
+import { useTestimonialStore } from "../../store/testimonialStore";
 
-export const useSubmitTestimonial = () =>
-  useMutation<Testimonial, ApiErrorResponse, FormData>({
-    mutationFn: (data) =>
-      TestimonialService.submit(data).then((res) => res.data),
-  });
+export const useTestimonials = () => {
+  return useTestimonialStore((state) => ({
+    testimonials: state.testimonials,
+    isLoading: state.isLoading,
+    isError: state.isError,
+    error: state.error,
+    fetchAll: state.fetchAll,
+  }));
+};
 
-export const useFetchTestimonials = () =>
-  useQuery<Testimonial[], ApiErrorResponse>({
-    queryKey: ["testimonials"],
-    queryFn: async () => {
-      const res = await TestimonialService.getAll();
-      return res.data;
-    },
-  });
+export const useSubmitTestimonial = () => {
+  return useTestimonialStore((state) => ({
+    submit: state.submit,
+    isSubmitting: state.isSubmitting,
+    isSuccess: state.isSuccess,
+    isError: state.isError,
+    error: state.error,
+  }));
+};
 
-export const useFetchAllTestimonials = () =>
-  useQuery<Testimonial[], ApiErrorResponse>({
-    queryKey: ["admin-testimonials"],
-    queryFn: async () => {
-      const res = await TestimonialService.getAllAdmin();
-      return res.data;
-    },
-  });
-
-export const useApproveTestimonial = () =>
-  useMutation<void, ApiErrorResponse, string>({
-    mutationFn: async (_id) => {
-      await TestimonialService.approve(_id);
-    },
-  });
-
-export const useDeleteTestimonial = () =>
-  useMutation<void, ApiErrorResponse, string>({
-    mutationFn: async (_id) => {
-      await TestimonialService.delete(_id);
-    },
-  });
+export const useAdminTestimonials = () => {
+  return useTestimonialStore((state) => ({
+    testimonials: state.testimonials,
+    fetchAll: state.fetchAll,
+    approve: state.approve,
+    delete: state.delete,
+  }));
+};

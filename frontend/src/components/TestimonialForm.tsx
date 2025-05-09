@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { testimonialSchema } from "../Utils/validationSchemas";
 import { useSubmitTestimonial } from "../hooks/testimonials/useTestimonialHooks";
-import { useCurrentUser } from "../hooks/useAuth"; // ✅ fixed import
+import { useCurrentUser } from "../hooks/auth/useAuth";
 import { motion } from "framer-motion";
 import colors from "../styles/colors";
 import { Loader2 } from "lucide-react";
@@ -14,24 +14,19 @@ type TestimonialData = {
 };
 
 const TestimonialForm = () => {
-  const { data: user } = useCurrentUser(); // ✅ access user from hook
+  const user = useCurrentUser();
+
+  const { submit, isSubmitting, isError, isSuccess, error } =
+    useSubmitTestimonial();
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TestimonialData>({
     resolver: zodResolver(testimonialSchema),
   });
-
-  const {
-    mutateAsync: submitTestimonial,
-    isPending,
-    isError,
-    error,
-    isSuccess,
-  } = useSubmitTestimonial();
 
   const onSubmit = async (data: TestimonialData) => {
     if (!user) return;
@@ -44,7 +39,7 @@ const TestimonialForm = () => {
     }
 
     try {
-      await submitTestimonial(formData);
+      await submit(formData);
       reset();
     } catch (err) {
       console.error("Submission error:", err);
@@ -89,8 +84,8 @@ const TestimonialForm = () => {
       {isError && (
         <p className="text-red-500 text-center mb-4">
           ❌{" "}
-          {error instanceof Error
-            ? error.message
+          {typeof error === "string"
+            ? error
             : "Submission failed. Please try again."}
         </p>
       )}
@@ -107,7 +102,7 @@ const TestimonialForm = () => {
             {...register("name")}
             placeholder="Your Name"
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
-            disabled={isPending}
+            disabled={isSubmitting}
           />
           {errors.name && (
             <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
@@ -120,7 +115,7 @@ const TestimonialForm = () => {
             placeholder="Your Testimonial"
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
             rows={4}
-            disabled={isPending}
+            disabled={isSubmitting}
           />
           {errors.message && (
             <p className="text-red-500 text-sm mt-1">
@@ -134,7 +129,7 @@ const TestimonialForm = () => {
             type="file"
             {...register("image")}
             className="w-full"
-            disabled={isPending}
+            disabled={isSubmitting}
             accept="image/*"
           />
           {errors.image && (
@@ -146,9 +141,9 @@ const TestimonialForm = () => {
           type="submit"
           className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700 text-lg hover:opacity-80 flex items-center justify-center"
           whileTap={{ scale: 0.95 }}
-          disabled={isPending || isSubmitting}
+          disabled={isSubmitting}
         >
-          {isPending || isSubmitting ? (
+          {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Submitting...

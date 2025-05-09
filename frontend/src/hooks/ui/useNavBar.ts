@@ -1,4 +1,3 @@
-// hooks/ui/useNavBar.ts
 import { useNavbarStore } from "../../store/uiStore";
 import { useAuthStore } from "../../store/authStore";
 import { useLogout } from "../auth/useLogout";
