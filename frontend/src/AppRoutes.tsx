@@ -1,11 +1,11 @@
 import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import { Route, Routes } from "react-router-dom";
 import ConditionalRoute from "./components/ConditionalRoute";
-import AuthLayout from "./layouts/AuthLayout";
-import AdminLayout from "./layouts/AdminLayout";
+import Footer from "./components/Footer";
 import LoadingSpinner from "./components/LoadingSpinner";
+import Navbar from "./components/Navbar";
+import AdminLayout from "./layouts/AdminLayout";
+import AuthLayout from "./layouts/AuthLayout";
 
 // Lazy load pages
 const Home = lazy(() => import("./pages/Home"));
@@ -33,6 +33,7 @@ const SeoPage = lazy(() => import("./pages/SeoPage"));
 const WebsiteTypeDetail = lazy(() => import("./pages/WebsiteDetail"));
 const BlogPage = lazy(() => import("./pages/BlogDetailPage")); // Added Blog Page
 const PortfolioPage = lazy(() => import("./pages/Portfolio"));
+const Verify = lazy(() => import("./pages/VerifyPage"));
 
 const RouteWrapper = ({ children }: { children: React.ReactNode }) => (
   <>
@@ -176,6 +177,7 @@ const AppRoutes = () => {
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify" element={<Verify />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Route>

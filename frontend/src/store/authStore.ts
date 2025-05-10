@@ -20,8 +20,9 @@ type LoginParams =
 
 type AuthActions = {
   login: (params: LoginParams) => Promise<void>;
-  register: (data: RegisterData) => Promise<void>;
+  register: (data: RegisterData) => Promise<{ email: string }>;
   verify: (data: VerifyData) => Promise<void>;
+  resendVerification: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: (force?: boolean) => Promise<void>;
   clearError: () => void;
@@ -82,6 +83,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         try {
           await AuthService.register(data);
           set({ isLoading: false });
+          return { email: data.email }; // ✅ Needed for UI redirect
         } catch (error) {
           set({
             error: getErrorMessage(error, "Registration failed"),
@@ -104,6 +106,20 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         } catch (error) {
           set({
             error: getErrorMessage(error, "Verification failed"),
+            isLoading: false,
+          });
+          throw error;
+        }
+      },
+
+      resendVerification: async (email: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          await AuthService.resendVerification(email);
+          set({ isLoading: false });
+        } catch (error) {
+          set({
+            error: getErrorMessage(error, "Resend verification failed"),
             isLoading: false,
           });
           throw error;

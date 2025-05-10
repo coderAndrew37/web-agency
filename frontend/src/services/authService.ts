@@ -41,6 +41,10 @@ export const AuthService = {
     return response;
   },
 
+  async resendVerification(email: string): Promise<void> {
+    await apiClient.post<void>("/auth/resend-verification", { email });
+  },
+
   async logout(): Promise<void> {
     await apiClient.post("/auth/logout");
     apiClient.clearCsrfToken();

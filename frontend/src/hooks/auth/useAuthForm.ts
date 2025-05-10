@@ -6,9 +6,24 @@ export const useAuthForm = () => {
   const error = useAuthStore((state) => state.error);
   const login = useAuthStore((state) => state.login);
   const register = useAuthStore((state) => state.register);
+  const verify = useAuthStore((state) => state.verify);
+  const forgotPassword = useAuthStore((state) => state.forgotPassword);
+  const resetPassword = useAuthStore((state) => state.resetPassword);
+  const resendVerification = useAuthStore((state) => state.resendVerification);
   const clearError = useAuthStore((state) => state.clearError);
 
-  return { user, isLoading, error, login, register, clearError };
+  return {
+    user,
+    isLoading,
+    error,
+    login,
+    register,
+    clearError,
+    verify,
+    forgotPassword,
+    resetPassword,
+    resendVerification,
+  };
 };
 
 export default useAuthForm;

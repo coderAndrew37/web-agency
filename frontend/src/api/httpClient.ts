@@ -161,7 +161,13 @@ class HttpClient {
   ): Promise<T> {
     return this.instance
       .post<BaseApiResponse<T>>(url, data, config)
-      .then((response) => response.data.data);
+      .then((response) => {
+        // fallback: if data.data is undefined, return full response.data
+        if (response.data && response.data.data !== undefined) {
+          return response.data.data;
+        }
+        return response.data as unknown as T;
+      });
   }
 
   public put<T, D = unknown>(

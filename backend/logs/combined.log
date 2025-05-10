@@ -406,3 +406,21 @@
 [2025-05-07T09:50:28.392Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
 [2025-05-09T13:43:38.690Z] INFO: 🚀 Server running on port 5000
 [2025-05-09T13:44:08.692Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-05-10T04:27:55.291Z] INFO: 🚀 Server running on port 5000
+[2025-05-10T04:27:55.365Z] INFO: ✅ MongoDB Connected Successfully
+[2025-05-10T04:41:11.167Z] INFO: 🚀 Server running on port 5000
+[2025-05-10T04:41:11.207Z] INFO: ✅ MongoDB Connected Successfully
+[2025-05-10T04:42:34.728Z] INFO: 📧 Email sent to omollondrw@gmail.com | Message ID: <1f51c8a9-292a-130d-c87d-b1671383108e@gmail.com>
+[2025-05-10T05:14:49.959Z] INFO: 📧 Email sent to omollondrw@gmail.com | Message ID: <3b752b7f-fb4b-cf09-374a-cad64b23ce56@gmail.com>
+[2025-05-10T05:49:46.663Z] INFO: 📧 Email sent to devandrew66@gmail.com | Message ID: <df21eea4-d07d-3543-7103-16ffea7f6ee7@gmail.com>
+[2025-05-10T08:02:05.478Z] INFO: 🚀 Server running on port 5000
+[2025-05-10T08:02:05.505Z] INFO: ✅ MongoDB Connected Successfully
+[2025-05-10T08:18:02.723Z] INFO: 📧 Email sent to omollondrw@gmail.com | Message ID: <678ee207-9642-befa-024e-a378ac20836f@gmail.com>
+[2025-05-10T08:31:29.780Z] INFO: 📧 Email sent to devandrew66@gmail.com | Message ID: <6f610b59-4f49-89f4-27dd-88964d55432f@gmail.com>
+[2025-05-10T08:35:28.025Z] INFO: 📧 Email sent to omollondrw@gmail.com | Message ID: <4fbae8e6-fa11-28de-317e-fb04ec4ec9ac@gmail.com>
+[2025-05-10T08:37:45.763Z] INFO: 📧 Email sent to omollondrw@gmail.com | Message ID: <195b63a0-7bfc-e70b-8475-0489f822a711@gmail.com>
+[2025-05-10T08:43:37.063Z] INFO: Shutting down server...
+[2025-05-10T08:43:53.397Z] INFO: 🚀 Server running on port 5000
+[2025-05-10T08:43:53.423Z] INFO: ✅ MongoDB Connected Successfully
+[2025-05-10T08:44:34.684Z] INFO: 📧 Email sent to omollondrw@gmail.com | Message ID: <b39c2c76-e5b8-0445-14a7-ba02081ade1a@gmail.com>
+[2025-05-10T08:49:54.557Z] INFO: 📧 Email sent to omollondrw@gmail.com | Message ID: <05ac8ab5-8fc6-34cb-272e-3ab3ea415f37@gmail.com>

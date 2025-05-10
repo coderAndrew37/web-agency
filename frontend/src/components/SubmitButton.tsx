@@ -6,6 +6,7 @@ type SubmitButtonProps = {
   isLoading: boolean;
   label: string;
   loadingLabel: string;
+  disabled?: boolean;
 };
 
 const SubmitButton = ({
