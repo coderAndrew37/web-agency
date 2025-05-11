@@ -9,7 +9,7 @@ import {
 } from "../types/authTypes";
 
 // Handles fallback errors from axios
-type ApiError = {
+interface ApiError {
   response?: {
     status?: number;
     data?: {
@@ -17,7 +17,7 @@ type ApiError = {
     };
   };
   message?: string;
-};
+}
 
 function handleCsrfToken(csrfToken?: string | null) {
   if (csrfToken) {
@@ -28,18 +28,25 @@ function handleCsrfToken(csrfToken?: string | null) {
 export const AuthService = {
   async login(data: LoginData): Promise<AuthResponse> {
     const response = await apiClient.post<AuthResponse>("/auth/login", data);
-    handleCsrfToken(response.csrfToken);
-    return response;
-  },
 
+    if (!response?.data || !response.data.user) {
+      throw new Error("Invalid response from /auth/login");
+    }
+
+    handleCsrfToken(response.csrfToken);
+    return response.data;
+  },
   async register(data: RegisterData): Promise<void> {
     await apiClient.post<void>("/auth/register", data);
   },
 
   async verify(data: VerifyData): Promise<AuthResponse> {
-    const response = await apiClient.post<AuthResponse>("/auth/verify", data);
-    handleCsrfToken(response.csrfToken);
-    return response;
+    const { csrfToken, data: payload } = await apiClient.post<AuthResponse>(
+      "/auth/verify",
+      data
+    );
+    handleCsrfToken(csrfToken);
+    return payload;
   },
 
   async resendVerification(email: string): Promise<void> {
@@ -52,13 +59,18 @@ export const AuthService = {
   },
 
   async getCurrentUser(): Promise<User> {
-    return apiClient.get<User>("/auth/me");
+    // return apiClient.get<User>("/auth/me");
+    const { data: payload } = await apiClient.get<User>("/auth/me");
+    return payload;
   },
 
   async forgotPassword(data: { email: string }): Promise<{ message: string }> {
-    return apiClient.post<{ message: string }>("/auth/forgot-password", data);
+    const { data: payload } = await apiClient.post<{ message: string }>(
+      "/auth/forgot-password",
+      data
+    );
+    return payload;
   },
-
   async resetPassword(
     token: string,
     data: { password: string }
@@ -67,18 +79,18 @@ export const AuthService = {
   },
 
   async refresh(): Promise<RefreshTokenResponse> {
-    const response = await apiClient
-      .post<RefreshTokenResponse>("/auth/refresh")
-      .catch((error) => {
-        const apiError = error as ApiError;
-        if (apiError.response?.status === 404) {
-          return { accessToken: null, csrfToken: null };
-        }
-        throw error;
-      });
-
-    handleCsrfToken(response.csrfToken);
-    return response;
+    try {
+      const { csrfToken, data: payload } =
+        await apiClient.post<RefreshTokenResponse>("/auth/refresh");
+      handleCsrfToken(csrfToken);
+      return payload;
+    } catch (error) {
+      const apiError = error as ApiError;
+      if (apiError.response?.status === 404) {
+        return { accessToken: null, csrfToken: null };
+      }
+      throw error;
+    }
   },
 
   async checkAuth(): Promise<{ isAuthenticated: boolean; user?: User }> {

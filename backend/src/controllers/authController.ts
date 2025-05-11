@@ -182,22 +182,22 @@ export const login = async (req: Request, res: Response) => {
     const { accessToken, refreshToken } = createTokens(user._id.toString());
     const csrfToken = crypto.randomBytes(32).toString("hex");
 
-    // Store new CSRF token
     user.csrfToken = csrfToken;
     await user.save();
     setRefreshTokenCookie(res, refreshToken);
 
+    // ✅ Call the correct global sendSuccess here:
     sendSuccess(res, {
-      message: "Login successful",
-      accessToken,
-      csrfToken, // ✅ Add this field
-      user: {
-        _id: user._id,
-        email: user.email,
-        role: user.role,
-        isVerified: user.isVerified,
+      data: {
+        user: {
+          _id: user._id,
+          email: user.email,
+          role: user.role,
+          isVerified: user.isVerified,
+        },
+        isAuthenticated: true,
       },
-      isAuthenticated: true,
+      csrfToken,
     });
   } catch (error) {
     console.error("Login error:", error);

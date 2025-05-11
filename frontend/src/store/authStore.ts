@@ -55,9 +55,14 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 
       login: async (params) => {
         set({ isLoading: true, error: null });
+
         try {
+          let user: User;
+
           if (params.type === "credentials") {
-            const { user } = await AuthService.login(params.data);
+            const response = await AuthService.login(params.data);
+            user = response.user;
+
             set({
               user,
               isAuthenticated: true,
@@ -65,8 +70,10 @@ export const useAuthStore = create<AuthState & AuthActions>()(
               hasCheckedAuth: true,
             });
           } else {
+            user = params.user;
+
             set({
-              user: params.user,
+              user,
               isAuthenticated: true,
               isLoading: false,
               hasCheckedAuth: true,

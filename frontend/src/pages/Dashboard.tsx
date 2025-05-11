@@ -1,24 +1,13 @@
+import { motion } from "framer-motion";
+import { Home, LogOut, ShieldCheck, UserCog } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useCurrentUser } from "../hooks/auth/useAuth";
 import { useLogout } from "../hooks/auth/useLogout";
-import { useMyProjects } from "../hooks/projects/useProjectsHooks";
-import { motion } from "framer-motion";
-import { LogOut, UserCog, ShieldCheck, Home, Folder } from "lucide-react";
-import { Link } from "react-router-dom";
-import { default as Spinner } from "../components/LoadingSpinner"; // Assuming you have a Spinner component
 
 const Dashboard = () => {
   const user = useCurrentUser();
   const logoutMutation = useLogout();
   const isAdmin = user?.role === "admin";
-
-  // Fetch user's projects
-  const {
-    data: projectsData,
-    isLoading: projectsLoading,
-    error: projectsError,
-  } = useMyProjects();
-
-  const hasProjects = projectsData?.data && projectsData.data.length > 0;
 
   const handleLogout = async () => {
     await logoutMutation.logout();
@@ -37,83 +26,6 @@ const Dashboard = () => {
       <p className="text-center text-gray-600 mt-2">
         Your dashboard gives you full control over your account.
       </p>
-
-      {/* Projects Section */}
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold flex items-center gap-2 mb-4">
-          <Folder className="text-primary" size={20} />
-          Your Projects
-        </h3>
-
-        {/* Loading State */}
-        {projectsLoading && (
-          <div className="flex justify-center py-8">
-            <Spinner size={32} />
-          </div>
-        )}
-
-        {/* Error State */}
-        {projectsError && (
-          <motion.div
-            className="p-4 bg-red-50 text-red-600 rounded-lg border border-red-100"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <p>Error loading projects: {projectsError.message}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="mt-2 text-sm text-red-700 underline"
-            >
-              Try again
-            </button>
-          </motion.div>
-        )}
-
-        {/* Empty State */}
-        {!projectsLoading && !projectsError && !hasProjects && (
-          <motion.div
-            className="text-center py-8 border border-dashed rounded-lg"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <Folder size={32} className="mx-auto text-gray-400" />
-            <p className="mt-2 text-gray-500">
-              You don't have any projects yet
-            </p>
-          </motion.div>
-        )}
-
-        {/* Projects List */}
-        {!projectsLoading && !projectsError && hasProjects && (
-          <motion.div
-            className="space-y-3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            {projectsData.data.map((project) => (
-              <motion.div
-                key={project._id}
-                className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
-                whileHover={{ x: 5 }}
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h4 className="font-medium">{project.name}</h4>
-                    <p className="text-sm text-gray-600">
-                      Status:{" "}
-                      <span className="capitalize">{project.status}</span>
-                    </p>
-                  </div>
-                  <span className="text-xs px-2 py-1 bg-gray-200 rounded-full">
-                    {new Date(project.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </div>
 
       {/* Stats Grid */}
       <div
