@@ -105,7 +105,7 @@ export const verify = async (req: Request, res: Response) => {
 
     const otpDoc = await OTP.findOne({
       email,
-      createdAt: { $gt: new Date(Date.now() - ms("15m")) },
+      expiresAt: { $gt: new Date() }, // ✅ Proper expiry check
     });
 
     if (!otpDoc?.code) {
@@ -116,7 +116,8 @@ export const verify = async (req: Request, res: Response) => {
       return sendError(res, 429, "Too many attempts. Request new OTP");
     }
 
-    if (!(await bcrypt.compare(code, otpDoc.code))) {
+    const isMatch = await bcrypt.compare(code, otpDoc.code);
+    if (!isMatch) {
       await OTP.updateOne({ email }, { $inc: { attempts: 1 } });
       return sendError(res, 400, "Invalid OTP", {
         attemptsRemaining: 5 - ((otpDoc.attempts ?? 0) + 1),
@@ -124,6 +125,7 @@ export const verify = async (req: Request, res: Response) => {
     }
 
     await OTP.deleteOne({ email });
+
     const user = await User.findOneAndUpdate(
       { email },
       { isVerified: true, verifiedAt: new Date() },
@@ -136,8 +138,6 @@ export const verify = async (req: Request, res: Response) => {
 
     const { accessToken, refreshToken } = createTokens(user._id.toString());
     const csrfToken = crypto.randomBytes(32).toString("hex");
-
-    // Store CSRF token in user document
     user.csrfToken = csrfToken;
     await user.save();
 
@@ -146,13 +146,18 @@ export const verify = async (req: Request, res: Response) => {
     await sendEmail(
       email,
       "Account Verified",
-      "Welcome! Your account has been verified. "
+      "Welcome! Your account has been verified."
     );
 
     sendSuccess(res, {
-      message: "Account verified",
-      accessToken,
-      auth: buildAuthState(user, csrfToken),
+      user: {
+        _id: user._id,
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified,
+      },
+      isAuthenticated: true,
+      csrfToken,
     });
   } catch (error) {
     console.error("Verification error:", error);
@@ -185,7 +190,14 @@ export const login = async (req: Request, res: Response) => {
     sendSuccess(res, {
       message: "Login successful",
       accessToken,
-      auth: buildAuthState(user, csrfToken),
+      csrfToken, // ✅ Add this field
+      user: {
+        _id: user._id,
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified,
+      },
+      isAuthenticated: true,
     });
   } catch (error) {
     console.error("Login error:", error);

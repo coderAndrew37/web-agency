@@ -3,6 +3,13 @@ import { persist } from "zustand/middleware";
 import { AuthService } from "../services/authService";
 import { User, LoginData, RegisterData, VerifyData } from "../types/authTypes";
 
+// Define AuthResponse type if not already defined or import it from the correct location
+type AuthResponse = {
+  user: User;
+  isAuthenticated: boolean;
+  // Add other properties as needed based on your AuthService.verify response
+};
+
 const getErrorMessage = (error: unknown, fallback: string) =>
   error instanceof Error ? error.message : fallback;
 
@@ -21,7 +28,8 @@ type LoginParams =
 type AuthActions = {
   login: (params: LoginParams) => Promise<void>;
   register: (data: RegisterData) => Promise<{ email: string }>;
-  verify: (data: VerifyData) => Promise<void>;
+  verify: (data: VerifyData) => Promise<AuthResponse>;
+
   resendVerification: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: (force?: boolean) => Promise<void>;
@@ -95,20 +103,25 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 
       verify: async (data) => {
         set({ isLoading: true, error: null });
+
         try {
-          const { user } = await AuthService.verify(data);
+          const response = await AuthService.verify(data);
+          console.log("[DEBUG] AuthStore verify: received user", response.user);
+
           set({
-            user,
-            isAuthenticated: true,
+            user: response.user,
+            isAuthenticated: response.isAuthenticated,
             isLoading: false,
             hasCheckedAuth: true,
           });
+
+          return response; // ✅ Add this line to return user back to caller!
         } catch (error) {
           set({
             error: getErrorMessage(error, "Verification failed"),
             isLoading: false,
           });
-          throw error;
+          throw error; // ✅ Optionally re-throw if needed
         }
       },
 

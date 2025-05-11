@@ -6,6 +6,7 @@ export interface IOtp extends Document {
   code: string;
   expiresAt: Date;
   attempts: number;
+  createdAt: Date;
 }
 
 const otpSchema = new mongoose.Schema<IOtp>(
@@ -13,7 +14,8 @@ const otpSchema = new mongoose.Schema<IOtp>(
     email: { type: String, required: true, lowercase: true },
     code: { type: String, required: true },
     attempts: { type: Number, default: 0 },
-    expiresAt: { type: Date, required: true },
+    createdAt: { type: Date, default: Date.now },
+    expiresAt: { type: Date, required: true, index: { expires: 0 } },
   },
   { timestamps: true } // Optional: useful for debugging, but not required for logic
 );

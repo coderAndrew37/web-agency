@@ -1,18 +1,22 @@
-import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import AuthForm from "../components/AuthForm";
-import TextInput from "../components/TextInput";
-import SubmitButton from "../components/SubmitButton";
 import FormError from "../components/FormError";
+import SubmitButton from "../components/SubmitButton";
+import TextInput from "../components/TextInput";
 import { useAuthForm } from "../hooks/auth/useAuthForm";
 import { AuthService } from "../services/authService";
 
 const schema = z.object({
   email: z.string().email(),
-  code: z.string().min(6, "Code must be 6 digits"),
+  code: z
+    .string()
+    .trim()
+    .regex(/^\d{6}$/, "Code must be 6 digits"),
 });
 
 type VerifyData = z.infer<typeof schema>;
@@ -38,11 +42,14 @@ const Verify = () => {
   });
 
   useEffect(() => {
+    console.log("[DEBUG] defaultEmail from query:", defaultEmail);
+    console.log("[DEBUG] Auth user object on mount:", user);
     if (defaultEmail) setValue("email", defaultEmail);
-  }, [defaultEmail, setValue]);
+  }, [defaultEmail, setValue, user]);
 
   useEffect(() => {
     if (user?.isVerified) {
+      console.log("[DEBUG] User already verified. Redirecting...");
       navigate("/dashboard");
     }
     return () => clearError();
@@ -56,21 +63,44 @@ const Verify = () => {
   }, []);
 
   const onSubmit = async (data: VerifyData) => {
+    console.log("[DEBUG] Form submitted with data:", data);
     try {
-      await verify(data);
-    } catch {
-      setError("root", {
-        message: error || "Verification failed. Try again.",
+      const { user: verifiedUser } = await verify(data); // ✅ use returned user
+
+      console.log("[DEBUG] Zustand user after verify:", verifiedUser);
+
+      if (verifiedUser?.isVerified) {
+        console.log("[DEBUG] User verified. Navigating to dashboard...");
+        navigate("/dashboard");
+      } else {
+        console.warn(
+          "[DEBUG] Verification call succeeded, but user is not marked verified"
+        );
+      }
+    } catch (err: unknown) {
+      const axiosErr = err as AxiosError<{ error?: string }>;
+      const detailedError = axiosErr?.response?.data?.error;
+      const msg = detailedError || error || "Verification failed. Try again.";
+
+      console.error("[DEBUG] OTP verification failed:", {
+        data,
+        error: msg,
+        backend: axiosErr?.response?.data,
       });
+
+      setError("root", { message: msg });
     }
   };
 
   const handleResend = async () => {
+    console.log("[DEBUG] Attempting to resend OTP to:", defaultEmail);
     try {
       await AuthService.resendVerification(defaultEmail);
+      console.log("[DEBUG] OTP resend successful");
       setResendCooldown(60);
       setResendMessage("OTP resent. Please check your email.");
-    } catch {
+    } catch (err) {
+      console.error("[DEBUG] OTP resend failed:", err);
       setResendMessage("Failed to resend OTP.");
     }
   };
@@ -112,7 +142,7 @@ const Verify = () => {
                 type="button"
                 onClick={handleResend}
                 disabled={resendCooldown > 0 || isVerified}
-                className="text-blue-600 text-sm disabled:opacity-50"
+                className="text-blue-600 text-sm disabled:opacity-50 hover:text-blue-700 font-medium cursor-pointer"
               >
                 {resendCooldown > 0
                   ? `Resend in ${resendCooldown}s`

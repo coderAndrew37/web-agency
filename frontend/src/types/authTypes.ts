@@ -10,7 +10,7 @@ export type RegisterData = {
 };
 
 export type User = {
-  id: string;
+  _id: string;
   email: string;
   role: string;
   isVerified: boolean;

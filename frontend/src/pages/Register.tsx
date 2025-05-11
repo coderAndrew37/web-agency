@@ -35,17 +35,13 @@ const Register = () => {
 
   const onSubmit = async (data: RegisterData) => {
     try {
-      console.log("[Register] Submitting registration data:", data);
       const result = await register(data);
-      console.log("[Register] Registration success:", result);
 
       if (result?.email) {
         const target = `/verify?email=${encodeURIComponent(result.email)}`;
-        console.log("[Register] Redirecting to:", target);
         navigate(target);
       }
-    } catch (err) {
-      console.error("[Register] Registration failed:", err);
+    } catch {
       setFormError("root", {
         message: error || "Registration failed. Try again.",
       });

@@ -1,13 +1,14 @@
 import { apiClient } from "../api/httpClient";
 import {
-  LoginData,
-  RegisterData,
-  VerifyData,
-  User,
   AuthResponse,
+  LoginData,
   RefreshTokenResponse,
+  RegisterData,
+  User,
+  VerifyData,
 } from "../types/authTypes";
 
+// Handles fallback errors from axios
 type ApiError = {
   response?: {
     status?: number;
@@ -64,6 +65,7 @@ export const AuthService = {
   ): Promise<void> {
     await apiClient.post(`/auth/reset-password/${token}`, data);
   },
+
   async refresh(): Promise<RefreshTokenResponse> {
     const response = await apiClient
       .post<RefreshTokenResponse>("/auth/refresh")
@@ -74,6 +76,7 @@ export const AuthService = {
         }
         throw error;
       });
+
     handleCsrfToken(response.csrfToken);
     return response;
   },

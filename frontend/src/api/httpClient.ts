@@ -74,15 +74,12 @@ class HttpClient {
 
   private handleResponse<T>(
     response: AxiosResponse<BaseApiResponse<T>>
-  ): AxiosResponse<T> {
+  ): AxiosResponse<BaseApiResponse<T>> {
     const newCsrfToken = response.data.csrfToken;
     if (newCsrfToken) {
       this.setCsrfToken(newCsrfToken);
     }
-    return {
-      ...response,
-      data: response.data.data,
-    };
+    return response;
   }
 
   private async handleError(error: AxiosError): Promise<never> {
@@ -148,56 +145,55 @@ class HttpClient {
     }
   }
 
-  public get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  public get<T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<BaseApiResponse<T>> {
     return this.instance
       .get<BaseApiResponse<T>>(url, config)
-      .then((response) => response.data.data);
+      .then((response) => response.data);
   }
 
   public post<T, D = unknown>(
     url: string,
     data?: D,
     config?: AxiosRequestConfig
-  ): Promise<T> {
+  ): Promise<BaseApiResponse<T>> {
     return this.instance
       .post<BaseApiResponse<T>>(url, data, config)
-      .then((response) => {
-        // fallback: if data.data is undefined, return full response.data
-        if (response.data && response.data.data !== undefined) {
-          return response.data.data;
-        }
-        return response.data as unknown as T;
-      });
+      .then((response) => response.data);
   }
 
   public put<T, D = unknown>(
     url: string,
     data?: D,
     config?: AxiosRequestConfig
-  ): Promise<T> {
+  ): Promise<BaseApiResponse<T>> {
     return this.instance
       .put<BaseApiResponse<T>>(url, data, config)
-      .then((response) => response.data.data);
+      .then((response) => response.data);
   }
 
   public patch<T, D = unknown>(
     url: string,
     data?: D,
     config?: AxiosRequestConfig
-  ): Promise<T> {
+  ): Promise<BaseApiResponse<T>> {
     return this.instance
       .patch<BaseApiResponse<T>>(url, data, config)
-      .then((response) => response.data.data);
+      .then((response) => response.data);
   }
 
-  public delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  public delete<T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<BaseApiResponse<T>> {
     return this.instance
       .delete<BaseApiResponse<T>>(url, config)
-      .then((response) => response.data.data);
+      .then((response) => response.data);
   }
 }
 
-// Create instance with environment variable
 export const apiClient = new HttpClient(
   import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api"
 );
