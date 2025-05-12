@@ -13,7 +13,7 @@ export const useFetchUsers = (params?: QueryParams) =>
     queryKey: ["admin-users", params],
     queryFn: async () => {
       const response = await AdminService.getUsers(params);
-      return response.data;
+      return response; // ✅ unwraps ListResponse<User>
     },
   });
 
@@ -21,7 +21,7 @@ export const useUpdateUserRole = () =>
   useMutation<User, ApiErrorResponse, { _id: string; role: User["role"] }>({
     mutationFn: async ({ _id, role }) => {
       const response = await AdminService.updateUserRole(_id, role);
-      return response.data;
+      return response; // ✅ unwraps User
     },
     onError: (error) => handleApiError(error, { showToast: true }),
   });
@@ -29,7 +29,10 @@ export const useUpdateUserRole = () =>
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
   return useMutation<{ success: boolean }, ApiErrorResponse, string>({
-    mutationFn: AdminService.deleteUser,
+    mutationFn: async (_id: string) => {
+      const response = await AdminService.deleteUser(_id);
+      return response; // ✅ unwraps success
+    },
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["admin-users"] }),
     onError: (error) => handleApiError(error, { showToast: true }),
@@ -40,7 +43,7 @@ export const useToggleUserStatus = () =>
   useMutation<User, ApiErrorResponse, { _id: string; isActive: boolean }>({
     mutationFn: async ({ _id, isActive }) => {
       const response = await AdminService.toggleUserStatus(_id, isActive);
-      return response.data;
+      return response; // ✅ unwraps User
     },
     onError: (error) => handleApiError(error, { showToast: true }),
   });
@@ -50,7 +53,7 @@ export const useGetUser = (_id: string) =>
     queryKey: ["admin-user", _id],
     queryFn: async () => {
       const response = await AdminService.getUserById(_id);
-      return response.data;
+      return response; // ✅ unwraps User
     },
     enabled: !!_id,
   });

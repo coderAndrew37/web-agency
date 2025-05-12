@@ -31,3 +31,15 @@ export type VerifyData = {
   email: string;
   code: string;
 };
+
+export interface AuthStateResponse {
+  isAuthenticated: boolean;
+  csrfToken: string;
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+    role: "admin" | "user";
+    isVerified: boolean;
+  } | null;
+}

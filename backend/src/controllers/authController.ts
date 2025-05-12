@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { Request, Response } from "express";
 import ms from "ms";
 import OTP from "../models/otp";
-import crypto from "crypto";
 import RefreshTokenBlacklist from "../models/RefreshTokenBlacklist";
 import User, { IUser, validateUser } from "../models/User";
 import { sendEmail } from "../utils/emailService";
@@ -16,11 +16,16 @@ import {
 
 const buildAuthState = (user?: IUser | null, csrfToken?: string) => ({
   isAuthenticated: !!user,
-  isVerified: user?.isVerified ?? false,
-  userId: user?._id ?? null,
-  email: user?.email ?? null,
-  role: user?.role ?? "guest",
   csrfToken,
+  user: user
+    ? {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified,
+      }
+    : null,
 });
 
 interface AuthenticatedRequest extends Request {
@@ -149,16 +154,7 @@ export const verify = async (req: Request, res: Response) => {
       "Welcome! Your account has been verified."
     );
 
-    sendSuccess(res, {
-      user: {
-        _id: user._id,
-        email: user.email,
-        role: user.role,
-        isVerified: user.isVerified,
-      },
-      isAuthenticated: true,
-      csrfToken,
-    });
+    sendSuccess(res, buildAuthState(user, csrfToken), 201);
   } catch (error) {
     console.error("Verification error:", error);
     sendError(res, 500, "Verification failed");
@@ -187,18 +183,7 @@ export const login = async (req: Request, res: Response) => {
     setRefreshTokenCookie(res, refreshToken);
 
     // ✅ Call the correct global sendSuccess here:
-    sendSuccess(res, {
-      data: {
-        user: {
-          _id: user._id,
-          email: user.email,
-          role: user.role,
-          isVerified: user.isVerified,
-        },
-        isAuthenticated: true,
-      },
-      csrfToken,
-    });
+    sendSuccess(res, buildAuthState(user, csrfToken));
   } catch (error) {
     console.error("Login error:", error);
     sendError(res, 500, "Login failed");
@@ -249,11 +234,7 @@ export const refresh = async (req: Request, res: Response) => {
 
     setRefreshTokenCookie(res, newRefreshToken);
 
-    sendSuccess(res, {
-      message: "Token refreshed",
-      accessToken,
-      auth: buildAuthState(user, newCsrfToken),
-    });
+    sendSuccess(res, buildAuthState(user, newCsrfToken), 200);
   } catch (error) {
     console.error("Refresh error:", error);
     sendError(res, 401, "Session expired. Please login");
@@ -305,7 +286,7 @@ export const getCurrentUser = async (
     }
 
     const user = await User.findById(req.user._id)
-      .select("email role isVerified _id")
+      .select("name email role isVerified _id")
       .lean();
 
     if (!user) {

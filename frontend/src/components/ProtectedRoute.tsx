@@ -1,4 +1,3 @@
-// components/ProtectedRoute.tsx
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import LoadingSpinner from "../components/LoadingSpinner";

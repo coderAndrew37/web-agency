@@ -1,7 +1,6 @@
 import { apiClient } from "../api/httpClient";
 import {
   AdminStats,
-  ApiResponse,
   User,
   ListResponse,
   Testimonial,
@@ -11,7 +10,6 @@ import {
   ContactReplyData,
 } from "../types/admin";
 
-// ✅ Explicit params types
 type PaginationParams = {
   page?: number;
   limit?: number;
@@ -21,81 +19,128 @@ type PaginationParams = {
 };
 
 export const AdminService = {
-  // Dashboard Stats
-  getStats: () => apiClient.get<ApiResponse<AdminStats>>("/admin/stats"),
+  // ✅ Dashboard Stats
+  getStats: async (): Promise<AdminStats> => {
+    const res = await apiClient.get<{ success: boolean; data: AdminStats }>(
+      "/admin/stats"
+    );
+    return res.data.data;
+  },
 
-  // Users
-  getUsers: (params?: PaginationParams) =>
-    apiClient.get<ApiResponse<ListResponse<User>>>("/admin/users", { params }),
+  // ✅ Users
+  getUsers: async (params?: PaginationParams): Promise<ListResponse<User>> => {
+    const res = await apiClient.get<{
+      success: boolean;
+      data: ListResponse<User>;
+    }>("/admin/users", { params });
+    return res.data.data;
+  },
 
-  updateUserRole: (_id: string, role: User["role"]) =>
-    apiClient.put<ApiResponse<User>, { role: User["role"] }>(
-      `/admin/users/${_id}/role`,
-      { role }
-    ),
+  updateUserRole: async (_id: string, role: User["role"]): Promise<User> => {
+    const res = await apiClient.put<
+      { success: boolean; data: User },
+      { role: User["role"] }
+    >(`/admin/users/${_id}/role`, { role });
+    return res.data.data;
+  },
 
-  deleteUser: (_id: string) =>
-    apiClient.delete<ApiResponse<{ success: boolean }>>(`/admin/users/${_id}`),
+  deleteUser: (_id: string): Promise<{ success: boolean }> =>
+    apiClient
+      .delete<{ success: boolean }>("/admin/users/" + _id)
+      .then((res) => res.data),
 
-  toggleUserStatus: (_id: string, isActive: boolean) =>
-    apiClient.patch<ApiResponse<User>, { isActive: boolean }>(
-      `/admin/users/${_id}/status`,
-      { isActive }
-    ),
+  toggleUserStatus: async (_id: string, isActive: boolean): Promise<User> => {
+    const res = await apiClient.patch<
+      { success: boolean; data: User },
+      { isActive: boolean }
+    >(`/admin/users/${_id}/status`, { isActive });
+    return res.data.data;
+  },
 
-  getUserById: (_id: string) =>
-    apiClient.get<ApiResponse<User>>(`/admin/users/${_id}`),
+  getUserById: async (_id: string): Promise<User> => {
+    const res = await apiClient.get<{ success: boolean; data: User }>(
+      `/admin/users/${_id}`
+    );
+    return res.data.data;
+  },
 
-  // Testimonials
-  getTestimonials: (params?: { approved?: boolean }) =>
-    apiClient.get<ApiResponse<ListResponse<Testimonial>>>(
-      "/admin/testimonials",
-      { params }
-    ),
+  // ✅ Testimonials
+  getTestimonials: async (params?: {
+    approved?: boolean;
+  }): Promise<ListResponse<Testimonial>> => {
+    const res = await apiClient.get<{
+      success: boolean;
+      data: ListResponse<Testimonial>;
+    }>("/admin/testimonials", { params });
+    return res.data.data;
+  },
 
-  approveTestimonial: (_id: string) =>
-    apiClient.patch<ApiResponse<Testimonial>, object>(
-      `/admin/testimonials/${_id}/approve`,
-      {}
-    ),
+  approveTestimonial: async (_id: string): Promise<Testimonial> => {
+    const res = await apiClient.patch<
+      { success: boolean; data: Testimonial },
+      object
+    >(`/admin/testimonials/${_id}/approve`, {});
+    return res.data.data;
+  },
 
-  deleteTestimonial: (_id: string) =>
-    apiClient.delete<ApiResponse<{ success: boolean }>>(
-      `/admin/testimonials/${_id}`
-    ),
+  deleteTestimonial: (_id: string): Promise<{ success: boolean }> =>
+    apiClient
+      .delete<{ success: boolean }>(`/admin/testimonials/${_id}`)
+      .then((res) => res.data),
 
-  // Subscribers
-  getSubscribers: (params?: { active?: boolean }) =>
-    apiClient.get<ApiResponse<ListResponse<Subscriber>>>("/admin/subscribers", {
-      params,
-    }),
+  // ✅ Subscribers
+  getSubscribers: async (params?: {
+    active?: boolean;
+  }): Promise<ListResponse<Subscriber>> => {
+    const res = await apiClient.get<{
+      success: boolean;
+      data: ListResponse<Subscriber>;
+    }>("/admin/subscribers", { params });
+    return res.data.data;
+  },
 
-  deleteSubscriber: (_id: string) =>
-    apiClient.delete<ApiResponse<{ success: boolean }>>(
-      `/admin/subscribers/${_id}`
-    ),
+  deleteSubscriber: (_id: string): Promise<{ success: boolean }> =>
+    apiClient
+      .delete<{ success: boolean }>(`/admin/subscribers/${_id}`)
+      .then((res) => res.data),
 
-  sendBulkEmail: (emailData: BulkEmailData) =>
-    apiClient.post<
-      ApiResponse<{ success: boolean; sentCount: number }>,
+  sendBulkEmail: async (
+    emailData: BulkEmailData
+  ): Promise<{ success: boolean; sentCount: number }> => {
+    const res = await apiClient.post<
+      { success: boolean; data: { success: boolean; sentCount: number } },
       BulkEmailData
-    >("/admin/subscribers/send-email", emailData),
+    >("/admin/subscribers/send-email", emailData);
+    return {
+      success: res.data.data.success,
+      sentCount: res.data.data.sentCount,
+    };
+  },
 
-  // Contact Messages
-  getContactMessages: (params?: { replied?: boolean }) =>
-    apiClient.get<ApiResponse<ListResponse<ContactMessage>>>(
-      "/admin/contacts",
-      { params }
-    ),
+  // ✅ Contacts
+  getContactMessages: async (params?: {
+    replied?: boolean;
+  }): Promise<ListResponse<ContactMessage>> => {
+    const res = await apiClient.get<{
+      success: boolean;
+      data: ListResponse<ContactMessage>;
+    }>("/admin/contacts", { params });
+    return res.data.data;
+  },
 
-  deleteContactMessage: (_id: string) =>
-    apiClient.delete<ApiResponse<{ success: boolean }>>(
-      `/admin/contacts/${_id}`
-    ),
+  deleteContactMessage: (_id: string): Promise<{ success: boolean }> =>
+    apiClient
+      .delete<{ success: boolean }>(`/admin/contacts/${_id}`)
+      .then((res) => res.data),
 
-  replyToContactMessage: (_id: string, replyData: ContactReplyData) =>
-    apiClient.post<ApiResponse<{ success: boolean }>, ContactReplyData>(
+  replyToContactMessage: async (
+    _id: string,
+    replyData: ContactReplyData
+  ): Promise<{ success: boolean }> => {
+    const res = await apiClient.post<{ success: boolean }, ContactReplyData>(
       `/contacts/${_id}/reply`,
       replyData
-    ),
+    );
+    return res.data;
+  },
 };

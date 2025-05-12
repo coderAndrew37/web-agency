@@ -50,7 +50,7 @@ const PricingCard = ({
       </ul>
       <button
         onClick={() => onBookNow?.(name)}
-        className="mt-6 px-6 py-3 bg-primary text-blue-700 text-lg font-semibold rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition"
+        className="mt-6 px-6 py-3 bg-primary text-blue-700 text-lg font-semibold rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition cursor-pointer"
       >
         Book Now <ArrowRight size={18} />
       </button>
