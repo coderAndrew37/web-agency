@@ -13,3 +13,4 @@
 [2025-04-30T12:49:54.103Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
 [2025-05-07T09:50:28.392Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
 [2025-05-09T13:44:08.692Z] ERROR: ❌ DB Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+[2025-05-12T13:51:40.114Z] ERROR: Booking creation failed: MongoServerError: E11000 duplicate key error collection: web-agency.bookings index: calendlyEventUri_1 dup key: { calendlyEventUri: null }

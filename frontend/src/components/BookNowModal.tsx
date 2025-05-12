@@ -1,6 +1,8 @@
 // components/BookNowModal.tsx
 import { useState, useEffect } from "react";
 import { z } from "zod";
+import { useCreateBooking } from "../hooks/useBooking";
+import { toast } from "react-toastify";
 
 interface UserData {
   name?: string;
@@ -14,6 +16,8 @@ const formSchema = z.object({
   email: z.string().email("Invalid email"),
   description: z.string().min(10, "Project description too short"),
 });
+
+const LOCAL_STORAGE_KEY = "bookingFormDraft";
 
 export default function BookNowModal({
   open,
@@ -32,28 +36,34 @@ export default function BookNowModal({
 
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
 
+  const createBooking = useCreateBooking();
+
+  // Load form data from localStorage on open
   useEffect(() => {
     if (open) {
+      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+      const savedData = saved ? JSON.parse(saved) : {};
+
       setStep(1);
       setErrors({});
       setFormData({
-        name: userData.name || "",
-        email: userData.email || "",
+        name: savedData.name || userData.name || "",
+        email: savedData.email || userData.email || "",
         description:
+          savedData.description ||
           userData.description ||
           (userData.selectedPlan
             ? `We are interested in the ${userData.selectedPlan} plan. Please describe what this plan should cover for us.`
             : ""),
       });
     }
-  }, [
-    open,
-    userData.description,
-    userData.email,
-    userData.name,
-    userData.selectedPlan,
-  ]);
+  }, [open, userData]);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
+  }, [formData]);
 
   const validateStep = () => {
     if (step === 1) {
@@ -75,7 +85,7 @@ export default function BookNowModal({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = formSchema.safeParse(formData);
     if (!result.success) {
@@ -87,11 +97,22 @@ export default function BookNowModal({
       setErrors(fieldErrors);
     } else {
       setErrors({});
-      console.log("Submitting:", {
+      const payload = {
         ...result.data,
-        selectedPlan: userData.selectedPlan,
-      });
-      onOpenChange(false);
+        selectedPlan: userData.selectedPlan || "Custom Strategy Call",
+      };
+
+      try {
+        setLoading(true);
+        await createBooking.mutateAsync(payload);
+        toast.success("Booking submitted successfully");
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+        onOpenChange(false);
+      } catch {
+        toast.error("Failed to submit booking");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -170,9 +191,9 @@ export default function BookNowModal({
               <button
                 type="button"
                 onClick={handleNext}
-                disabled={!validateStep()}
+                disabled={!validateStep() || loading}
                 className={`w-full rounded-xl py-3 font-medium transition ${
-                  validateStep()
+                  validateStep() && !loading
                     ? "bg-[#2563EB] text-white hover:bg-blue-600"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
@@ -216,9 +237,14 @@ export default function BookNowModal({
               </button>
               <button
                 type="submit"
-                className="w-full rounded-xl bg-[#2563EB] text-white py-3 font-medium hover:bg-blue-600"
+                disabled={loading}
+                className={`w-full rounded-xl py-3 font-medium transition ${
+                  loading
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-[#2563EB] text-white hover:bg-blue-600"
+                }`}
               >
-                Submit
+                {loading ? "Submitting..." : "Submit"}
               </button>
             </div>
           </form>
