@@ -1,86 +1,68 @@
 import mongoose from "mongoose";
 import Joi from "joi";
 
-// Interface for TypeScript type safety
 interface IBooking extends mongoose.Document {
-  calendlyEventUri: string;
-  serviceType: string;
-  user: mongoose.Types.ObjectId;
-  meetingDate: Date;
+  name: string;
+  email: string;
+  selectedPlan: string;
+  description: string;
   status: string;
-  notes?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const bookingSchema = new mongoose.Schema<IBooking>(
   {
-    calendlyEventUri: {
-      type: String,
-      unique: true,
-      index: true, // Added index for faster queries
-    },
-    serviceType: {
+    name: {
       type: String,
       required: true,
-      enum: [
-        "web-design",
-        "app-development",
-        "seo",
-        "facebook-ads",
-        "google-ads",
-        "email-marketing",
-      ],
+      trim: true,
+      minlength: 2,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    email: {
+      type: String,
       required: true,
-      index: true, // Added index for faster queries
+      trim: true,
+      lowercase: true,
     },
-    meetingDate: {
-      type: Date,
+    selectedPlan: {
+      type: String,
       required: true,
-      index: true, // Important for querying upcoming bookings
+    },
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 10,
     },
     status: {
       type: String,
-      default: "scheduled",
-      enum: ["scheduled", "completed", "cancelled", "converted-to-project"],
-    },
-    notes: {
-      type: String,
-      trim: true, // Automatically trim whitespace
+      default: "pending",
+      enum: ["pending", "confirmed", "completed", "cancelled"],
     },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt automatically
+    timestamps: true,
   }
 );
 
-// Joi validation schema
-const bookingValidationSchema = Joi.object({
-  calendlyEventUri: Joi.string().uri().required(),
-  serviceType: Joi.string()
-    .valid(
-      "web-design",
-      "app-development",
-      "seo",
-      "facebook-ads",
-      "google-ads",
-      "email-marketing"
-    )
-    .required(),
-  user: Joi.string().hex().length(24).required(),
-  meetingDate: Joi.date().iso().required(),
-  status: Joi.string()
-    .valid("scheduled", "completed", "cancelled", "converted-to-project")
-    .default("scheduled"),
-  notes: Joi.string().allow("").trim(),
+// Joi validation schema (mirrors frontend Zod schema)
+export const bookingValidationSchema = Joi.object({
+  name: Joi.string().min(2).required().messages({
+    "string.min": "Name is required",
+    "string.empty": "Name is required",
+  }),
+  email: Joi.string().email({ tlds: false }).required().messages({
+    "string.email": "Invalid email",
+    "string.empty": "Email is required",
+  }),
+  selectedPlan: Joi.string().required(),
+  description: Joi.string().min(10).required().messages({
+    "string.min": "Project description too short",
+    "string.empty": "Description is required",
+  }),
 });
 
 const Booking = mongoose.model<IBooking>("Booking", bookingSchema);
 
-// Export both named and default exports for flexibility
-export { Booking, bookingValidationSchema, IBooking };
-export default Booking;
+export { Booking, IBooking };

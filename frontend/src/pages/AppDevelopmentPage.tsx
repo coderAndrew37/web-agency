@@ -119,7 +119,7 @@ const AppDevelopmentPage = () => {
       <PricingCalculator
         title="Customize Your App Development Package"
         features={appDevFeatures}
-        basePrice={100000} // Minimum price for app development
+        basePrice={100000}
       />
 
       {/* 8️⃣ Bonuses Section */}

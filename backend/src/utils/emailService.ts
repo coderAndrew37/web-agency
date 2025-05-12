@@ -1,50 +1,50 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import logger from "./logger"; // ✅ Use Winston for logging
+import logger from "../utils/logger";
+import { IBooking } from "../models/booking";
 
 dotenv.config();
 
-// ✅ Configure Secure Nodemailer Transporter
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.EMAIL_USER, // 🔹 Your email
-    pass: process.env.EMAIL_PASS, // 🔹 App password (not regular password)
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
-// ✅ Function to Send Email
 export async function sendEmail(to: string, subject: string, html: string) {
   try {
     const info = await transporter.sendMail({
-      from: `"Your Agency" <${process.env.EMAIL_USER}>`,
+      from: `"Strategy Call Booking" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html,
     });
-    logger.info(`📧 Email sent to ${to} | Message ID: ${info.messageId}`);
+    logger.info(`Email sent to ${to}`);
+    return true;
   } catch (err) {
-    logger.error(`❌ Email send failed: ${(err as Error).message}`);
+    logger.error(`Email send failed: ${(err as Error).message}`);
+    return false;
   }
 }
 
-// ✅ Send Admin Notification for New Client
-export async function notifyAdminNewClient(
-  clientName: string,
-  clientEmail: string
-) {
+export async function notifyAdminNewBooking(booking: IBooking) {
   const adminEmail = process.env.ADMIN_EMAIL;
   if (!adminEmail) {
-    logger.warn("⚠️ Admin email not set in environment variables.");
+    logger.warn("Admin email not set in environment variables.");
     return;
   }
 
-  const subject = `🚀 New Client Onboarded: ${clientName}`;
+  const subject = `New Strategy Call Booking: ${booking.selectedPlan}`;
   const html = `
-    <h2>New Client Signed Up</h2>
-    <p><strong>Name:</strong> ${clientName}</p>
-    <p><strong>Email:</strong> ${clientEmail}</p>
-    <p>Check the admin dashboard for details.</p>
+    <h2>New Strategy Call Request</h2>
+    <p><strong>Client:</strong> ${booking.name} (${booking.email})</p>
+    <p><strong>Selected Plan:</strong> ${booking.selectedPlan}</p>
+    <h3>Project Details:</h3>
+    <p>${booking.description}</p>
+    <p><strong>Status:</strong> ${booking.status}</p>
+    <p>Please contact the client within 24 hours to schedule the call.</p>
   `;
 
   await sendEmail(adminEmail, subject, html);

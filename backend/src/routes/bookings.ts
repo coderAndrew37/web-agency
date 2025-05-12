@@ -1,28 +1,25 @@
 import express from "express";
+import helmet from "helmet";
+import { asyncHandler } from "../utils/asyncHandler";
 import {
-  handleCalendlyWebhook,
-  convertBookingToProject,
-} from "../controllers/calendlyController";
-import { Booking } from "../models/booking";
-import { protect, admin } from "../middleware/authMiddleware";
+  createBooking,
+  getBookings,
+  getBooking,
+  updateBookingStatus,
+  deleteBooking,
+} from "../controllers/bookingController";
+import { bookingRequestLimiter } from "../middleware/rateLimiter";
+import { protect, admin, csrfProtect } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-// Webhook endpoint (no auth needed)
-router.post("/webhook", handleCalendlyWebhook);
+router.use(helmet());
+router.post("/", bookingRequestLimiter, asyncHandler(createBooking));
 
-// // Protected admin routes
-// router.post("/:id/convert", protect, admin, convertBookingToProject);
-
-// router.get("/", protect, admin, async (req, res) => {
-//   try {
-//     const bookings = await Booking.find()
-//       .populate("user", "name email")
-//       .sort({ meetingDate: -1 });
-//     res.json(bookings);
-//   } catch (err) {
-//     res.status(500).json({ error: "Failed to fetch bookings" });
-//   }
-// });
+router.use(protect); // All routes below require auth
+router.get("/", admin, csrfProtect, asyncHandler(getBookings));
+router.get("/:id", admin, csrfProtect, asyncHandler(getBooking));
+router.put("/:id/status", admin, csrfProtect, asyncHandler(updateBookingStatus));
+router.delete("/:id", admin, csrfProtect, asyncHandler(deleteBooking));
 
 export default router;

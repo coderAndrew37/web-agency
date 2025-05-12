@@ -78,9 +78,9 @@ const WebDevelopmentPage = () => {
       <PricingCalculator
         title="Customize Your Website Package"
         features={webDevFeatures}
-        basePrice={20000} // Minimum price for web development
+        basePrice={20000}
       />
-      /* 6️⃣ Bonuses Section */
+      {/* 6️⃣ Bonuses Section */}
       <Bonus
         title="Web Development Bonuses"
         subtitle="We offer exclusive resources, one-on-one strategy sessions, and lifetime updates."

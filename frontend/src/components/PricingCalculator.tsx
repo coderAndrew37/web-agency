@@ -1,11 +1,13 @@
+// components/PricingCalculator.tsx
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import axios from "axios";
+import BookNowModal from "./BookNowModal";
 import colors from "../styles/colors";
 import { pricingSchema } from "../Utils/validationSchemas";
+
 gsap.registerPlugin(ScrollTrigger);
 
 interface Feature {
@@ -16,23 +18,25 @@ interface Feature {
 interface PricingCalculatorProps {
   title: string;
   features: Feature[];
-  basePrice: number;
+  basePrice?: number;
 }
 
 const PricingCalculator: React.FC<PricingCalculatorProps> = ({
-  title,
+  title = "Customize Your Plan",
   features,
-  basePrice,
+  basePrice = 0,
 }) => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState(basePrice);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: zodResolver(pricingSchema),
     defaultValues: {
@@ -61,32 +65,26 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
     );
   }, []);
 
-  const toggleFeature = (feature: string, price: number) => {
-    setSelectedFeatures((prev) =>
-      prev.includes(feature)
-        ? prev.filter((f) => f !== feature)
-        : [...prev, feature]
-    );
+  const toggleFeature = (feature: string) => {
+    const newSelectedFeatures = selectedFeatures.includes(feature)
+      ? selectedFeatures.filter((f) => f !== feature)
+      : [...selectedFeatures, feature];
 
-    setTotalPrice((prevTotal) =>
-      selectedFeatures.includes(feature) ? prevTotal - price : prevTotal + price
-    );
+    setSelectedFeatures(newSelectedFeatures);
 
-    setValue("selectedFeatures", selectedFeatures);
-    setValue("totalPrice", totalPrice);
+    const newTotalPrice = newSelectedFeatures.reduce((sum, featureName) => {
+      const feature = features.find((f) => f.name === featureName);
+      return sum + (feature?.price || 0);
+    }, basePrice);
+
+    setTotalPrice(newTotalPrice);
+    setValue("selectedFeatures", newSelectedFeatures);
+    setValue("totalPrice", newTotalPrice);
   };
 
-  const onSubmit = async (data: {
-    email: string;
-    selectedFeatures: string[];
-    totalPrice: number;
-  }) => {
-    try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/pricing`, data);
-      alert("Request submitted successfully! 🎉");
-    } catch (error) {
-      console.error("Error submitting pricing request:", error);
-    }
+  const onSubmit = () => {
+    setIsModalOpen(true);
+    reset();
   };
 
   return (
@@ -97,17 +95,18 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
     >
       <h2 className="text-4xl font-bold mb-6">{title}</h2>
       <p className="text-lg text-gray-500 mb-6">
-        Select the features you need:
+        Build your perfect package by selecting the features you need:
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
         {features.map((feature) => (
           <button
             key={feature.name}
-            onClick={() => toggleFeature(feature.name, feature.price)}
+            type="button"
+            onClick={() => toggleFeature(feature.name)}
             className={`feature-item flex justify-between px-6 py-3 rounded-lg font-semibold border transition-all duration-300 ${
               selectedFeatures.includes(feature.name)
-                ? "bg-primary text-white scale-105 shadow-lg"
+                ? "bg-primary text-gray-500 scale-105 shadow-lg line-through"
                 : "border-gray-500 text-gray-700 hover:bg-gray-100"
             }`}
           >
@@ -118,17 +117,16 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
       </div>
 
       <div className="mt-8 text-3xl font-bold">
-        Total Price:{" "}
+        Your Custom Price:{" "}
         <span style={{ color: colors.primary }}>
           Ksh {totalPrice.toLocaleString()}
         </span>
       </div>
 
-      {/* ✅ Add User Email for Booking */}
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 max-w-lg mx-auto">
         <input
           type="email"
-          placeholder="Enter your email"
+          placeholder="Enter your email to continue"
           className="w-full px-4 py-3 border border-gray-500 rounded-md focus:border-primary"
           {...register("email")}
         />
@@ -136,19 +134,28 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
           <p className="text-red-500 mt-2">{errors.email.message as string}</p>
         )}
 
-        {errors.selectedFeatures && (
-          <p className="text-red-500 mt-2">
-            {errors.selectedFeatures.message as string}
-          </p>
-        )}
-
         <button
           type="submit"
-          className="mt-4 px-8 py-3 bg-primary text-blue-700 text-lg font-bold rounded-full shadow-md hover:opacity-80 transition"
+          disabled={selectedFeatures.length === 0}
+          className={`mt-4 px-8 py-3 text-lg font-bold rounded-full shadow-md transition ${
+            selectedFeatures.length > 0
+              ? "bg-primary text-blue-500 hover:text-blue-700 cursor-pointer"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
         >
           Get Started 🚀
         </button>
       </form>
+
+      <BookNowModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        userData={{
+          email: "",
+          selectedPlan: `Custom Package (Ksh ${totalPrice.toLocaleString()})`,
+          description: `Selected features:\n${selectedFeatures.join("\n")}`,
+        }}
+      />
     </section>
   );
 };

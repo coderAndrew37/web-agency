@@ -21,3 +21,13 @@ export const refreshLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+export const bookingRequestLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 booking requests per window
+  message: {
+    error: "Too many booking attempts from this IP, please try again later",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
