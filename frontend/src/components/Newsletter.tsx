@@ -1,11 +1,17 @@
-import axios, { AxiosError } from "axios";
 import { z } from "zod";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { useSubscribeNewsletter } from "../hooks/useNewsletter";
+import { AxiosError } from "axios";
 
 interface NewsletterProps {
   title: string;
   subtitle: string;
   background?: string;
+}
+
+interface ErrorResponse {
+  error: string;
 }
 
 const newsletterSchema = z.object({
@@ -14,35 +20,43 @@ const newsletterSchema = z.object({
 
 const Newsletter = ({ title, subtitle }: NewsletterProps) => {
   const [email, setEmail] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [errorText, setErrorText] = useState<string>("");
+  const subscribe = useSubscribeNewsletter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage("");
+    setErrorText("");
 
-    try {
-      const result = newsletterSchema.safeParse({ email });
-
-      if (!result.success) {
-        setMessage("Invalid email");
-        setLoading(false);
-        return;
-      }
-
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/newsletter`,
-        { email }
-      );
-      setMessage(res.data.message);
-      setEmail("");
-    } catch (error) {
-      const axiosError = error as AxiosError<{ error: string }>;
-      setMessage(axiosError.response?.data?.error || "Subscription failed.");
-    } finally {
-      setLoading(false);
+    const result = newsletterSchema.safeParse({ email });
+    if (!result.success) {
+      const validationMessage =
+        result.error.issues[0]?.message || "Invalid input";
+      setErrorText(validationMessage);
+      toast.error(validationMessage);
+      return;
     }
+
+    subscribe.mutate(
+      { email },
+      {
+        onSuccess: (data) => {
+          toast.success(data.message || "You’ve been subscribed!");
+          setEmail("");
+          setErrorText("");
+        },
+        onError: (error) => {
+          let message = "Something went wrong. Please try again later.";
+
+          if (error && typeof error === "object" && "response" in error) {
+            const axiosError = error as AxiosError<ErrorResponse>;
+            message = axiosError.response?.data?.error || message;
+          }
+
+          setErrorText(message);
+          toast.error(message);
+        },
+      }
+    );
   };
 
   return (
@@ -55,20 +69,28 @@ const Newsletter = ({ title, subtitle }: NewsletterProps) => {
           onSubmit={handleSubmit}
           className="flex flex-col md:flex-row gap-4"
         >
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="flex-1 px-4 py-3 rounded-md border border-gray-600 bg-gray-800 text-white focus:ring-2 focus:ring-primary"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <div className="w-full flex flex-col">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex-1 px-4 py-3 rounded-md border border-gray-600 bg-gray-800 text-white focus:ring-2 focus:ring-primary"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoFocus
+            />
+            {errorText && (
+              <span className="text-sm text-red-500 text-left mt-1">
+                {errorText}
+              </span>
+            )}
+          </div>
           <button
             type="submit"
             className="px-6 py-3 font-bold rounded-md shadow-md transition bg-primary text-blue-700 cursor-pointer hover:bg-opacity-80 hover:transform hover:scale-105"
-            disabled={loading}
+            disabled={subscribe.status === "pending"}
           >
-            {loading ? (
+            {subscribe.status === "pending" ? (
               <div className="flex items-center gap-2">
                 <svg
                   className="animate-spin h-5 w-5 text-white"
@@ -97,8 +119,6 @@ const Newsletter = ({ title, subtitle }: NewsletterProps) => {
             )}
           </button>
         </form>
-
-        {message && <p className="mt-4 text-green-400">{message}</p>}
       </div>
     </section>
   );

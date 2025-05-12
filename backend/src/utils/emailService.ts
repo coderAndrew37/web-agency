@@ -49,3 +49,15 @@ export async function notifyAdminNewBooking(booking: IBooking) {
 
   await sendEmail(adminEmail, subject, html);
 }
+
+export async function sendWelcomeEmail(to: string) {
+  const subject = `Welcome to Sleek Sites 🎉`;
+  const html = `
+    <h2>Welcome to the Sleek Sites Newsletter!</h2>
+    <p>We're thrilled to have you on board.</p>
+    <p>Get ready for actionable insights, design trends, and marketing tips — straight to your inbox.</p>
+    <p>Thanks for joining us,<br/>The Sleek Sites Team</p>
+  `;
+
+  return await sendEmail(to, subject, html);
+}
