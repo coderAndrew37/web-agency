@@ -18,7 +18,7 @@ type LoginData = {
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { user, isLoading, error, login, clearError } = useAuthForm();
+  const { user, isLoading, login, clearError } = useAuthForm();
 
   const {
     register,
@@ -42,10 +42,10 @@ const Login = () => {
   const onSubmit = async (data: LoginData) => {
     try {
       await login({ type: "credentials", data });
-    } catch {
-      setFormError("root", {
-        message: error || "Login failed. Please try again.",
-      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Login failed";
+      setFormError("root", { message });
+      console.error("Login error:", error); // Add this for debugging
     }
   };
 

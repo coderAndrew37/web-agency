@@ -1,4 +1,3 @@
-// src/utils/apiErrorHandler.ts
 import { AxiosError } from "axios";
 import { ApiErrorResponse, ApiError } from "../types/admin";
 import { toast } from "react-toastify"; // Assuming you're using react-toastify

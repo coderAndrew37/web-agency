@@ -1,4 +1,3 @@
-// api/httpClient.ts
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,
@@ -14,6 +13,8 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 interface BaseApiResponse<T = unknown> {
   data: T;
   csrfToken?: string;
+  message?: string;
+  success: boolean;
 }
 
 interface RefreshTokenResponse {
@@ -154,16 +155,23 @@ class HttpClient {
       .then((response) => response.data);
   }
 
+  // httpClient.ts
+  // httpClient.ts
   public post<T, D = unknown>(
     url: string,
     data?: D,
     config?: AxiosRequestConfig
-  ): Promise<BaseApiResponse<T>> {
+  ): Promise<T> {
+    // Changed return type to T instead of BaseApiResponse<T>
     return this.instance
       .post<BaseApiResponse<T>>(url, data, config)
-      .then((response) => response.data);
+      .then((response) => {
+        if (!response.data.success) {
+          throw new Error(response.data.message || "Request failed");
+        }
+        return response.data.data; // Return only the data part
+      });
   }
-
   public put<T, D = unknown>(
     url: string,
     data?: D,

@@ -1,14 +1,9 @@
-import { motion } from "framer-motion";
-import { useEffect } from "react";
-import { useTestimonials } from "../hooks/testimonials/useTestimonial.ts";
+import { useTestimonials } from "../hooks/testimonials/useTestimonial";
 import { TestimonialSkeleton } from "./TestimonialSkeleton";
+import { motion } from "framer-motion";
 
 const TestimonialList = () => {
-  const { testimonials, isLoading, isError, fetchAll } = useTestimonials();
-
-  useEffect(() => {
-    fetchAll();
-  }, [fetchAll]);
+  const { testimonials, isLoading, isError } = useTestimonials();
 
   if (isLoading) return <TestimonialSkeleton />;
 
@@ -36,6 +31,7 @@ const TestimonialList = () => {
                 src={testimonial.image}
                 alt={testimonial.name}
                 className="w-14 h-14 rounded-full object-cover border"
+                loading="lazy"
               />
             ) : (
               <div className="w-14 h-14 rounded-full bg-gray-300 flex items-center justify-center text-white text-lg font-bold">

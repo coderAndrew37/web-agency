@@ -17,20 +17,13 @@ interface TestimonialState {
   delete: (_id: string) => Promise<void>;
 }
 
-export const useTestimonialStore = create<TestimonialState>((set, get) => ({
-  testimonials: [],
-  adminTestimonials: [],
-  isLoading: false,
-  isError: false,
-  error: null,
-  isSubmitting: false,
-  isSuccess: false,
-
-  fetchAll: async () => {
+export const useTestimonialStore = create<TestimonialState>((set) => {
+  // Memoized actions stored in closure
+  const fetchAll = async () => {
     set({ isLoading: true, isError: false, error: null });
     try {
       const res = await TestimonialService.getAll();
-      set({ testimonials: res.data, isLoading: false });
+      set({ testimonials: res.data.data, isLoading: false });
     } catch (err) {
       set({
         isError: true,
@@ -39,13 +32,13 @@ export const useTestimonialStore = create<TestimonialState>((set, get) => ({
         isLoading: false,
       });
     }
-  },
+  };
 
-  fetchAdmin: async () => {
+  const fetchAdmin = async () => {
     set({ isLoading: true, isError: false, error: null });
     try {
       const res = await TestimonialService.getAllAdmin();
-      set({ adminTestimonials: res.data, isLoading: false });
+      set({ adminTestimonials: res.data.data, isLoading: false });
     } catch (err) {
       set({
         isError: true,
@@ -56,14 +49,14 @@ export const useTestimonialStore = create<TestimonialState>((set, get) => ({
         isLoading: false,
       });
     }
-  },
+  };
 
-  submit: async (formData) => {
+  const submit = async (formData: FormData) => {
     set({ isSubmitting: true, isSuccess: false, isError: false, error: null });
     try {
       await TestimonialService.submit(formData);
       set({ isSubmitting: false, isSuccess: true });
-      get().fetchAll();
+      await fetchAll();
     } catch (err) {
       set({
         isError: true,
@@ -72,23 +65,38 @@ export const useTestimonialStore = create<TestimonialState>((set, get) => ({
         isSuccess: false,
       });
     }
-  },
+  };
 
-  approve: async (_id) => {
+  const approve = async (_id: string) => {
     try {
       await TestimonialService.approve(_id);
-      get().fetchAdmin();
+      await fetchAdmin();
     } catch (err) {
       console.error("Failed to approve testimonial:", err);
     }
-  },
+  };
 
-  delete: async (_id) => {
+  const deleteTestimonial = async (_id: string) => {
     try {
       await TestimonialService.delete(_id);
-      get().fetchAdmin();
+      await fetchAdmin();
     } catch (err) {
       console.error("Failed to delete testimonial:", err);
     }
-  },
-}));
+  };
+
+  return {
+    testimonials: [],
+    adminTestimonials: [],
+    isLoading: false,
+    isError: false,
+    error: null,
+    isSubmitting: false,
+    isSuccess: false,
+    submit,
+    fetchAll,
+    fetchAdmin,
+    approve,
+    delete: deleteTestimonial,
+  };
+});

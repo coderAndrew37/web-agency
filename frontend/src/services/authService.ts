@@ -1,3 +1,4 @@
+// src/services/authService.ts
 import { apiClient } from "../api/httpClient";
 import {
   AuthResponse,
@@ -6,18 +7,8 @@ import {
   RegisterData,
   User,
   VerifyData,
+  BaseApiResponse,
 } from "../types/authTypes";
-
-// Handles fallback errors from axios
-interface ApiError {
-  response?: {
-    status?: number;
-    data?: {
-      message?: string;
-    };
-  };
-  message?: string;
-}
 
 function handleCsrfToken(csrfToken?: string | null) {
   if (csrfToken) {
@@ -29,28 +20,42 @@ export const AuthService = {
   async login(data: LoginData): Promise<AuthResponse> {
     const response = await apiClient.post<AuthResponse>("/auth/login", data);
 
-    if (!response?.data || !response.data.user) {
-      throw new Error("Invalid response from /auth/login");
+    console.log("Login response:", response);
+
+    if (!response?.user) {
+      throw new Error("Authentication failed - invalid response");
     }
 
     handleCsrfToken(response.csrfToken);
-    return response.data;
+    return response;
   },
-  async register(data: RegisterData): Promise<void> {
-    await apiClient.post<void>("/auth/register", data);
+
+  async register(data: RegisterData): Promise<{ email: string }> {
+    await apiClient.post("/auth/register", data);
+    return { email: data.email };
   },
 
   async verify(data: VerifyData): Promise<AuthResponse> {
-    const { csrfToken, data: payload } = await apiClient.post<AuthResponse>(
-      "/auth/verify",
-      data
-    );
-    handleCsrfToken(csrfToken);
-    return payload;
+    const response = await apiClient.post<{
+      data: AuthResponse;
+      csrfToken?: string;
+    }>("/auth/verify", data);
+    const raw = response.data;
+
+    if (!raw?.user) {
+      throw new Error("Invalid response from /auth/verify");
+    }
+
+    handleCsrfToken(response.data.csrfToken);
+    return raw;
   },
 
   async resendVerification(email: string): Promise<void> {
-    await apiClient.post<void>("/auth/resend-verification", { email });
+    if (!email) {
+      throw new Error("Email is required to resend verification");
+    }
+    console.log("[AuthService] Sending resend-verification with:", { email });
+    await apiClient.post("/auth/resend-verification", { email });
   },
 
   async logout(): Promise<void> {
@@ -58,19 +63,25 @@ export const AuthService = {
     apiClient.clearCsrfToken();
   },
 
-  async getCurrentUser(): Promise<User> {
-    // return apiClient.get<User>("/auth/me");
-    const { data: payload } = await apiClient.get<User>("/auth/me");
-    return payload;
+  async getCurrentUser(): Promise<User | null> {
+    try {
+      const response = await apiClient.get<BaseApiResponse<AuthResponse>>(
+        "/auth/me"
+      );
+      return response.data.data?.user || null;
+    } catch {
+      return null;
+    }
   },
 
   async forgotPassword(data: { email: string }): Promise<{ message: string }> {
-    const { data: payload } = await apiClient.post<{ message: string }>(
+    const response = await apiClient.post<{ message: string }>(
       "/auth/forgot-password",
       data
     );
-    return payload;
+    return response;
   },
+
   async resetPassword(
     token: string,
     data: { password: string }
@@ -80,25 +91,48 @@ export const AuthService = {
 
   async refresh(): Promise<RefreshTokenResponse> {
     try {
-      const { csrfToken, data: payload } =
-        await apiClient.post<RefreshTokenResponse>("/auth/refresh");
-      handleCsrfToken(csrfToken);
-      return payload;
-    } catch (error) {
-      const apiError = error as ApiError;
-      if (apiError.response?.status === 404) {
+      const response = await apiClient.post<RefreshTokenResponse>(
+        "/auth/refresh"
+      );
+
+      if (!response) {
+        return { accessToken: null, csrfToken: null };
+      }
+
+      handleCsrfToken(response.csrfToken);
+      return {
+        accessToken: response.accessToken,
+        csrfToken: response.csrfToken,
+        user: response.user,
+      };
+    } catch (error: unknown) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        (error as { response?: { status?: number } }).response?.status === 401
+      ) {
         return { accessToken: null, csrfToken: null };
       }
       throw error;
     }
   },
 
-  async checkAuth(): Promise<{ isAuthenticated: boolean; user?: User }> {
-    const response = await this.refresh();
-    if (response.csrfToken) {
+  async checkAuth(): Promise<{ isAuthenticated: boolean; user?: User | null }> {
+    try {
+      const refreshResponse = await this.refresh();
+
+      if (!refreshResponse.accessToken) {
+        return { isAuthenticated: false };
+      }
+
       const user = await this.getCurrentUser();
-      return { isAuthenticated: true, user };
+      return {
+        isAuthenticated: !!user,
+        user: user || undefined,
+      };
+    } catch {
+      return { isAuthenticated: false };
     }
-    return { isAuthenticated: false };
   },
 };

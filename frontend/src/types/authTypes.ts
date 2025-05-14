@@ -1,3 +1,10 @@
+export type BaseApiResponse<T = unknown> = {
+  success: boolean;
+  data: T;
+  message?: string;
+  csrfToken?: string; // Optional CSRF token at wrapper level
+};
+
 export type LoginData = {
   email: string;
   password: string;
@@ -11,35 +18,39 @@ export type RegisterData = {
 
 export type User = {
   _id: string;
+  name: string;
   email: string;
-  role: string;
+  role: "admin" | "user";
   isVerified: boolean;
 };
 
-export type AuthResponse = {
-  user: User;
-  isAuthenticated: boolean;
-  csrfToken?: string;
+export type AuthTokens = {
+  accessToken?: string;
+  refreshToken?: string;
 };
 
+export type AuthStateResponse = {
+  isAuthenticated: boolean;
+  csrfToken?: string; // Make optional to match backend
+  user: User | null; // Nullable to match backend
+};
+
+// Update AuthResponse to match
+export type AuthResponse = {
+  user: User | null;
+  isAuthenticated: boolean;
+  csrfToken?: string;
+  accessToken?: string;
+};
+
+// For refresh token endpoint
 export type RefreshTokenResponse = {
   accessToken: string | null;
   csrfToken: string | null;
+  user?: User | null;
 };
 
 export type VerifyData = {
   email: string;
   code: string;
 };
-
-export interface AuthStateResponse {
-  isAuthenticated: boolean;
-  csrfToken: string;
-  user: {
-    _id: string;
-    name: string;
-    email: string;
-    role: "admin" | "user";
-    isVerified: boolean;
-  } | null;
-}

@@ -1,15 +1,27 @@
 import { useTestimonialStore } from "../../store/testimonialStore";
+import { useEffect } from "react";
 
-export const useTestimonials = () => {
-  return useTestimonialStore((state) => ({
-    testimonials: state.testimonials,
-    isLoading: state.isLoading,
-    isError: state.isError,
-    error: state.error,
-    fetchAll: state.fetchAll,
-  }));
+// Main hook that handles both data and auto-fetching
+export const useTestimonials = (autoFetch = true) => {
+  const { testimonials, isLoading, isError, error, fetchAll } =
+    useTestimonialStore((state) => ({
+      testimonials: state.testimonials,
+      isLoading: state.isLoading,
+      isError: state.isError,
+      error: state.error,
+      fetchAll: state.fetchAll,
+    }));
+
+  useEffect(() => {
+    if (autoFetch && testimonials.length === 0 && !isLoading) {
+      fetchAll();
+    }
+  }, [autoFetch, testimonials.length, isLoading, fetchAll]);
+
+  return { testimonials, isLoading, isError, error, fetchAll };
 };
 
+// Keep other hooks the same as before
 export const useSubmitTestimonial = () => {
   return useTestimonialStore((state) => ({
     submit: state.submit,

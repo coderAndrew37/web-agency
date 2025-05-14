@@ -1,14 +1,13 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { AuthService } from "../services/authService";
-import { User, LoginData, RegisterData, VerifyData } from "../types/authTypes";
-
-// Define AuthResponse type if not already defined or import it from the correct location
-type AuthResponse = {
-  user: User;
-  isAuthenticated: boolean;
-  // Add other properties as needed based on your AuthService.verify response
-};
+import {
+  AuthResponse,
+  LoginData,
+  RegisterData,
+  User,
+  VerifyData,
+} from "../types/authTypes";
 
 const getErrorMessage = (error: unknown, fallback: string) =>
   error instanceof Error ? error.message : fallback;
@@ -29,7 +28,6 @@ type AuthActions = {
   login: (params: LoginParams) => Promise<void>;
   register: (data: RegisterData) => Promise<{ email: string }>;
   verify: (data: VerifyData) => Promise<AuthResponse>;
-
   resendVerification: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: (force?: boolean) => Promise<void>;
@@ -57,28 +55,28 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         set({ isLoading: true, error: null });
 
         try {
-          let user: User;
+          let user: User | null;
+          let isAuthenticated: boolean;
 
           if (params.type === "credentials") {
             const response = await AuthService.login(params.data);
             user = response.user;
-
-            set({
-              user,
-              isAuthenticated: true,
-              isLoading: false,
-              hasCheckedAuth: true,
-            });
+            isAuthenticated = response.isAuthenticated;
           } else {
             user = params.user;
-
-            set({
-              user,
-              isAuthenticated: true,
-              isLoading: false,
-              hasCheckedAuth: true,
-            });
+            isAuthenticated = true;
           }
+
+          if (!user) {
+            throw new Error("Authentication failed - no user returned");
+          }
+
+          set({
+            user,
+            isAuthenticated,
+            isLoading: false,
+            hasCheckedAuth: true,
+          });
         } catch (error) {
           set({
             error: getErrorMessage(
@@ -98,7 +96,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         try {
           await AuthService.register(data);
           set({ isLoading: false });
-          return { email: data.email }; // ✅ Needed for UI redirect
+          return { email: data.email };
         } catch (error) {
           set({
             error: getErrorMessage(error, "Registration failed"),
@@ -113,7 +111,10 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 
         try {
           const response = await AuthService.verify(data);
-          console.log("[DEBUG] AuthStore verify: received user", response.user);
+
+          if (!response.user) {
+            throw new Error("Verification failed - no user returned");
+          }
 
           set({
             user: response.user,
@@ -122,17 +123,17 @@ export const useAuthStore = create<AuthState & AuthActions>()(
             hasCheckedAuth: true,
           });
 
-          return response; // ✅ Add this line to return user back to caller!
+          return response;
         } catch (error) {
           set({
             error: getErrorMessage(error, "Verification failed"),
             isLoading: false,
           });
-          throw error; // ✅ Optionally re-throw if needed
+          throw error;
         }
       },
 
-      resendVerification: async (email: string) => {
+      resendVerification: async (email) => {
         set({ isLoading: true, error: null });
         try {
           await AuthService.resendVerification(email);
@@ -166,25 +167,9 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         try {
           const { isAuthenticated, user } = await AuthService.checkAuth();
 
-          if (!isAuthenticated) {
-            await AuthService.logout(); // ensure CSRF/token cleared
-            set({ ...initialState, hasCheckedAuth: true });
-            return;
-          }
-
-          if (!user || !user.isVerified) {
-            await AuthService.logout();
-            set({
-              ...initialState,
-              error: "Email not verified",
-              hasCheckedAuth: true,
-            });
-            return;
-          }
-
           set({
             user,
-            isAuthenticated: true,
+            isAuthenticated,
             isLoading: false,
             hasCheckedAuth: true,
           });
