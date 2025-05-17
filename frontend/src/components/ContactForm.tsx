@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { contactSchema } from "../Utils/validationSchemas";
 import { useSubmitContactForm } from "../hooks/contact/useContactHooks";
 import colors from "../styles/colors";
@@ -9,11 +9,13 @@ import { ContactFormData } from "../types/contact";
 
 const ContactForm = () => {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   });
@@ -25,8 +27,27 @@ const ContactForm = () => {
     try {
       const res = await submitContact(data);
       setStatusMessage("✅ " + res.message);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 3000);
+      reset();
     } catch {
       setStatusMessage("❌ Failed to send message. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    if (statusMessage) {
+      const timer = setTimeout(() => setStatusMessage(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [statusMessage]);
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSubmit(onSubmit)(event);
     }
   };
 
@@ -34,7 +55,7 @@ const ContactForm = () => {
     <motion.div
       className="p-6 shadow-lg rounded-lg bg-white bg-opacity-80 backdrop-blur-lg border border-gray-200"
       initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={{ opacity: 1, y: 0, scale: isSuccess ? 1.02 : 1 }}
       transition={{ duration: 0.5 }}
     >
       <h3
@@ -59,6 +80,7 @@ const ContactForm = () => {
           {...register("name")}
           placeholder="Your Name"
           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+          onKeyDown={handleKeyDown}
         />
         {errors.name && <p className="text-red-500">{errors.name.message}</p>}
 
@@ -67,6 +89,7 @@ const ContactForm = () => {
           type="email"
           placeholder="Your Email"
           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+          onKeyDown={handleKeyDown}
         />
         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
@@ -75,6 +98,7 @@ const ContactForm = () => {
           placeholder="Your Message"
           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
           rows={5}
+          onKeyDown={handleKeyDown}
         />
         {errors.message && (
           <p className="text-red-500">{errors.message.message}</p>
@@ -82,7 +106,9 @@ const ContactForm = () => {
 
         <motion.button
           type="submit"
-          className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700  text-lg text-center hover:opacity-80 cursor-pointer hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          className={`w-full py-3 font-bold rounded-lg shadow-md transition ${
+            isPending ? "bg-gray-400" : "bg-primary"
+          } text-blue-700 text-lg text-center hover:opacity-80 cursor-pointer hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
           whileTap={{ scale: 0.95 }}
           disabled={isPending}
         >
