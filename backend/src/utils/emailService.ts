@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 export async function sendEmail(to: string, subject: string, html: string) {
   try {
     const info = await transporter.sendMail({
-      from: `"Strategy Call Booking" <${process.env.EMAIL_USER}>`,
+      from: `"Sleek Sites" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html,
@@ -60,4 +60,20 @@ export async function sendWelcomeEmail(to: string) {
   `;
 
   return await sendEmail(to, subject, html);
+}
+
+export async function sendContactAcknowledgement(to: string, name: string) {
+  const subject = `👋 Thanks for contacting Sleek Sites!`;
+  const html = `
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; background: #ffffff; border-radius: 8px; border: 1px solid #eee;">
+      <h2 style="color: #007BFF;">Hey ${name},</h2>
+      <p>Thank you for reaching out to Sleek Sites! We’ve received your message and our team will get back to you as soon as possible.</p>
+      <p>If it’s urgent, feel free to reply to this email directly.</p>
+      <br/>
+      <p style="font-size: 16px;">Cheers,<br/><strong>The Sleek Sites Team</strong></p>
+      <hr style="margin-top: 24px;"/>
+      <p style="font-size: 12px; color: #888;">You’re receiving this email because you contacted us via our website. If this wasn’t you, feel free to ignore it.</p>
+    </div>
+  `;
+  await sendEmail(to, subject, html);
 }

@@ -112,8 +112,8 @@ export const AdminService = {
       BulkEmailData
     >("/admin/subscribers/send-email", emailData);
     return {
-      success: res.data.data.success,
-      sentCount: res.data.data.sentCount,
+      success: res.data.success,
+      sentCount: res.data.sentCount,
     };
   },
 
@@ -141,6 +141,6 @@ export const AdminService = {
       `/contacts/${_id}/reply`,
       replyData
     );
-    return res.data;
+    return res;
   },
 };

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { Contact, validateContact } from "../models/contact";
-import { sendEmail } from "../utils/emailService";
+import { sendContactAcknowledgement, sendEmail } from "../utils/emailService";
 
 const router = express.Router();
 
@@ -29,10 +29,20 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
       console.warn("⚠️ ADMIN_EMAIL is not set in environment variables.");
     }
 
-    res.status(201).json({ message: "Your message has been sent!" });
+    res.status(201).json({
+      success: true,
+      message: "Your message has been sent!",
+      data: null,
+    });
+
+    await sendContactAcknowledgement(contact.email, contact.name);
   } catch (err) {
     console.error("❌ Contact Form Error:", err);
-    res.status(500).json({ error: "Failed to send message." });
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while sending your message.",
+      errors: { server: "Internal Server Error" },
+    });
   }
 });
 

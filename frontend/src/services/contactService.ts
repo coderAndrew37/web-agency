@@ -1,15 +1,14 @@
-// src/services/contactService.ts
 import { apiClient } from "../api/httpClient";
 import { ContactFormData } from "../types/contact";
-import { ApiResponse } from "../types/api";
 
 export const ContactService = {
   submit: (data: ContactFormData) =>
-    apiClient.post<ApiResponse<{ message: string }>, ContactFormData>(
-      "/contact",
-      data
-    ),
+    apiClient
+      .post<null, ContactFormData>("/contact", data)
+      .then(() => ({ message: "Your message has been sent!" })), // ✅ return message manually
 
-  getAll: () =>
-    apiClient.get<ApiResponse<ContactFormData[]>>("/admin/contacts"),
+  getAll: async (): Promise<ContactFormData[]> => {
+    const res = await apiClient.get<ContactFormData[]>("/admin/contacts");
+    return res.data;
+  },
 };

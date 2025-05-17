@@ -151,7 +151,7 @@ export const verify = async (req: Request, res: Response) => {
     await sendEmail(
       email,
       "Account Verified",
-      "Welcome! Your account has been verified."
+      `Welcome ${res}! Your account has been verified.`
     );
 
     // Send the raw auth data without success wrapper
@@ -172,46 +172,6 @@ export const verify = async (req: Request, res: Response) => {
     sendError(res, 500, "Verification failed");
   }
 };
-
-// User login
-// export const login = async (req: Request, res: Response) => {
-//   try {
-//     const { email, password } = req.body;
-//     const user = await User.findOne({ email }).select("+password");
-
-//     if (!user || !(await user.comparePassword(password))) {
-//       return sendError(res, 401, "Invalid credentials");
-//     }
-
-//     if (!user.isVerified) {
-//       return sendError(res, 403, "Account not verified. Check email for OTP");
-//     }
-
-//     const { accessToken, refreshToken } = createTokens(user._id.toString());
-//     const csrfToken = crypto.randomBytes(32).toString("hex");
-
-//     user.csrfToken = csrfToken;
-//     await user.save();
-//     setRefreshTokenCookie(res, refreshToken);
-
-//     // Send the raw auth data without success wrapper
-//     sendSuccess(res, {
-//       user: {
-//         _id: user._id,
-//         name: user.name,
-//         email: user.email,
-//         role: user.role,
-//         isVerified: user.isVerified,
-//       },
-//       isAuthenticated: true,
-//       csrfToken,
-//       accessToken,
-//     });
-//   } catch (error) {
-//     console.error("Login error:", error);
-//     sendError(res, 500, "Login failed");
-//   }
-// };
 
 // authController.ts
 export const login = async (req: Request, res: Response) => {

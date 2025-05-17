@@ -16,7 +16,7 @@ export const useAdminStats = () =>
     queryKey: ["admin-stats"],
     queryFn: async () => {
       const response = await AdminService.getStats();
-      return response.data;
+      return response;
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -26,7 +26,7 @@ export const useFetchSubscribers = (params?: { active?: boolean }) =>
     queryKey: ["admin-subscribers", params],
     queryFn: async () => {
       const response = await AdminService.getSubscribers(params);
-      return response.data;
+      return response;
     },
   });
 
@@ -48,7 +48,7 @@ export const useSendBulkEmail = () =>
   >({
     mutationFn: async (emailData: BulkEmailData) => {
       const response = await AdminService.sendBulkEmail(emailData);
-      return response.data;
+      return response;
     },
     onError: (error) => handleApiError(error, { showToast: true }),
   });
@@ -58,7 +58,7 @@ export const useFetchContactMessages = (params?: { replied?: boolean }) =>
     queryKey: ["admin-contacts", params],
     queryFn: async () => {
       const response = await AdminService.getContactMessages(params);
-      return response.data;
+      return response;
     },
   });
 

@@ -1,4 +1,3 @@
-// src/services/authService.ts
 import { apiClient } from "../api/httpClient";
 import {
   AuthResponse,
@@ -118,6 +117,7 @@ export const AuthService = {
     }
   },
 
+  // In AuthService.ts
   async checkAuth(): Promise<{ isAuthenticated: boolean; user?: User | null }> {
     try {
       const refreshResponse = await this.refresh();
@@ -127,6 +127,12 @@ export const AuthService = {
       }
 
       const user = await this.getCurrentUser();
+
+      // Add role verification
+      if (user && refreshResponse.user?.role !== user.role) {
+        return { isAuthenticated: false };
+      }
+
       return {
         isAuthenticated: !!user,
         user: user || undefined,

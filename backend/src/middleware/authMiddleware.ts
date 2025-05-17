@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
 
-// Create a custom interface that extends Express's Request
 export interface AuthenticatedRequest extends Request {
   user?: typeof User.prototype;
 }
@@ -12,11 +11,11 @@ const getToken = (req: Request): string | null => {
   return authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
 };
 
-export const protect = async (
+export const protect = (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   try {
     const token = getToken(req);
     if (!token) {
@@ -27,26 +26,30 @@ export const protect = async (
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
       userId: string;
     };
-    const user = await User.findById(decoded.userId).select("-password");
+    User.findById(decoded.userId)
+      .select("-password")
+      .then((user) => {
+        if (!user) {
+          res.status(401).json({ error: "User not found" });
+          return;
+        }
 
-    if (!user) {
-      res.status(401).json({ error: "User not found" });
-      return;
-    }
-
-    req.user = user;
-    next();
-  } catch (error) {
+        req.user = user;
+        next();
+      })
+      .catch(() => {
+        res.status(401).json({ error: "Invalid user data" });
+      });
+  } catch {
     res.status(401).json({ error: "Invalid or expired token" });
   }
 };
 
-// Add new CSRF protection middleware
-export const csrfProtect = async (
+export const csrfProtect = (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   try {
     if (!req.user) {
       res.status(401).json({ error: "Authentication required" });
@@ -65,26 +68,30 @@ export const csrfProtect = async (
     }
 
     next();
-  } catch (error) {
+  } catch {
     res.status(500).json({ error: "CSRF validation failed" });
   }
 };
 
-export const optionalAuth = async (
+export const optionalAuth = (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   try {
     const token = getToken(req);
-    if (token) {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-        userId: string;
-      };
-      const user = await User.findById(decoded.userId).select("-password");
-      if (user) req.user = user;
-    }
-    next();
+    if (!token) return next();
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      userId: string;
+    };
+    User.findById(decoded.userId)
+      .select("-password")
+      .then((user) => {
+        if (user) req.user = user;
+        next();
+      })
+      .catch(() => next());
   } catch {
     next();
   }
@@ -94,10 +101,42 @@ export const admin = (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
-) => {
-  if (!req.user || req.user.role !== "admin") {
-    res.status(403).json({ error: "Admin access required" });
-    return;
+): void => {
+  try {
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        error: "Authentication required",
+      });
+      return;
+    }
+
+    if (req.user.role !== "admin") {
+      res.status(403).json({
+        success: false,
+        error: "Admin access required",
+      });
+      return;
+    }
+
+    if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method)) {
+      const csrfToken = req.headers["x-csrf-token"];
+      if (!csrfToken || typeof csrfToken !== "string") {
+        res.status(403).json({ error: "CSRF token required" });
+        return;
+      }
+
+      if (req.user.csrfToken !== csrfToken) {
+        res.status(403).json({ error: "Invalid CSRF token" });
+        return;
+      }
+    }
+
+    next();
+  } catch {
+    res.status(500).json({
+      success: false,
+      error: "Authorization check failed",
+    });
   }
-  next();
 };

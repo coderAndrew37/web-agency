@@ -82,7 +82,7 @@ const ContactForm = () => {
 
         <motion.button
           type="submit"
-          className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700  text-lg text-center hover:opacity-80"
+          className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700  text-lg text-center hover:opacity-80 cursor-pointer hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           whileTap={{ scale: 0.95 }}
           disabled={isPending}
         >

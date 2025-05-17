@@ -17,7 +17,9 @@ export const useAutoRefresh = () => {
         if (response.csrfToken) {
           // Only update if we got a valid response
           const user = await AuthService.getCurrentUser();
-          login({ type: "refresh", user });
+          if (user) {
+            login({ type: "refresh", user });
+          }
         }
       } catch (error) {
         if (
