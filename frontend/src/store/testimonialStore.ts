@@ -17,9 +17,10 @@ interface TestimonialState {
   delete: (_id: string) => Promise<void>;
 }
 
-export const useTestimonialStore = create<TestimonialState>((set) => {
-  // Memoized actions stored in closure
+export const useTestimonialStore = create<TestimonialState>((set, get) => {
   const fetchAll = async () => {
+    const state = get();
+    if (state.isLoading) return; // prevent race conditions
     set({ isLoading: true, isError: false, error: null });
     try {
       const res = await TestimonialService.getAll();

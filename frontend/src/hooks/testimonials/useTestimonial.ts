@@ -1,45 +1,48 @@
+import { useEffect, useRef } from "react";
 import { useTestimonialStore } from "../../store/testimonialStore";
-import { useEffect } from "react";
 
-// Main hook that handles both data and auto-fetching
 export const useTestimonials = (autoFetch = true) => {
-  const { testimonials, isLoading, isError, error, fetchAll } =
-    useTestimonialStore((state) => ({
-      testimonials: state.testimonials,
-      isLoading: state.isLoading,
-      isError: state.isError,
-      error: state.error,
-      fetchAll: state.fetchAll,
-    }));
+  const testimonials = useTestimonialStore((s) => s.testimonials);
+  const isLoading = useTestimonialStore((s) => s.isLoading);
+  const isError = useTestimonialStore((s) => s.isError);
+  const error = useTestimonialStore((s) => s.error);
+  const fetchAllRef = useRef(useTestimonialStore.getState().fetchAll);
 
   useEffect(() => {
     if (autoFetch && testimonials.length === 0 && !isLoading) {
-      fetchAll();
+      fetchAllRef.current();
     }
-  }, [autoFetch, testimonials.length, isLoading, fetchAll]);
+  }, [autoFetch, testimonials.length, isLoading]);
 
-  return { testimonials, isLoading, isError, error, fetchAll };
+  return { testimonials, isLoading, isError, error };
 };
 
-// Keep other hooks the same as before
 export const useSubmitTestimonial = () => {
-  return useTestimonialStore((state) => ({
-    submit: state.submit,
-    isSubmitting: state.isSubmitting,
-    isSuccess: state.isSuccess,
-    isError: state.isError,
-    error: state.error,
-  }));
+  const submit = useTestimonialStore((s) => s.submit);
+  const isSubmitting = useTestimonialStore((s) => s.isSubmitting);
+  const isSuccess = useTestimonialStore((s) => s.isSuccess);
+  const isError = useTestimonialStore((s) => s.isError);
+  const error = useTestimonialStore((s) => s.error);
+
+  return { submit, isSubmitting, isSuccess, isError, error };
 };
 
 export const useAdminTestimonials = () => {
-  return useTestimonialStore((state) => ({
-    adminTestimonials: state.adminTestimonials,
-    isLoading: state.isLoading,
-    isError: state.isError,
-    error: state.error,
-    fetchAdmin: state.fetchAdmin,
-    approve: state.approve,
-    delete: state.delete,
-  }));
+  const adminTestimonials = useTestimonialStore((s) => s.adminTestimonials);
+  const isLoading = useTestimonialStore((s) => s.isLoading);
+  const isError = useTestimonialStore((s) => s.isError);
+  const error = useTestimonialStore((s) => s.error);
+  const fetchAdmin = useTestimonialStore((s) => s.fetchAdmin);
+  const approve = useTestimonialStore((s) => s.approve);
+  const deleteTestimonial = useTestimonialStore((s) => s.delete);
+
+  return {
+    adminTestimonials,
+    isLoading,
+    isError,
+    error,
+    fetchAdmin,
+    approve,
+    delete: deleteTestimonial,
+  };
 };
