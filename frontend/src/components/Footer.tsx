@@ -77,7 +77,7 @@ const Footer = () => {
                     <Phone size={16} /> +254 712 345 678
                   </p>
                   <p className="flex items-center gap-2">
-                    <Mail size={16} /> info@sleeksites.com
+                    <Mail size={16} /> info@sleeksites.co.ke
                   </p>
                   <div className="flex gap-4 mt-4">
                     <a href="#" className="hover:text-blue-600">

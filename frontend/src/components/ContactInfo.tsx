@@ -20,12 +20,12 @@ const ContactInfo = () => {
       <div className="space-y-4 text-center">
         <div className="flex items-center justify-center gap-3">
           <Phone size={24} style={{ color: colors.primary }} />
-          <p className="text-lg text-gray-700">+254 712 345 678</p>
+          <p className="text-lg text-gray-700">+254 725 746 263</p>
         </div>
 
         <div className="flex items-center justify-center gap-3">
           <Mail size={24} style={{ color: colors.primary }} />
-          <p className="text-lg text-gray-700">contact@sleeksites.com</p>
+          <p className="text-lg text-gray-700">contact@sleeksites.co.ke</p>
         </div>
 
         <div className="flex items-center justify-center gap-3">
