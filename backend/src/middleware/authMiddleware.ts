@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
+import { IUser } from "../models/User";
 
 export interface AuthenticatedRequest extends Request {
-  user?: typeof User.prototype;
+  user?: IUser & { csrfToken?: string };
 }
 
 const getToken = (req: Request): string | null => {
