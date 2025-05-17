@@ -10,6 +10,7 @@ import { useAutoRefresh } from "./hooks/auth/useAutoRefresh";
 import { useAuthStore } from "./store/authStore";
 import { PUBLIC_ROUTES } from "./routes/publicRoutes";
 import { HelmetProvider } from "react-helmet-async";
+import ScrollToTop from "./components/ScrollToTop";
 
 const AppInitializer = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -39,6 +40,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ScrollToTop />
         <HelmetProvider>
           <ErrorBoundary>
             <AppInitializer>
