@@ -1,13 +1,26 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { testimonialSchema } from "../Utils/validationSchemas";
-import { useSubmitTestimonial } from "../hooks/testimonials/useTestimonial.ts";
+import { useSubmitTestimonial } from "../hooks/testimonials/useTestimonial";
 import { useCurrentUser } from "../hooks/auth/useAuth";
 import { motion } from "framer-motion";
-import colors from "../styles/colors";
+import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-type TestimonialData = {
+// ✅ Define type just for form input (not server)
+type TestimonialFormData = {
   name: string;
   message: string;
   image?: FileList;
@@ -15,20 +28,48 @@ type TestimonialData = {
 
 const TestimonialForm = () => {
   const user = useCurrentUser();
-
   const { submit, isSubmitting, isError, isSuccess, error } =
     useSubmitTestimonial();
+  const [preview, setPreview] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
-  } = useForm<TestimonialData>({
+  } = useForm<TestimonialFormData>({
     resolver: zodResolver(testimonialSchema),
   });
 
-  const onSubmit = async (data: TestimonialData) => {
+  const imageFile = watch("image");
+
+  useEffect(() => {
+    if (imageFile && imageFile.length > 0) {
+      const file = imageFile[0];
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("❌ Image size must be under 2MB");
+        return setPreview(null);
+      }
+      const url = URL.createObjectURL(file);
+      setPreview(url);
+      return () => URL.revokeObjectURL(url);
+    } else {
+      setPreview(null);
+    }
+  }, [imageFile]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("✅ Testimonial submitted for approval!");
+      reset();
+      setPreview(null);
+    } else if (isError) {
+      toast.error(`❌ Submission failed. ${error || ""}`);
+    }
+  }, [isSuccess, isError, error, reset]);
+
+  const onSubmit = async (data: TestimonialFormData) => {
     if (!user) return;
 
     const formData = new FormData();
@@ -38,123 +79,108 @@ const TestimonialForm = () => {
       formData.append("image", data.image[0]);
     }
 
-    try {
-      await submit(formData);
-      reset();
-    } catch (err) {
-      console.error("Submission error:", err);
-    }
+    await submit(formData);
   };
 
   if (!user) {
     return (
-      <motion.div
-        className="max-w-lg mx-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-80 backdrop-blur-lg border border-gray-200"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2
-          className="text-3xl font-bold text-center mb-6"
-          style={{ color: colors.darkText }}
-        >
-          📝 Share Your Experience
-        </h2>
-        <p className="text-center text-gray-600">
+      <Card className="max-w-lg mx-auto">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl">
+            📝 Share Your Experience
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="text-center text-gray-600">
           Please sign in to submit a testimonial.
-        </p>
-      </motion.div>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
     <motion.div
-      className="max-w-lg mx-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-80 backdrop-blur-lg border border-gray-200"
+      className="max-w-lg mx-auto"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2
-        className="text-3xl font-bold text-center mb-6"
-        style={{ color: colors.darkText }}
-      >
-        📝 Share Your Experience
-      </h2>
+      <Card className="p-6 shadow-md">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl text-primary">
+            📝 Share Your Experience
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-1">
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" {...register("name")} disabled={isSubmitting} />
+              {errors.name && (
+                <p className="text-red-500 text-sm">{errors.name.message}</p>
+              )}
+            </div>
 
-      {isError && (
-        <p className="text-red-500 text-center mb-4">
-          ❌{" "}
-          {typeof error === "string"
-            ? error
-            : "Submission failed. Please try again."}
-        </p>
-      )}
+            <div className="space-y-1">
+              <Label htmlFor="message">Testimonial</Label>
+              <Textarea
+                id="message"
+                rows={4}
+                {...register("message")}
+                disabled={isSubmitting}
+              />
+              {errors.message && (
+                <p className="text-red-500 text-sm">{errors.message.message}</p>
+              )}
+            </div>
 
-      {isSuccess && (
-        <p className="text-green-500 text-center mb-4">
-          ✅ Testimonial submitted for approval!
-        </p>
-      )}
+            <div className="space-y-1">
+              <Label htmlFor="image">Optional Image</Label>
+              <Input
+                id="image"
+                type="file"
+                {...register("image")}
+                disabled={isSubmitting}
+                accept="image/*"
+              />
+              {preview && (
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="mt-2 w-20 h-20 object-cover rounded-full border"
+                />
+              )}
+              {errors.image && (
+                <p className="text-red-500 text-sm">{errors.image.message}</p>
+              )}
+            </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <input
-            {...register("name")}
-            placeholder="Your Name"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
-            disabled={isSubmitting}
-          />
-          {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-          )}
-        </div>
-
-        <div>
-          <textarea
-            {...register("message")}
-            placeholder="Your Testimonial"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
-            rows={4}
-            disabled={isSubmitting}
-          />
-          {errors.message && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.message.message}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <input
-            type="file"
-            {...register("image")}
-            className="w-full"
-            disabled={isSubmitting}
-            accept="image/*"
-          />
-          {errors.image && (
-            <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>
-          )}
-        </div>
-
-        <motion.button
-          type="submit"
-          className="w-full py-3 font-bold rounded-lg shadow-md transition bg-primary text-blue-700 text-lg hover:opacity-80 flex items-center justify-center"
-          whileTap={{ scale: 0.95 }}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Submitting...
-            </>
-          ) : (
-            "Submit Testimonial"
-          )}
-        </motion.button>
-      </form>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="submit"
+                    className="w-full flex items-center justify-center"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit Testimonial"
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Submit your honest feedback 💬</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </form>
+        </CardContent>
+      </Card>
     </motion.div>
   );
 };
 
 export default TestimonialForm;
+// This component is a form for submitting testimonials. It includes fields for the user's name, message, and an optional image upload. The form uses React Hook Form for validation and submission handling, and it provides feedback to the user on submission status.
