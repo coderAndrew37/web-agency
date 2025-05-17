@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sleeksites.co.ke/sitemap.xml
