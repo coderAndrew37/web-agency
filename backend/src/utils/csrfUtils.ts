@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { Request } from "express";
 
 // Generate CSRF Token
 export const generateCSRFToken = () => {

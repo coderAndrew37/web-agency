@@ -1,9 +1,9 @@
 import express from "express";
 import helmet from "helmet";
 import {
-  register,
-  verify,
-  login,
+  registerUser as register,
+  verifyUserOtp as verify,
+  loginUser as login,
   refresh,
   logout,
   getCurrentUser,

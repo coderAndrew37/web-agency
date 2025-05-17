@@ -13,7 +13,7 @@ const router = express.Router();
 // ✅ [POST] Submit Pricing Request (Anyone, user attached if logged in)
 router.post(
   "/",
-  protect.optionalAuth,
+  protect,
   async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const { error } = validatePricing(req.body);
     if (error) {

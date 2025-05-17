@@ -1,4 +1,3 @@
-// services/projectService.ts
 import { Booking } from "../models/booking";
 import { Project, projectValidationSchema } from "../models/project";
 import logger from "../utils/logger";

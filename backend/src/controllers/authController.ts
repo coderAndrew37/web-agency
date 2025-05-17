@@ -50,7 +50,7 @@ const sendSuccess = (res: Response, data: object, statusCode = 200) => {
 };
 
 // Register new user
-export const register = async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response) => {
   try {
     const { error } = validateUser(req.body);
     if (error) {
@@ -101,7 +101,7 @@ export const register = async (req: Request, res: Response) => {
 };
 
 // Verify user email with OTP
-export const verify = async (req: Request, res: Response) => {
+export const verifyUserOtp = async (req: Request, res: Response) => {
   try {
     const { email, code } = req.body;
     if (!email || !code) {
@@ -174,7 +174,7 @@ export const verify = async (req: Request, res: Response) => {
 };
 
 // authController.ts
-export const login = async (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email }).select("+password");
