@@ -5,6 +5,7 @@ import FAQ from "../components/FAQ";
 import { websiteTypes } from "../data/websitesData";
 import colors from "../styles/colors";
 import { calendlyUrl } from "../config/constants";
+import { testimonials } from "../data/testimonials";
 
 export default function WebsiteTypeDetail() {
   const { slug } = useParams();
@@ -18,7 +19,7 @@ export default function WebsiteTypeDetail() {
     <main className="bg-white">
       {/* Hero Section */}
       <section
-        className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-6 py-20"
+        className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-6 py-20 mt-12 md:mt-0"
         style={{ backgroundColor: colors.background, color: colors.darkText }}
       >
         <div className="space-y-6">
@@ -29,7 +30,7 @@ export default function WebsiteTypeDetail() {
           <button
             className="px-6 py-3 font-bold text-lg rounded-full shadow-md hover:opacity-80 transition"
             style={{ backgroundColor: colors.primary, color: "#fff" }}
-            onClick={() => (window.location.href = calendlyUrl)}
+            onClick={() => window.open(calendlyUrl, "_blank")}
           >
             Get Started Now
           </button>
@@ -41,6 +42,16 @@ export default function WebsiteTypeDetail() {
         />
       </section>
 
+      {/* Description Section */}
+      <section className="px-6 py-12 max-w-4xl mx-auto text-center">
+        <h2 className="text-2xl font-semibold mb-4">
+          Why This Website Type Matters
+        </h2>
+        <p className="text-lg text-gray-700 leading-relaxed">
+          {website.shortDescription}
+        </p>
+      </section>
+
       {/* Feature Highlights */}
       <CardGrid
         title="What You Get"
@@ -49,6 +60,26 @@ export default function WebsiteTypeDetail() {
           icon: <span className="text-3xl">{feature.icon}</span>,
         }))}
       />
+
+      {/* Social Proof Section */}
+      <section className="bg-gray-50 py-12">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-2xl font-semibold mb-10">What Our Clients Say</h2>
+          <div className="grid gap-8 md:grid-cols-2">
+            {testimonials.slice(0, 4).map((t) => (
+              <blockquote
+                key={t.name}
+                className="bg-white shadow p-6 rounded-lg"
+              >
+                <p className="text-lg italic">“{t.text}”</p>
+                <p className="mt-4 font-medium text-primary">
+                  — {t.name}, {t.role}
+                </p>
+              </blockquote>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Use Cases */}
       <CardGrid
@@ -80,6 +111,14 @@ export default function WebsiteTypeDetail() {
 
       {/* FAQs */}
       <FAQ faqs={website.faqs} />
+
+      {/* Sticky CTA */}
+      <div
+        className="fixed bottom-4 right-4 bg-primary text-white px-5 py-3 rounded-full shadow-lg z-50 hover:opacity-90 cursor-pointer"
+        onClick={() => window.open(calendlyUrl, "_blank")}
+      >
+        Book a Free Strategy Call →
+      </div>
     </main>
   );
 }

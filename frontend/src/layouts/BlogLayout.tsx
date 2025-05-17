@@ -1,5 +1,3 @@
-// src/layouts/BlogLayout.tsx
-
 import DOMPurify from "dompurify";
 
 interface BlogLayoutProps {
@@ -13,7 +11,7 @@ const BlogLayout = ({ title, excerpt, image, content }: BlogLayoutProps) => {
   return (
     <article className="max-w-6xl mx-auto px-4 py-16">
       <header className="text-center mb-16">
-        <h1 className="text-5xl font-bold mb-4 leading-tight md:text-6xl md:leading-snug sm:text-5xl sm:leading-snug text-gray-900">
+        <h1 className="text-5xl font-bold mt-12 md:mt-20 mb-4 leading-tight md:text-6xl md:leading-snug sm:text-5xl sm:leading-snug text-gray-900">
           {title}
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">{excerpt}</p>

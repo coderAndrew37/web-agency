@@ -51,6 +51,9 @@ export const websiteTypes = [
         answer: "Yes, it's built to be easily editable.",
       },
     ],
+
+    shortDescription:
+      "A business website acts as your 24/7 digital storefront. It builds credibility, showcases your services, and helps potential customers find and contact you easily. Ideal for small businesses, consultants, and growing startups looking to establish a professional online presence.",
   },
   {
     slug: "ecommerce-store",
@@ -99,6 +102,8 @@ export const websiteTypes = [
         answer: "Yes, the site comes with a user-friendly admin panel.",
       },
     ],
+    shortDescription:
+      "An e-commerce store lets you sell products online with a smooth shopping experience, secure payments, and full control over your inventory. Perfect for boutiques, wholesalers, or entrepreneurs looking to reach customers beyond physical locations and grow revenue online.",
   },
   {
     slug: "portfolio-website",
@@ -147,6 +152,8 @@ export const websiteTypes = [
         answer: "Absolutely! All our sites are responsive.",
       },
     ],
+    shortDescription:
+      "A portfolio website is your personal stage — show off your best work, tell your story, and attract new clients or job offers. Ideal for freelancers, designers, photographers, and creatives who want to stand out and make a strong impression online.",
   },
   {
     slug: "booking-website",
@@ -195,6 +202,8 @@ export const websiteTypes = [
         answer: "Yes, via email or SMS integrations.",
       },
     ],
+    shortDescription:
+      "A booking website allows clients to schedule appointments directly, reducing no-shows and streamlining your calendar. Ideal for spas, salons, doctors, and tutors who want to simplify scheduling and improve client experience.",
   },
   //adding charity website
   {
@@ -248,6 +257,8 @@ export const websiteTypes = [
         answer: "Absolutely! User-friendly CMS included.",
       },
     ],
+    shortDescription:
+      "A charity website helps you raise awareness and funds for your cause. With features like secure donations, event management, and impact stories, it’s perfect for NGOs, nonprofits, and community groups looking to connect with supporters and drive change.",
   },
   //adding a landing page website
   {
@@ -316,6 +327,8 @@ export const websiteTypes = [
         answer: "Absolutely! All our sites are responsive.",
       },
     ],
+    shortDescription:
+      "A landing page website is designed to convert visitors into leads or customers. With a focused message, clear call-to-action, and optimized layout, it’s perfect for product launches, event promotions, or any campaign where you want to drive specific actions.",
   },
   //adding a blog website
   {
@@ -374,6 +387,8 @@ export const websiteTypes = [
         answer: "Absolutely! User-friendly CMS included.",
       },
     ],
+    shortDescription:
+      "A blog website allows you to share your thoughts, experiences, and expertise with the world. With features like content management, comment systems, and social media integration, it’s perfect for personal bloggers, travel enthusiasts, or anyone looking to connect with an audience through writing.",
   },
 
   //adding a single page  website
@@ -429,5 +444,21 @@ export const websiteTypes = [
         icon: "🚀",
       },
     ],
+    faqs: [
+      {
+        question: "How long does it take to build?",
+        answer: "Usually 3-5 days depending on content readiness.",
+      },
+      {
+        question: "Can I add more sections later?",
+        answer: "Yes, it's built to be easily editable.",
+      },
+      {
+        question: "Is it mobile-friendly?",
+        answer: "Absolutely! All our sites are responsive.",
+      },
+    ],
+    shortDescription:
+      "A single-page website is a streamlined, focused online presence that provides all essential information on one page. Ideal for personal portfolios, event promotions, or any campaign where you want to drive specific actions without overwhelming visitors with too much content.",
   },
 ];
