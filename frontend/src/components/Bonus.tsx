@@ -1,4 +1,3 @@
-// file: src/components/Bonus.tsx
 import { Gift, Star, Rocket } from "lucide-react";
 import CardGrid from "./CardGrid";
 
@@ -33,8 +32,6 @@ const Bonus = ({
   title = "🔥 Bonuses Included!",
   subtitle,
   items = defaultBonuses,
-}: BonusProps) => (
-  <CardGrid title={title} subtitle={subtitle} items={items} variant="dark" />
-);
+}: BonusProps) => <CardGrid title={title} subtitle={subtitle} items={items} />;
 
 export default Bonus;

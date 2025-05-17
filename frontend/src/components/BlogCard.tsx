@@ -21,7 +21,6 @@ const BlogCardGrid = ({
   title = "Knowledge is Power! Learn something new today",
   subtitle,
   posts,
-  variant = "soft",
   filterType,
 }: BlogCardGridProps) => {
   const filteredPosts = filterType
@@ -51,14 +50,7 @@ const BlogCardGrid = ({
     ),
   }));
 
-  return (
-    <CardGrid
-      title={title!}
-      subtitle={subtitle}
-      items={items}
-      variant={variant}
-    />
-  );
+  return <CardGrid title={title!} subtitle={subtitle} items={items} />;
 };
 
 export default BlogCardGrid;
