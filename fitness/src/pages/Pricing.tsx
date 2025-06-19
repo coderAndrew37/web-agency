@@ -51,8 +51,8 @@ const Pricing: React.FC = () => {
 
       <CallToAction
         title="Ready to Get Started?"
-        description="Choose the plan that's right for your coaching business"
-        primaryButton={{ text: "View Plans", link: "#pricing" }}
+        description="You've made it this far. We'd love to chat about which plan is best for you. Contact us to get started."
+        primaryButton={{ text: "Get Started", link: "/contact" }}
       />
     </div>
   );

@@ -70,6 +70,12 @@ const Navbar = () => {
                   >
                     How It Works
                   </Link>
+                  <Link
+                    to="/services"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Services
+                  </Link>
                 </div>
               )}
             </div>

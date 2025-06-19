@@ -1,4 +1,3 @@
-// src/components/Steps.tsx
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -16,10 +15,13 @@ interface StepProps {
 
 const fadeInVariant = {
   hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
+  visible: () => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.15, duration: 0.5, ease: "easeOut" },
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
+    },
   }),
 };
 
