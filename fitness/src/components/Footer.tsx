@@ -88,8 +88,16 @@ const Footer = () => {
             <h4 className="text-lg font-semibold">Company</h4>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link to="/about" className="text-gray-400 hover:text-white">
-                  About Us
+                <Link to="/why-us" className="text-gray-400 hover:text-white">
+                  Why Choose Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/how-it-works"
+                  className="text-gray-400 hover:text-white"
+                >
+                  How we Work
                 </Link>
               </li>
               <li>
@@ -101,8 +109,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="text-gray-400 hover:text-white">
-                  Blog
+                <Link
+                  to="/blog-posts"
+                  className="text-gray-400 hover:text-white"
+                >
+                  Blogs
                 </Link>
               </li>
               <li>
@@ -117,18 +128,19 @@ const Footer = () => {
             <h4 className="text-lg font-semibold">Legal</h4>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link to="/privacy" className="text-gray-400 hover:text-white">
+                <Link
+                  to="/privacy-policy"
+                  className="text-gray-400 hover:text-white"
+                >
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="text-gray-400 hover:text-white">
+                <Link
+                  to="/terms-and-conditions"
+                  className="text-gray-400 hover:text-white"
+                >
                   Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link to="/cookies" className="text-gray-400 hover:text-white">
-                  Cookie Policy
                 </Link>
               </li>
             </ul>

@@ -1,51 +1,30 @@
+import { BrowserRouter as Router } from "react-router-dom";
+import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Contact from "./pages/Contact";
-import Footer from "./components/Footer";
-import Hero from "./components/Hero";
+import ScrollToTop from "./components/ScrollToTop";
 import Navbar from "./components/Navbar";
-import Services from "./components/Services";
-import Testimonials from "./components/Testimonials";
-import FeaturesGrid from "./components/WebsitesFeatures";
-import { testimonials } from "./data/testimonials";
-import NotFound from "./pages/404";
-import CaseStudies from "./pages/CaseStudies";
-import FreeResources from "./pages/FreeResources";
-import HowItWorks from "./pages/HowItWorks";
-import Pricing from "./pages/Pricing";
-import WhyUs from "./pages/WhyUs";
-import PricingSection from "./components/PricingSection";
+import Footer from "./components/Footer";
+import AppRoutes from "./routes/AppRoutes";
+
+const DumbbellLoader = () => (
+  <div className="flex items-center justify-center min-h-screen bg-white">
+    <div className="animate-bounce text-blue-600 text-4xl font-bold flex items-center space-x-2">
+      <span className="inline-block w-6 h-6 bg-blue-600 rounded-full animate-pulse"></span>
+      <span className="inline-block w-10 h-2 bg-blue-600 rounded-sm"></span>
+      <span className="inline-block w-6 h-6 bg-blue-600 rounded-full animate-pulse"></span>
+    </div>
+  </div>
+);
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Hero />
-                <Services />
-                <FeaturesGrid />
-                <Testimonials
-                  testimonials={testimonials}
-                  title="What Our Clients Say"
-                  subtitle="Testimonials"
-                />
-                <PricingSection />
-              </>
-            }
-          />
-          <Route path="/free-resources" element={<FreeResources />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="why-us" element={<WhyUs />} />
-          <Route path="how-it-works" element={<HowItWorks />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<DumbbellLoader />}>
+          <AppRoutes />
+        </Suspense>
         <Footer />
         <Toaster position="top-right" />
       </div>

@@ -1,5 +1,6 @@
 import { MailIcon, PhoneIcon } from "lucide-react";
 import React from "react";
+import customImage from "../assets/custom-image.webp";
 
 const CustomPricing: React.FC = () => {
   return (
@@ -16,7 +17,16 @@ const CustomPricing: React.FC = () => {
               custom solution tailored specifically for your coaching business.
             </p>
 
-            <div className="mt-8 space-y-4">
+            <div className="mt-6 mb-8">
+              <img
+                src={customImage}
+                alt="Custom pricing illustration"
+                className="w-full max-w-md rounded-lg shadow-md"
+              />
+            </div>
+
+            <div className="space-y-4">
+              {/* Email */}
               <div className="flex items-start">
                 <div className="flex-shrink-0">
                   <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-600 text-white">
@@ -38,6 +48,7 @@ const CustomPricing: React.FC = () => {
                 </div>
               </div>
 
+              {/* Phone */}
               <div className="flex items-start">
                 <div className="flex-shrink-0">
                   <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-600 text-white">
@@ -59,6 +70,7 @@ const CustomPricing: React.FC = () => {
             </div>
           </div>
 
+          {/* Form */}
           <div className="mt-10 lg:mt-0">
             <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden">
               <div className="px-6 py-8 sm:p-10">
@@ -71,6 +83,7 @@ const CustomPricing: React.FC = () => {
                 </p>
 
                 <form className="mt-6 space-y-6">
+                  {/* Inputs */}
                   <div>
                     <label
                       htmlFor="name"
@@ -83,7 +96,7 @@ const CustomPricing: React.FC = () => {
                       name="name"
                       id="name"
                       autoComplete="name"
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 sm:text-sm"
                     />
                   </div>
 
@@ -99,7 +112,7 @@ const CustomPricing: React.FC = () => {
                       name="email"
                       id="email"
                       autoComplete="email"
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 sm:text-sm"
                     />
                   </div>
 
@@ -115,7 +128,7 @@ const CustomPricing: React.FC = () => {
                       name="phone"
                       id="phone"
                       autoComplete="tel"
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 sm:text-sm"
                     />
                   </div>
 
@@ -130,15 +143,15 @@ const CustomPricing: React.FC = () => {
                       id="requirements"
                       name="requirements"
                       rows={4}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       placeholder="Tell us about your coaching business and what you need..."
-                    ></textarea>
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 sm:text-sm"
+                    />
                   </div>
 
                   <div>
                     <button
                       type="submit"
-                      className="w-full flex justify-center py-3 px-6 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      className="w-full flex justify-center py-3 px-6 rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:opacity-90"
                     >
                       Request Custom Quote
                     </button>

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import HeroImage from "../assets/hero.jpg";
 
 const Hero = () => {
   return (
@@ -43,9 +44,11 @@ const Hero = () => {
         </div>
       </div>
       <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-        <div className="h-56 w-full bg-gray-200 rounded-lg sm:h-72 md:h-96 lg:w-full lg:h-full overflow-hidden">
-          <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full" />
-        </div>
+        <img
+          src={HeroImage}
+          alt="Hero Image"
+          className="h-56 w-full object-cover rounded-lg sm:h-72 md:h-96 lg:w-full lg:h-full"
+        />
       </div>
     </div>
   );

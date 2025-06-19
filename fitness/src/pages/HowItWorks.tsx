@@ -8,6 +8,7 @@ import {
   CodeIcon,
   RefreshCwIcon,
   RocketIcon,
+  CreditCardIcon,
 } from "lucide-react";
 
 const HowItWorks = () => {
@@ -80,6 +81,40 @@ const HowItWorks = () => {
         title="From Concept to Launch in 5 Simple Steps"
         bgColor="bg-gray-50"
       />
+
+      <section className="bg-white py-16">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
+            Payment Milestones
+          </h2>
+          <p className="mt-6 text-lg text-gray-700">
+            To make our projects affordable and low-risk, we break payments into
+            clear phases:
+          </p>
+
+          <ul className="mt-8 space-y-6 text-left">
+            <li className="flex items-start">
+              <CreditCardIcon className="text-blue-600 w-6 h-6 mt-1 flex-shrink-0" />
+              <span className="ml-3 text-gray-700 text-lg">
+                <strong>40%</strong> – After Discovery Call and Project
+                Confirmation
+              </span>
+            </li>
+            <li className="flex items-start">
+              <CreditCardIcon className="text-blue-600 w-6 h-6 mt-1 flex-shrink-0" />
+              <span className="ml-3 text-gray-700 text-lg">
+                <strong>30%</strong> – After Design Presentation and Revisions
+              </span>
+            </li>
+            <li className="flex items-start">
+              <CreditCardIcon className="text-blue-600 w-6 h-6 mt-1 flex-shrink-0" />
+              <span className="ml-3 text-gray-700 text-lg">
+                <strong>30%</strong> – Just Before Launch and Handover
+              </span>
+            </li>
+          </ul>
+        </div>
+      </section>
 
       <FAQ
         faqs={faqs}

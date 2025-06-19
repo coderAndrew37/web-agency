@@ -1,4 +1,6 @@
+// src/components/Steps.tsx
 import React from "react";
+import { motion } from "framer-motion";
 
 interface Step {
   title: string;
@@ -11,6 +13,15 @@ interface StepProps {
   title: string;
   bgColor?: string;
 }
+
+const fadeInVariant = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.15, duration: 0.5, ease: "easeOut" },
+  }),
+};
 
 const Steps: React.FC<StepProps> = ({ steps, title, bgColor = "bg-white" }) => {
   return (
@@ -31,11 +42,16 @@ const Steps: React.FC<StepProps> = ({ steps, title, bgColor = "bg-white" }) => {
                 const IconComponent = step.icon;
 
                 return (
-                  <div
+                  <motion.div
                     key={index}
                     className={`relative ${
                       index % 2 === 0 ? "md:text-right md:pr-12" : "md:pl-12"
                     }`}
+                    custom={index}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.3 }}
+                    variants={fadeInVariant}
                   >
                     <div className="flex items-center md:block">
                       <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
@@ -58,7 +74,7 @@ const Steps: React.FC<StepProps> = ({ steps, title, bgColor = "bg-white" }) => {
                         <p className="mt-2 text-gray-600">{step.description}</p>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
