@@ -1,6 +1,6 @@
 import { Toaster } from "react-hot-toast";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import ContactForm from "./components/ContactForm";
+import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
@@ -14,6 +14,7 @@ import FreeResources from "./pages/FreeResources";
 import HowItWorks from "./pages/HowItWorks";
 import Pricing from "./pages/Pricing";
 import WhyUs from "./pages/WhyUs";
+import PricingSection from "./components/PricingSection";
 
 function App() {
   return (
@@ -28,18 +29,18 @@ function App() {
                 <Hero />
                 <Services />
                 <FeaturesGrid />
-                <Pricing />
                 <Testimonials
                   testimonials={testimonials}
                   title="What Our Clients Say"
                   subtitle="Testimonials"
                 />
+                <PricingSection />
               </>
             }
           />
           <Route path="/free-resources" element={<FreeResources />} />
           <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/contact" element={<ContactForm />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="why-us" element={<WhyUs />} />
           <Route path="how-it-works" element={<HowItWorks />} />

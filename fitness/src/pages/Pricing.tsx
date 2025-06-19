@@ -4,6 +4,7 @@ import PageHero from "../components/PageHero";
 import Features from "../components/Features";
 import CallToAction from "../components/CTA";
 import CustomPricing from "../components/CustomPricing";
+import PricingSection from "../components/PricingSection";
 
 const Pricing: React.FC = () => {
   const pricingFeatures = [
@@ -35,11 +36,10 @@ const Pricing: React.FC = () => {
         title="Simple, Transparent Pricing"
         subtitle="Pricing"
         primaryButton={{ text: "Get Started", link: "/contact" }}
-        image="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=1024&h=1024&q=80"
         description="No hidden fees. Everything you need to build your fitness coaching business online."
       />
 
-      <Pricing />
+      <PricingSection />
 
       <Features
         features={pricingFeatures}
