@@ -1,30 +1,16 @@
-import {
-  ClipboardIcon,
-  CodeIcon,
-  PhoneIcon,
-  RefreshCwIcon,
-  RocketIcon,
-} from "lucide-react";
+import React from "react";
+
+interface Step {
+  title: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
 
 interface StepProps {
   steps: Step[];
   title: string;
   bgColor?: string;
 }
-
-interface Step {
-  title: string;
-  description: string;
-  icon: keyof typeof icons;
-}
-
-const icons = {
-  PhoneIcon,
-  ClipboardIcon,
-  CodeIcon,
-  RefreshCwIcon,
-  RocketIcon,
-};
 
 const Steps: React.FC<StepProps> = ({ steps, title, bgColor = "bg-white" }) => {
   return (
@@ -38,12 +24,12 @@ const Steps: React.FC<StepProps> = ({ steps, title, bgColor = "bg-white" }) => {
 
         <div className="mt-16">
           <div className="relative">
-            {/* Vertical line */}
             <div className="hidden md:block absolute h-full w-0.5 bg-blue-200 left-1/2 transform -translate-x-1/2"></div>
 
             <div className="space-y-12 md:grid md:grid-cols-2 md:gap-x-8 md:space-y-0">
               {steps.map((step, index) => {
-                const IconComponent = icons[step.icon];
+                const IconComponent = step.icon;
+
                 return (
                   <div
                     key={index}
@@ -52,7 +38,6 @@ const Steps: React.FC<StepProps> = ({ steps, title, bgColor = "bg-white" }) => {
                     }`}
                   >
                     <div className="flex items-center md:block">
-                      {/* Number */}
                       <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
                         {index + 1}
                       </div>

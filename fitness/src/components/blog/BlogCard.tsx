@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { type BlogCard } from "../../types/blog";
+import { type BlogPost } from "../../types/blog";
 import { ClockIcon } from "lucide-react";
 
 interface BlogCardProps {
-  post: BlogCard;
+  post: BlogPost;
 }
 
 const BlogCard: React.FC<BlogCardProps> = ({ post }) => {

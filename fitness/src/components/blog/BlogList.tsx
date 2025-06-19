@@ -1,9 +1,9 @@
 import React from "react";
-import type BlogCard from "./BlogCard";
-import { type BlogCard as BlogCardType } from "../../types/blog";
+import { type BlogPost } from "../../types/blog";
+import BlogCard from "./BlogCard";
 
 interface BlogListProps {
-  posts: BlogCardType[];
+  posts: BlogPost[];
 }
 
 const BlogList: React.FC<BlogListProps> = ({ posts }) => {

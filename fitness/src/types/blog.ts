@@ -13,5 +13,3 @@ export type BlogPost = {
   tags: string[];
   readTime: number;
 };
-
-export type BlogCard = Omit<BlogPost, "content">;

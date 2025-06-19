@@ -1,40 +1,27 @@
-const testimonials = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    role: "Personal Trainer",
-    content:
-      "Since launching my new website, I've doubled my client base. The booking system is so easy for clients to use, and I love the progress tracking features.",
-    avatar: null,
-  },
-  {
-    id: 2,
-    name: "Michael Brown",
-    role: "Yoga Instructor",
-    content:
-      "The website SleekSites built for me perfectly captures my teaching style. I've received so many compliments from clients about how professional it looks.",
-    avatar: null,
-  },
-  {
-    id: 3,
-    name: "Emily Davis",
-    role: "Nutrition Coach",
-    content:
-      "My new website has helped me establish my brand as a serious professional. The investment has already paid for itself with just two new clients!",
-    avatar: null,
-  },
-];
+type Testimonial = {
+  id: number;
+  name: string;
+  role: string;
+  content: string;
+  avatar?: string | null;
+};
 
-const Testimonials = () => {
+type TestimonialsProps = {
+  testimonials: Testimonial[];
+  title: string;
+  subtitle: string;
+};
+
+const Testimonials = ({ testimonials, title, subtitle }: TestimonialsProps) => {
   return (
     <div className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-base font-semibold text-blue-600 tracking-wide uppercase">
-            Testimonials
+            {subtitle}
           </h2>
           <p className="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            What Our Clients Say
+            {title}
           </p>
         </div>
 

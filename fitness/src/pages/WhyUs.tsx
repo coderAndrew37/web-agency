@@ -2,6 +2,13 @@ import PageHero from "../components/PageHero";
 import Features from "../components/Features";
 import Testimonials from "../components/Testimonials";
 import CallToAction from "../components/CTA";
+import { testimonials } from "../data/testimonials";
+import {
+  ChartBarIcon,
+  HeartIcon,
+  MessageCircleIcon,
+  UsersIcon,
+} from "lucide-react";
 
 const WhyUs = () => {
   const whyUsFeatures = [
@@ -9,46 +16,25 @@ const WhyUs = () => {
       name: "Industry Expertise",
       description:
         "We specialize exclusively in websites for fitness professionals, understanding your unique needs better than generic agencies.",
-      icon: "UsersIcon",
+      icon: UsersIcon,
     },
     {
       name: "Client-First Approach",
       description:
         "Your success is our priority. We work closely with you to ensure your website perfectly represents your brand.",
-      icon: "HeartIcon",
+      icon: HeartIcon,
     },
     {
       name: "Results-Driven Design",
       description:
         "We don't just build pretty websites - we create conversion-focused experiences that attract and retain clients.",
-      icon: "ChartBarIcon",
+      icon: ChartBarIcon,
     },
     {
       name: "Ongoing Support",
       description:
         "Get lifetime support and updates to keep your website running smoothly as your business grows.",
-      icon: "SupportIcon",
-    },
-  ];
-
-  const testimonials = [
-    {
-      quote:
-        "My new website has tripled my client inquiries! The team understood exactly what I needed as a fitness coach.",
-      author: "Sarah Johnson",
-      role: "Personal Trainer",
-    },
-    {
-      quote:
-        "The booking system integration has saved me 10+ hours weekly. My clients love the seamless experience.",
-      author: "Mike Thompson",
-      role: "Strength & Conditioning Coach",
-    },
-    {
-      quote:
-        "Working with them felt like having an extension of my own team. They captured my brand perfectly.",
-      author: "Jessica Williams",
-      role: "Yoga Instructor",
+      icon: MessageCircleIcon,
     },
   ];
 

@@ -2,7 +2,13 @@ import PageHero from "../components/PageHero";
 import Steps from "../components/Steps";
 import FAQ from "../components/FAQ";
 import CallToAction from "../components/CTA";
-import type { icons } from "lucide-react";
+import {
+  PhoneIcon,
+  ClipboardIcon,
+  CodeIcon,
+  RefreshCwIcon,
+  RocketIcon,
+} from "lucide-react";
 
 const HowItWorks = () => {
   const steps = [
@@ -10,31 +16,31 @@ const HowItWorks = () => {
       title: "Discovery Call",
       description:
         "We start with a 30-minute consultation to understand your coaching business and goals.",
-      icon: "PhoneIcon",
+      icon: PhoneIcon,
     },
     {
       title: "Strategy & Planning",
       description:
         "Our team creates a customized website plan tailored to your specific needs.",
-      icon: "ClipboardIcon",
+      icon: ClipboardIcon,
     },
     {
       title: "Design & Development",
       description:
         "We build your website with your branding and client experience at the forefront.",
-      icon: "CodeIcon",
+      icon: CodeIcon,
     },
     {
       title: "Review & Refine",
       description:
         "You provide feedback and we make revisions until it's perfect.",
-      icon: "RefreshIcon",
+      icon: RefreshCwIcon,
     },
     {
       title: "Launch & Training",
       description:
         "We launch your site and train you on managing your content.",
-      icon: "RocketIcon",
+      icon: RocketIcon,
     },
   ];
 
@@ -70,10 +76,7 @@ const HowItWorks = () => {
       />
 
       <Steps
-        steps={steps.map((step) => ({
-          ...step,
-          icon: icons[step.icon as keyof typeof icons],
-        }))}
+        steps={steps}
         title="From Concept to Launch in 5 Simple Steps"
         bgColor="bg-gray-50"
       />

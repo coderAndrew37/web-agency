@@ -12,6 +12,7 @@ interface FeaturesProps {
   subtitle?: string;
   description?: string;
   bgColor?: string;
+  id?: string;
 }
 
 const Features: React.FC<FeaturesProps> = ({
