@@ -1,31 +1,6 @@
 import { Link } from "react-router-dom";
 
-const caseStudies = [
-  {
-    id: 1,
-    title: "How a Personal Trainer Doubled Client Base in 3 Months",
-    description:
-      "Discover how Sarah Johnson transformed her fitness business with a professional website and online booking system.",
-    category: "Personal Training",
-    imageUrl: null,
-  },
-  {
-    id: 2,
-    title: "From Studio to Online: A Yoga Instructor's Journey",
-    description:
-      "Learn how Michael Brown expanded his reach beyond his local studio with a beautiful website and virtual classes.",
-    category: "Yoga",
-    imageUrl: null,
-  },
-  {
-    id: 3,
-    title: "Building a Nutrition Coaching Empire Online",
-    description:
-      "See how Emily Davis scaled her one-on-one coaching to group programs with a membership website.",
-    category: "Nutrition",
-    imageUrl: null,
-  },
-];
+import { caseStudies } from "../data/caseStudies";
 
 const CaseStudies = () => {
   return (
@@ -44,7 +19,7 @@ const CaseStudies = () => {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {caseStudies.map((caseStudy) => (
             <div
-              key={caseStudy.id}
+              key={caseStudy.slug}
               className="bg-white rounded-lg shadow overflow-hidden"
             >
               {caseStudy.imageUrl ? (
@@ -66,7 +41,7 @@ const CaseStudies = () => {
                 <p className="mt-4 text-gray-600">{caseStudy.description}</p>
                 <div className="mt-6">
                   <Link
-                    to={`/case-studies/${caseStudy.id}`}
+                    to={`/case-studies/${caseStudy.slug}`}
                     className="text-blue-600 font-medium hover:text-blue-800"
                   >
                     Read full case study →

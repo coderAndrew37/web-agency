@@ -29,6 +29,7 @@ const Sitemap = lazy(() => import("../pages/Sitemap"));
 const NotFound = lazy(() => import("../pages/404"));
 
 import AnimatedSection from "../components/AnimatedSection";
+import CaseStudyPage from "../pages/caseStudyPage";
 
 const AppRoutes = () => (
   <Routes>
@@ -83,6 +84,7 @@ const AppRoutes = () => (
     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
     <Route path="/accessibility" element={<Accessibility />} />
     <Route path="/services/:slug" element={<CoreServicePage />} />
+    <Route path="/case-studies/:slug" element={<CaseStudyPage />} />
 
     <Route path="/sitemap" element={<Sitemap />} />
     <Route path="*" element={<NotFound />} />
