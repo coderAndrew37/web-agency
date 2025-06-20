@@ -44,6 +44,8 @@ const ServiceOverview = () => {
               <Link
                 to={link}
                 className="text-blue-600 font-medium hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Visit →
               </Link>

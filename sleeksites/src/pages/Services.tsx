@@ -28,6 +28,7 @@ const Services = () => {
             <Link
               to="https://fitness.sleeksites.co.ke"
               className="text-blue-700 font-medium hover:underline"
+              target="_blank"
             >
               Explore Fitness Solutions →
             </Link>
@@ -46,6 +47,8 @@ const Services = () => {
             <Link
               to="https://ecom.sleeksites.co.ke"
               className="text-indigo-700 font-medium hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Explore Ecommerce Solutions →
             </Link>
@@ -59,6 +62,7 @@ const Services = () => {
           <Link
             to="/contact"
             className="inline-block bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-6 py-3 rounded-md text-lg font-medium hover:opacity-90 transition"
+            rel="noopener noreferrer"
           >
             Book a Free Consultation
           </Link>

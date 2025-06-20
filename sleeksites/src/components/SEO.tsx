@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { frontendUrl } from "../../config/constants";
+import { frontendUrl } from "../config/constants";
 
 interface SEOProps {
   title?: string;
@@ -28,6 +28,22 @@ const defaultMeta = {
     "content marketing",
     "lead generation",
     "online presence",
+    "website design",
+    "website development",
+    "website optimization",
+    "website maintenance",
+    "Fitness Coaching Websites",
+    "website development",
+    "website developer near me",
+    "web developer near me",
+    "web hosting",
+    "website hosting",
+    "website domain",
+    "web hosting services",
+    "domain hosting",
+    "best web hosting",
+    "website hosting services",
+    "web hosting near me",
   ],
 };
 
@@ -85,11 +101,18 @@ const SEO = ({ title, description, image, url }: SEOProps) => {
   const metaImage = image || defaultMeta.image;
   const metaUrl = url || defaultMeta.url;
 
+  const keywords = title
+    ? [...defaultMeta.keywords, title]
+    : defaultMeta.keywords;
+
   return (
     <Helmet htmlAttributes={{ lang: "en" }}>
       <title>{metaTitle}</title>
       <meta name="description" content={metaDesc} />
-      <meta name="keywords" content={metaKeywords.join(", ")} />
+      <meta
+        name="keywords"
+        content={(keywords || defaultMeta.keywords).join(", ")}
+      />
       <link rel="canonical" href={metaUrl} />
 
       {/* Open Graph */}

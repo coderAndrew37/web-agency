@@ -1,4 +1,5 @@
 import { CheckCircleIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const benefits = [
   {
@@ -25,19 +26,22 @@ const benefits = [
 
 const portfolioItems = [
   {
+    title: "Jm Home Furniture",
+    category: "Ecommerce",
+    imageUrl: "/images/ecom-site-preview.jpg",
+    liveLink: "https://jmhomefurniture.co.ke",
+  },
+  {
+    title: "Interiors By Tifi ",
+    category: "Ecommerce",
+    imageUrl: "/images/interiorsbytifi.jpg",
+    liveLink: "https://interiorsbytifi.co.ke",
+  },
+  {
     title: "StrongFit Coaching",
     category: "Fitness",
     imageUrl: "/images/fitness-site-preview.jpg",
-  },
-  {
-    title: "GlowSkincare Store",
-    category: "Ecommerce",
-    imageUrl: "/images/ecom-site-preview.jpg",
-  },
-  {
-    title: "CoreFuel Nutrition",
-    category: "Fitness",
-    imageUrl: "/images/nutrition-site-preview.jpg",
+    liveLink: "https://fitness.sleeksites.co.ke",
   },
 ];
 
@@ -54,18 +58,22 @@ const GeneralHero = () => {
             attract more customers, and scale with confidence.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="https://fitness.sleeksites.co.ke"
+            <Link
+              to="https://fitness.sleeksites.co.ke"
               className="bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:opacity-90"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Explore Fitness Solutions
-            </a>
-            <a
-              href="https://ecom.sleeksites.co.ke"
+            </Link>
+            <Link
+              to="https://ecom.sleeksites.co.ke"
               className="bg-white border border-blue-600 text-blue-600 px-6 py-3 rounded-md font-medium hover:bg-blue-50"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Explore Ecommerce Solutions
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -119,6 +127,14 @@ const GeneralHero = () => {
                   <h3 className="text-lg font-bold text-gray-900">
                     {item.title}
                   </h3>
+                  <Link
+                    to={item.liveLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    View Live
+                  </Link>
                 </div>
               </div>
             ))}
