@@ -1,0 +1,62 @@
+type Testimonial = {
+  id: number;
+  name: string;
+  role: string;
+  content: string;
+  avatar?: string | null;
+};
+
+type TestimonialsProps = {
+  testimonials: Testimonial[];
+  title: string;
+  subtitle: string;
+};
+
+const Testimonials = ({ testimonials, title, subtitle }: TestimonialsProps) => {
+  return (
+    <div className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="text-base font-semibold text-blue-600 tracking-wide uppercase">
+            {subtitle}
+          </h2>
+          <p className="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            {title}
+          </p>
+        </div>
+
+        <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
+          {testimonials.map((testimonial) => (
+            <div
+              key={testimonial.id}
+              className="bg-white p-8 rounded-xl shadow-md"
+            >
+              <div className="flex items-center">
+                {testimonial.avatar ? (
+                  <img
+                    className="h-12 w-12 rounded-full"
+                    src={testimonial.avatar}
+                    alt={testimonial.name}
+                  />
+                ) : (
+                  <div className="bg-gray-200 border-2 border-dashed rounded-full w-12 h-12" />
+                )}
+                <div className="ml-4">
+                  <div className="text-lg font-medium text-gray-900">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-blue-600">{testimonial.role}</div>
+                </div>
+              </div>
+              <div className="mt-6">
+                <p className="text-gray-600 italic">"{testimonial.content}"</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Testimonials;
