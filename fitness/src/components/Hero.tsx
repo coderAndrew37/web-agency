@@ -16,9 +16,10 @@ const Hero = () => {
                   </span>
                 </h1>
                 <p className="mt-3 text-base text-gray-600 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                  Build your online presence, attract more clients, and grow
-                  your fitness business with a custom website designed
-                  specifically for coaches.
+                  Helping you attract
+                  <span className="block text-blue-600 mt-2">More Clients</span>
+                  and expand your fitness business with a website tailored to
+                  your unique needs.
                 </p>
                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                   <div className="rounded-md shadow">
