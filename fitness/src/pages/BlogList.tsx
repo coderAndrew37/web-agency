@@ -2,6 +2,7 @@ import React from "react";
 import PageHero from "../components/PageHero";
 import BlogList from "../components/blog/BlogList";
 import { blogPosts } from "../data/blogPosts";
+import BlogHero from "../assets/blog-hero.jpeg";
 
 const BlogListPage: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const BlogListPage: React.FC = () => {
         subtitle="Blog"
         description="Discover the latest tips, strategies, and industry insights to grow your fitness coaching business."
         primaryButton={{ text: "Get Started", link: "/contact" }}
+        image={BlogHero}
       />
 
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">

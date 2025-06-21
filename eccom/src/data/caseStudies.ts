@@ -1,63 +1,72 @@
-import personalTrainer from "../assets/personal-trainer.jpeg";
-import yogaTrainer from "../assets/yoga-trainer.jpeg";
-import nutritionFitness from "../assets/nutritional-fitness.jpeg";
+// import fashionStore from "../assets/fashion-store.jpeg";
+// import beautyBrand from "../assets/beauty-brand.jpeg";
+// import foodShop from "../assets/food-shop.jpeg";
 
-export const caseStudies = [
+export const caseStudies: CaseStudy[] = [
   {
-    slug: "personal-trainer-expansion",
-    title: "How a Personal Trainer Doubled Client Base in 3 Months",
+    slug: "fashion-store-scaleup",
+    title: "How a Fashion Store Boosted Sales by 300%",
     description:
-      "Discover how Sarah Johnson transformed her fitness business with a professional website and online booking system.",
-    category: "Personal Training",
-    imageUrl: personalTrainer,
+      "See how Styles & Threads revamped their online store and increased conversions in just two months.",
+    category: "Fashion",
+    // imageUrl: fashionStore,
     content: `
       <p>
-        Sarah Johnson was a successful personal trainer with a loyal client base. However, she struggled to find new clients and her business was stagnant.
+        Styles & Threads was facing declining online sales due to a clunky website and outdated branding.
       </p>
       <p>
-        We worked with Sarah to create a professional website that showcased her services and expertise. We also integrated an online booking system, making it easy for potential clients to schedule sessions.
+        We redesigned their store with modern visuals, added an intuitive product filter, and integrated mobile payments.
       </p>
       <p>
-        In just three months, Sarah's client base doubled. She was able to increase her revenue by 50% and had a waiting list of clients.
+        Sales grew 3X, bounce rate dropped by 40%, and their email list doubled.
       </p>
     `,
   },
   {
-    slug: "yoga-instructor-journey",
-    title: "From Studio to Online: A Yoga Instructor's Journey",
+    slug: "beauty-brand-makeover",
+    title: "Building a Loyal Customer Base for a Beauty Brand",
     description:
-      "Learn how sara Brown expanded his reach beyond his local studio with a beautiful website and virtual classes.",
-    category: "Yoga",
-    imageUrl: yogaTrainer,
+      "Discover how GlowMe used our ecommerce platform to grow their subscriber base and streamline orders.",
+    category: "Beauty",
+    // imageUrl: beautyBrand,
     content: `
       <p>
-        Michael Brown was a successful yoga instructor with a loyal following at his local studio. However, he wanted to expand his reach and teach yoga to people all over the world.
+        GlowMe was a fast-growing skincare startup needing a polished online experience.
       </p>
       <p>
-        We worked with Michael to create a beautiful website that showcased his services and expertise. We also integrated a virtual class booking system, making it easy for students to sign up and participate in his classes from anywhere in the world.
+        We built a Shopify-powered store with subscription billing, upsell automations, and a customer dashboard.
       </p>
       <p>
-        In just six months, Michael's virtual class attendance increased by 500%. He was able to increase his revenue by 200% and had a loyal following of students from all over the world.
+        Within 90 days, revenue grew by 240%, and return customer rate reached 60%.
       </p>
     `,
   },
   {
-    slug: "nutrition-coaching-empire",
-    title: "Building a Nutrition Coaching Empire Online",
+    slug: "food-brand-delivery",
+    title: "Scaling Local Orders for a Food Business",
     description:
-      "See how Emily Davis scaled her one-on-one coaching to group programs with a membership website.",
-    category: "Nutrition",
-    imageUrl: nutritionFitness,
+      "Learn how TastyBites launched a full online store with delivery tracking and real-time inventory.",
+    category: "Food",
+    // imageUrl: foodShop,
     content: `
       <p>
-        Emily Davis was a successful nutrition coach with a loyal client base. However, she struggled to scale her business and was limited to one-on-one coaching.
+        TastyBites needed more than a menu — they needed full ecommerce functionality.
       </p>
       <p>
-        We worked with Emily to create a membership website that allowed her to offer group coaching programs. We also integrated an online course platform, making it easy for her to create and sell online courses.
+        We implemented local delivery zones, instant order confirmations, and mobile ordering.
       </p>
       <p>
-        In just nine months, Emily's business revenue increased by 500%. She was able to scale her business and help thousands of people achieve their health goals.
+        They now handle 300+ orders weekly with no missed deliveries or stock issues.
       </p>
     `,
   },
 ];
+
+export type CaseStudy = {
+  slug: string;
+  title: string;
+  description: string;
+  category: string;
+  imageUrl?: string;
+  content: string;
+};

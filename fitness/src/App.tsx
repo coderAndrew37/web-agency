@@ -5,6 +5,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AppRoutes from "./routes/AppRoutes";
+import WhatsAppCTA from "./components/WhatsapCta";
 
 const DumbbellLoader = () => (
   <div className="flex items-center justify-center min-h-screen bg-white">
@@ -25,6 +26,7 @@ function App() {
         <Suspense fallback={<DumbbellLoader />}>
           <AppRoutes />
         </Suspense>
+        <WhatsAppCTA />
         <Footer />
         <Toaster position="top-right" />
       </div>

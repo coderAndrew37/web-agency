@@ -7,6 +7,7 @@ import Services from "./pages/Services";
 import Footer from "./components/Footer";
 import FAQ from "./components/FAQ";
 import { defaultFaqs } from "./data/DefaultFaqs";
+import WhatsAppCTA from "./components/WhtasapCta";
 
 const About = lazy(() => import("./pages/About"));
 const Home = lazy(() => import("./pages/Home"));
@@ -46,6 +47,7 @@ const App = () => {
           subtitle="Everything you might want to know"
           faqs={defaultFaqs}
         />
+        <WhatsAppCTA />
         <Footer />
       </Suspense>
     </Router>

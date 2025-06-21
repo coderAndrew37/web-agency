@@ -52,10 +52,10 @@ const WebsiteInAWeekPage = () => {
       </section>
 
       <section className="bg-indigo-50 py-16">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
-            <div className="lg:col-start-1">
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="lg:flex lg:gap-16 lg:items-center">
+            <div className="lg:flex-1">
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center lg:text-left">
                 What’s Included
               </h2>
               <ul className="mt-10 space-y-6">
@@ -67,7 +67,7 @@ const WebsiteInAWeekPage = () => {
                 ))}
               </ul>
             </div>
-            <div className="hidden lg:block lg:col-start-2">
+            <div className="lg:flex-1 lg:mt-0 mt-10">
               <img
                 src={FeatiresImage}
                 alt="Features illustration"

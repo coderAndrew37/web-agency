@@ -8,11 +8,11 @@ const CaseStudies = () => {
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Case Studies
+            Ecommerce Success Stories
           </h1>
           <p className="mt-4 max-w-2xl text-xl text-gray-600 mx-auto">
-            Real stories from fitness coaches who transformed their businesses
-            with our websites.
+            Real results from entrepreneurs who scaled their online stores with
+            us.
           </p>
         </div>
 
@@ -32,7 +32,7 @@ const CaseStudies = () => {
                 <div className="bg-gray-200 border-2 border-dashed rounded-t-lg w-full h-48" />
               )}
               <div className="p-6">
-                <div className="text-sm text-blue-600 font-semibold">
+                <div className="text-sm text-pink-600 font-semibold">
                   {caseStudy.category}
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mt-2">
@@ -42,7 +42,7 @@ const CaseStudies = () => {
                 <div className="mt-6">
                   <Link
                     to={`/case-studies/${caseStudy.slug}`}
-                    className="text-blue-600 font-medium hover:text-blue-800"
+                    className="text-pink-600 font-medium hover:text-pink-800"
                   >
                     Read full case study →
                   </Link>

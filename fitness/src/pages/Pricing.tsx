@@ -6,6 +6,8 @@ import CallToAction from "../components/CTA";
 import CustomPricing from "../components/CustomPricing";
 import PricingSection from "../components/PricingSection";
 
+import Pricinghero from "../assets/pricing-hero.jpeg";
+
 const Pricing: React.FC = () => {
   const pricingFeatures = [
     {
@@ -37,6 +39,7 @@ const Pricing: React.FC = () => {
         subtitle="Pricing"
         primaryButton={{ text: "Get Started", link: "/contact" }}
         description="No hidden fees. Everything you need to build your fitness coaching business online."
+        image={Pricinghero}
       />
 
       <PricingSection />

@@ -5,6 +5,9 @@ import Features from "../components/Features";
 import CallToAction from "../components/CTA";
 import CustomPricing from "../components/CustomPricing";
 import PricingSection from "../components/PricingSection";
+import Pricinghero from "../assets/pricing-hero.jpeg";
+import WebsiteInAWeek from "../components/WebsiteInAWeek";
+import ThisSoundFamiliar from "../components/ThisSoundsFamiliar";
 
 const Pricing: React.FC = () => {
   const pricingFeatures = [
@@ -37,6 +40,7 @@ const Pricing: React.FC = () => {
         subtitle="Pricing"
         primaryButton={{ text: "Get Started", link: "/contact" }}
         description="No hidden fees. Everything you need to build your fitness coaching business online."
+        image={Pricinghero}
       />
 
       <PricingSection />
@@ -48,12 +52,23 @@ const Pricing: React.FC = () => {
       />
 
       <CustomPricing />
-
       <CallToAction
         title="Ready to Get Started?"
         description="You've made it this far. We'd love to chat about which plan is best for you. Contact us to get started."
         primaryButton={{ text: "Get Started", link: "/contact" }}
       />
+
+      <section>
+        <p className="text-center my-12">
+          Not ready for our custom packages just yet? We understand. Check out
+          our Website in a Week program. It's an affordable way to get a website
+          up and running quickly.
+        </p>
+      </section>
+
+      <WebsiteInAWeek />
+
+      <ThisSoundFamiliar />
     </div>
   );
 };

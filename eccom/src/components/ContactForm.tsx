@@ -7,6 +7,7 @@ type FormData = {
   email: string;
   service: string;
   message: string;
+  phone: string;
 };
 
 const ContactForm = () => {
@@ -92,6 +93,21 @@ const ContactForm = () => {
                   {errors.email.message}
                 </p>
               )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Phone Number
+              </label>
+              <input
+                id="phone"
+                type="tel"
+                className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
+                {...register("phone")}
+              />
             </div>
 
             <div>

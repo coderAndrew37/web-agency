@@ -30,6 +30,7 @@ const NotFound = lazy(() => import("../pages/404"));
 
 import AnimatedSection from "../components/AnimatedSection";
 import CaseStudyPage from "../pages/caseStudyPage";
+import BlogDetail from "../pages/BlogdetailPage";
 
 const AppRoutes = () => (
   <Routes>
@@ -79,6 +80,7 @@ const AppRoutes = () => (
     <Route path="/how-it-works" element={<HowItWorks />} />
     <Route path="/website-in-a-week" element={<WebsiteInAWeekPage />} />
     <Route path="/blog-posts" element={<BlogListPage />} />
+    <Route path="/blog/:slug" element={<BlogDetail />} />
     <Route path="/services" element={<ServicesPage />} />
     <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
