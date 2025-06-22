@@ -4,6 +4,7 @@ import { coreServices } from "../data/coreServices";
 import Testimonials from "../components/Testimonials";
 import CTA from "../components/CTA";
 import { testimonials } from "../data/testimonials";
+import { calendlyUrl } from "../config/constants";
 
 const CoreServicePage = () => {
   const { slug } = useParams();
@@ -130,7 +131,11 @@ const CoreServicePage = () => {
         <CTA
           title="Ready to Take the Next Step?"
           description="Let's build your business together with our expert support."
-          primaryButton={{ text: "Get Started", link: "/contact" }}
+          primaryButton={{
+            text: "Get Started",
+            link: calendlyUrl,
+            target: "_blank",
+          }}
           secondaryButton={{ text: "View Pricing", link: "/pricing" }}
         />
       </div>

@@ -1,8 +1,10 @@
-// src/components/WebsiteInAWeek.tsx
 import { Link } from "react-router-dom";
 import heroImage from "../assets/website-in-a-week.jpeg";
 
 const WebsiteInAWeek = () => {
+  const whatsappLink =
+    "https://wa.me/254746577838?text=Hey%2C%20I'm%20interested%20in%20Fitness%20Website%20in%20a%20Week.";
+
   return (
     <section className="bg-indigo-50 py-16">
       <div className="max-w-4xl mx-auto px-4 text-center mb-12">
@@ -32,7 +34,9 @@ const WebsiteInAWeek = () => {
           <p className="mt-6 text-2xl font-bold text-blue-700">Ksh 15,000</p>
 
           <Link
-            to="/contact"
+            to={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-6 inline-block bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-6 py-3 rounded-md text-lg font-medium hover:opacity-90 transition-opacity"
           >
             Get Started

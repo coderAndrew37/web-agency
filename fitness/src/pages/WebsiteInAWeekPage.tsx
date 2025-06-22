@@ -6,6 +6,9 @@ import WebsiteInAWeek from "../components/WebsiteInAWeek";
 import { CheckCircleIcon } from "lucide-react";
 import FeatiresImage from "../assets/features-image.jpeg";
 
+const whatsappLink =
+  "https://wa.me/254746577838?text=Hey%2C%20I'm%20interested%20in%20Fitness%20Website%20in%20a%20Week.";
+
 const WebsiteInAWeekPage = () => {
   const inclusions = [
     "Professionally designed homepage using proven template",
@@ -82,7 +85,16 @@ const WebsiteInAWeekPage = () => {
       <CallToAction
         title="Let's Get Your Website Launched in a Week"
         description="Ready to go live in just 5 days? Let's do this together."
-        primaryButton={{ text: "Get Started", link: "/contact" }}
+        primaryButton={{
+          text: "Get Started",
+          link: whatsappLink,
+          target: "_blank",
+        }}
+        secondaryButton={{
+          text: "Contact Us",
+
+          link: "/contact",
+        }}
       />
 
       <section className="bg-white py-16">

@@ -7,6 +7,7 @@ import CustomPricing from "../components/CustomPricing";
 import PricingSection from "../components/PricingSection";
 
 import Pricinghero from "../assets/pricing-hero.jpeg";
+import { calendlyUrl } from "../config/constants";
 
 const Pricing: React.FC = () => {
   const pricingFeatures = [
@@ -37,7 +38,11 @@ const Pricing: React.FC = () => {
       <PageHero
         title="Simple, Transparent Pricing"
         subtitle="Pricing"
-        primaryButton={{ text: "Get Started", link: "/contact" }}
+        primaryButton={{
+          text: "Get Started",
+          link: calendlyUrl,
+          target: "_blank",
+        }}
         description="No hidden fees. Everything you need to build your fitness coaching business online."
         image={Pricinghero}
       />
@@ -55,7 +60,11 @@ const Pricing: React.FC = () => {
       <CallToAction
         title="Ready to Get Started?"
         description="You've made it this far. We'd love to chat about which plan is best for you. Contact us to get started."
-        primaryButton={{ text: "Get Started", link: "/contact" }}
+        primaryButton={{
+          text: "Get Started",
+          link: calendlyUrl,
+          target: "_blank",
+        }}
       />
     </div>
   );

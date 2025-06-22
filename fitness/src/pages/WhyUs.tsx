@@ -9,6 +9,7 @@ import {
   MessageCircleIcon,
   UsersIcon,
 } from "lucide-react";
+import { calendlyUrl } from "../config/constants";
 
 const WhyUs = () => {
   const whyUsFeatures = [
@@ -44,8 +45,16 @@ const WhyUs = () => {
         title="Why Choose Us for Your Coaching Website"
         subtitle="Your Success is Our Mission"
         description="We're not just another web design agency. We're fitness industry specialists dedicated to helping coaches like you thrive online."
-        primaryButton={{ text: "Get Started", link: "/contact" }}
-        secondaryButton={{ text: "See Our Work", link: "/portfolio" }}
+        primaryButton={{
+          text: "Get Started",
+          link: calendlyUrl,
+          target: "_blank",
+        }}
+        secondaryButton={{
+          text: "See Our Work",
+          link: "https://sleeksites.co.ke/portfolio",
+          target: "_blank",
+        }}
       />
 
       <Features
@@ -66,7 +75,11 @@ const WhyUs = () => {
       <CallToAction
         title="Ready to Elevate Your Online Presence?"
         description="Join hundreds of successful coaches who've transformed their business with our websites."
-        primaryButton={{ text: "Get Started Today", link: "/contact" }}
+        primaryButton={{
+          text: "Get Started Today",
+          link: calendlyUrl,
+          target: "_blank",
+        }}
         secondaryButton={{ text: "View Pricing", link: "/pricing" }}
       />
     </div>

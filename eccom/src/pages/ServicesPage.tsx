@@ -8,6 +8,7 @@ import CTA from "../components/CTA";
 import ServiceCard from "../components/ServiceCard";
 import ServiceHero from "../components/ServiceHero";
 import { coreServices } from "../data/coreServices";
+import { calendlyUrl } from "../config/constants";
 
 const ServicesPage = () => {
   const number = 254746577838;
@@ -135,7 +136,11 @@ const ServicesPage = () => {
       <CTA
         title="Launch and Scale Your Store With Ease"
         description="Partner with experts who understand ecommerce — from product setup to profit."
-        primaryButton={{ text: "Start Now", link: "/contact" }}
+        primaryButton={{
+          text: "Start Now",
+          link: calendlyUrl,
+          target: "_blank",
+        }}
         secondaryButton={{ text: "Explore Plans", link: "/pricing" }}
       />
     </div>

@@ -10,6 +10,7 @@ import {
   RocketIcon,
   CreditCardIcon,
 } from "lucide-react";
+import { calendlyUrl } from "../config/constants";
 
 const HowItWorks = () => {
   const steps = [
@@ -72,7 +73,11 @@ const HowItWorks = () => {
         title="How We Launch Your Online Store"
         subtitle="Our 5-Step Ecommerce Process"
         description="From planning to launch — our expert team makes it simple to get your store online and selling fast."
-        primaryButton={{ text: "Start Your Project", link: "/contact" }}
+        primaryButton={{
+          text: "Start Your Project",
+          link: calendlyUrl,
+          target: "_blank",
+        }}
       />
 
       <Steps
@@ -123,7 +128,11 @@ const HowItWorks = () => {
       <CallToAction
         title="Ready to Launch Your Store?"
         description="Let’s build a store that sells — from day one."
-        primaryButton={{ text: "Book Your Call", link: "/contact" }}
+        primaryButton={{
+          text: "Book Your Call",
+          link: calendlyUrl,
+          target: "_blank",
+        }}
       />
     </div>
   );

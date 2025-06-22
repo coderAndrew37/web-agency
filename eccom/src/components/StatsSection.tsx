@@ -6,10 +6,10 @@ const StatsSection = () => (
     <div className="px-6 py-8 sm:p-10">
       <div className="text-center mb-10">
         <h3 className="text-2xl font-bold text-gray-900">
-          Real Results for Fitness Coaches
+          Real Results for Ecommerce Owners
         </h3>
         <p className="mt-2 text-gray-600">
-          See how our websites help coaches grow their businesses
+          See how our websites help ecommerce owners grow their businesses
         </p>
         <div className="mt-6">
           <img
@@ -41,7 +41,7 @@ const StatsSection = () => (
           <p className="text-5xl font-extrabold text-blue-600">360+</p>
           <p className="mt-2 text-lg font-medium text-gray-900">Clients</p>
           <p className="mt-1 text-gray-600">
-            Successful coaches using our websites
+            Successful store owners using our websites
           </p>
         </div>
       </div>

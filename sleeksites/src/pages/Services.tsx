@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { calendlyUrl } from "../config/constants";
 
 const Services = () => {
   return (
@@ -60,9 +61,10 @@ const Services = () => {
             Not sure which fits your business?
           </p>
           <Link
-            to="/contact"
+            to={calendlyUrl}
             className="inline-block bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-6 py-3 rounded-md text-lg font-medium hover:opacity-90 transition"
             rel="noopener noreferrer"
+            target="_blank"
           >
             Book a Free Consultation
           </Link>

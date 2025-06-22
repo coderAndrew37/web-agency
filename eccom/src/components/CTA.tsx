@@ -7,10 +7,12 @@ interface CallToActionProps {
   primaryButton: {
     link: string;
     text: string;
+    target?: string;
   };
   secondaryButton?: {
     link: string;
     text: string;
+    target?: string;
   };
 }
 

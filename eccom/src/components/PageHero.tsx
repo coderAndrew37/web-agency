@@ -8,10 +8,12 @@ interface PageHeroProps {
   primaryButton: {
     text: string;
     link: string;
+    target?: string;
   };
   secondaryButton?: {
     text: string;
     link: string;
+    target?: string;
   };
 }
 
@@ -23,12 +25,18 @@ const PageHero = ({
   secondaryButton,
   image,
 }: PageHeroProps) => {
+  const isTwoColumn = !!image;
+
   return (
     <div className="bg-gradient-to-r from-blue-50 to-indigo-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 lg:py-28">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div
+          className={`grid gap-12 items-center ${
+            isTwoColumn ? "lg:grid-cols-2" : "text-center"
+          }`}
+        >
           {/* Text Column */}
-          <div className="text-center lg:text-left">
+          <div className={isTwoColumn ? "text-left" : "text-center"}>
             <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl">
               <span className="block">{title}</span>
               {subtitle && (
@@ -38,7 +46,11 @@ const PageHero = ({
             <p className="mt-4 text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0">
               {description}
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row justify-center lg:justify-start">
+            <div
+              className={`mt-8 flex flex-col sm:flex-row ${
+                isTwoColumn ? "justify-start" : "justify-center"
+              }`}
+            >
               <div className="rounded-md shadow">
                 <Link
                   to={primaryButton.link}

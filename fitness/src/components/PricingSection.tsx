@@ -1,8 +1,9 @@
 import { CheckCircleIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const tiers = [
   {
-    name: "Starter",
+    name: "SleekFit Starter",
     price: 24_999,
     description: "Perfect for new coaches starting their online journey",
     features: [
@@ -16,7 +17,7 @@ const tiers = [
     popular: false,
   },
   {
-    name: "Professional",
+    name: "SleekFit Pro",
     price: 49_999,
     description: "Everything you need to establish your coaching brand",
     features: [
@@ -31,7 +32,7 @@ const tiers = [
     popular: true,
   },
   {
-    name: "Enterprise",
+    name: "SleekFit Elite",
     price: 99_999,
     description: "For established coaches with complex business needs",
     features: [
@@ -105,8 +106,9 @@ const Pricing = () => {
                   ))}
                 </ul>
                 <div className="mt-8">
-                  <a
-                    href={tier.popular ? "/contact" : "/contact"}
+                  <Link
+                    to={`https://wa.me/254746577838?text=I'm%20interested%20in%20the%20${tier.name}%20plan.`}
+                    target="_blank"
                     className={`block w-full py-3 px-6 text-center rounded-md font-medium ${
                       tier.popular
                         ? "bg-gradient-to-r from-blue-600 to-indigo-700 text-white hover:opacity-90"
@@ -114,7 +116,7 @@ const Pricing = () => {
                     }`}
                   >
                     {tier.cta}
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -2,6 +2,8 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { calendlyUrl } from "../config/constants";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -41,8 +43,10 @@ const Navbar = () => {
             ))}
 
             <Link
-              to="/contact"
+              to={calendlyUrl}
               className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-4 py-2 rounded-md font-medium hover:opacity-90"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Book a Call
             </Link>
@@ -75,9 +79,11 @@ const Navbar = () => {
               </Link>
             ))}
             <Link
-              to="/contact"
+              to={calendlyUrl}
               onClick={() => setIsMenuOpen(false)}
               className="block mt-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center px-4 py-2 rounded-md"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Book a Call
             </Link>

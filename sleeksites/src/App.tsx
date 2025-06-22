@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import FAQ from "./components/FAQ";
 import { defaultFaqs } from "./data/DefaultFaqs";
 import WhatsAppCTA from "./components/WhtasapCta";
+import PortfolioPage from "./pages/PortfolioPage";
 
 const About = lazy(() => import("./pages/About"));
 const Home = lazy(() => import("./pages/Home"));
@@ -41,6 +42,8 @@ const App = () => {
           <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/services" element={<Services />} />
+          <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="*" element={<Home />} />
         </Routes>
         <FAQ
           title="Frequently Asked Questions"

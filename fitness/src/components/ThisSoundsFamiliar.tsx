@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { XCircleIcon } from "lucide-react";
+import { calendlyUrl } from "../config/constants";
 
 const painPoints = [
   "You’ve spent weeks trying to build your website but it still doesn’t look right.",
@@ -43,7 +44,8 @@ const ThisSoundFamiliar = () => {
           Or if you're ready to take action right now...
         </p>
         <Link
-          to="/contact"
+          to={calendlyUrl}
+          target="_blank"
           className="mt-4 inline-block bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-6 py-3 rounded-md text-lg font-medium hover:opacity-90 transition-opacity"
         >
           Book a Free Discovery Call

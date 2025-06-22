@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { XCircleIcon } from "lucide-react";
+import { calendlyUrl } from "../config/constants";
 
 const painPoints = [
   "You’ve tried setting up your online store but keep running into tech issues.",
@@ -43,7 +44,8 @@ const ThisSoundFamiliar = () => {
           Or if you're ready to go all in now...
         </p>
         <Link
-          to="/contact"
+          to={calendlyUrl}
+          target="_blank"
           className="mt-4 inline-block bg-gradient-to-r from-indigo-600 to-pink-600 text-white px-6 py-3 rounded-md text-lg font-medium hover:opacity-90 transition-opacity"
         >
           Book a Free Discovery Call

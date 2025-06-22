@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import HeroImage from "../assets/hero.jpg";
+import { calendlyUrl } from "../config/constants";
 
 const Hero = () => {
   return (
@@ -24,8 +25,10 @@ const Hero = () => {
                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                   <div className="rounded-md shadow">
                     <Link
-                      to="/contact"
+                      to={calendlyUrl}
                       className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:opacity-90 md:py-4 md:text-lg md:px-10"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       Get Started
                     </Link>
